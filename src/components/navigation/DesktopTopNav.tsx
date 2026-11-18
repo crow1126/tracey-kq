@@ -14,6 +14,7 @@ export default function DesktopTopNav() {
     setIsCartDrawerOpen,
     setIsSearchOpen,
     setIsAuthModalOpen,
+    siteContent,
     user,
   } = useStore();
 
@@ -31,9 +32,8 @@ export default function DesktopTopNav() {
       {/* Top Banner */}
       <div className="bg-[#111113] text-white py-1.5 px-6 text-center text-xs tracking-widest font-medium flex items-center justify-center gap-3">
         <span className="w-1.5 h-1.5 rounded-full bg-[#6B73F0] animate-pulse"></span>
-        <span className="font-light">
-          ACCRA ATELIER TO WORLDWIDE DOORSTEP · EXPRESS SAME-DAY DELIVERY IN ACCRA METRO · USE CODE{' '}
-          <strong className="text-[#C8E96B] font-bold cursor-pointer underline">WELCOME10</strong>
+        <span className="font-light tracking-wide">
+          {siteContent?.announcementBarText || 'ACCRA ATELIER TO WORLDWIDE DOORSTEP · EXPRESS SAME-DAY DELIVERY IN ACCRA METRO'}
         </span>
         <span className="w-1.5 h-1.5 rounded-full bg-[#6B73F0] animate-pulse"></span>
       </div>

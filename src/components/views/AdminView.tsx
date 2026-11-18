@@ -2,7 +2,7 @@
 
 import React, { useState } from 'react';
 import { useStore } from '@/context/StoreContext';
-import { Product, Order, BespokeEnquiry } from '@/data/db-schema';
+import { Product, Order, BespokeEnquiry, JournalArticle, SiteContent } from '@/data/db-schema';
 import {
   ShieldCheck,
   Package,
@@ -16,19 +16,290 @@ import {
   ExternalLink,
   ChevronRight,
   Filter,
+  Plus,
+  Pencil,
+  Trash2,
+  Sliders,
+  Sparkles,
+  BookOpen,
+  RotateCcw,
+  Eye,
+  Save,
 } from 'lucide-react';
 import Badge from '../ui/Badge';
 
 export default function AdminView() {
-  const { products, orders, enquiries, updateOrderStatus } = useStore();
+  const {
+    products,
+    categories,
+    articles,
+    siteContent,
+    orders,
+    enquiries,
+    updateOrderStatus,
+    addProduct,
+    updateProduct,
+    deleteProduct,
+    updateSiteContent,
+    addArticle,
+    updateArticle,
+    deleteArticle,
+    resetToDefaultData,
+    setActiveView,
+  } = useStore();
 
-  const [activeTab, setActiveTab] = useState<'orders' | 'inventory' | 'enquiries' | 'analytics'>('orders');
+  const [activeTab, setActiveTab] = useState<
+    'inventory' | 'content' | 'journal' | 'orders' | 'enquiries' | 'analytics'
+  >('inventory');
+
+  // Selected order for printable packing slip
   const [selectedPackingSlipOrder, setSelectedPackingSlipOrder] = useState<Order | null>(null);
+
+  // Product Add / Edit Modal state
+  const [isProductModalOpen, setIsProductModalOpen] = useState(false);
+  const [editingProductId, setEditingProductId] = useState<string | null>(null);
+  const [productForm, setProductForm] = useState({
+    name: '',
+    subtitle: '',
+    category: 'Dresses',
+    categoryId: 'cat-dresses',
+    priceGhc: 8500,
+    originalPriceGhc: 0,
+    fabric: 'Bonwire Hand-Woven Silk',
+    craftsmanship: 'Hand-loomed in the Ashanti region of Bonwire by hereditary master weavers.',
+    description: 'An architectural silhouette sculpted with traditional Ghanaian textiles and fluid modern tailoring.',
+    careInstructions: 'Dry clean only. Store in breathable canvas garment bag.',
+    imageUrl: 'https://images.unsplash.com/photo-1515886657613-9f3515b0c78f?auto=format&fit=crop&w=800&q=85',
+    stockStatus: 'in_stock' as 'in_stock' | 'low_stock' | 'out_of_stock',
+    sizes: 'XS, S, M, L, XL',
+    isNew: true,
+    isTrending: true,
+    isSpotlight: false,
+  });
+
+  // Product delete confirmation modal
+  const [productToDelete, setProductToDelete] = useState<Product | null>(null);
+
+  // Site Content Editor state
+  const [contentForm, setContentForm] = useState<SiteContent>(siteContent);
+  const [contentSaved, setContentSaved] = useState(false);
+
+  // Journal Add / Edit Modal state
+  const [isArticleModalOpen, setIsArticleModalOpen] = useState(false);
+  const [editingArticleId, setEditingArticleId] = useState<string | null>(null);
+  const [articleForm, setArticleForm] = useState({
+    title: '',
+    category: 'Styling Guide' as 'Styling Guide' | 'Behind The Scenes' | 'Press' | 'Heritage',
+    author: 'Tracey Kuukua Quansah',
+    readTime: '4 min read',
+    date: '18 February 2026',
+    heroImage: 'https://images.unsplash.com/photo-1509631179647-0177331693ae?auto=format&fit=crop&w=1000&q=85',
+    excerpt: '',
+    content: '',
+  });
+  const [articleToDelete, setArticleToDelete] = useState<JournalArticle | null>(null);
+
+  // Search & Filter in Inventory
+  const [inventorySearch, setInventorySearch] = useState('');
+  const [inventoryCategoryFilter, setInventoryCategoryFilter] = useState('all');
 
   // Analytics computations
   const totalRevenueGhc = orders.reduce((sum, o) => sum + o.totalGhc, 0);
   const totalItemsSold = orders.reduce((sum, o) => sum + o.items.reduce((s, i) => s + i.quantity, 0), 0);
   const lowStockCount = products.filter((p) => p.stockStatus === 'low_stock').length;
+
+  const filteredInventory = products.filter((p) => {
+    const matchesCat = inventoryCategoryFilter === 'all' || p.category === inventoryCategoryFilter || p.categoryId === inventoryCategoryFilter;
+    const matchesSearch = p.name.toLowerCase().includes(inventorySearch.toLowerCase()) || p.fabric.toLowerCase().includes(inventorySearch.toLowerCase());
+    return matchesCat && matchesSearch;
+  });
+
+  // Open Product Modal for Create
+  const handleOpenCreateProduct = () => {
+    setEditingProductId(null);
+    setProductForm({
+      name: '',
+      subtitle: 'Accra Atelier Ready-to-Wear',
+      category: 'Dresses',
+      categoryId: 'cat-dresses',
+      priceGhc: 8500,
+      originalPriceGhc: 0,
+      fabric: 'Bonwire Hand-Woven Silk',
+      craftsmanship: 'Hand-loomed in the Ashanti region of Bonwire by hereditary master weavers.',
+      description: 'An architectural silhouette sculpted with traditional Ghanaian textiles and fluid modern tailoring.',
+      careInstructions: 'Dry clean only. Store in breathable canvas garment bag.',
+      imageUrl: 'https://images.unsplash.com/photo-1515886657613-9f3515b0c78f?auto=format&fit=crop&w=800&q=85',
+      stockStatus: 'in_stock',
+      sizes: 'XS, S, M, L, XL',
+      isNew: true,
+      isTrending: true,
+      isSpotlight: false,
+    });
+    setIsProductModalOpen(true);
+  };
+
+  // Open Product Modal for Edit
+  const handleOpenEditProduct = (p: Product) => {
+    setEditingProductId(p.id);
+    setProductForm({
+      name: p.name,
+      subtitle: p.subtitle || '',
+      category: p.category,
+      categoryId: p.categoryId,
+      priceGhc: p.priceGhc,
+      originalPriceGhc: p.originalPriceGhc || 0,
+      fabric: p.fabric,
+      craftsmanship: p.craftsmanship,
+      description: p.description,
+      careInstructions: p.careInstructions,
+      imageUrl: p.images[0] || '',
+      stockStatus: p.stockStatus,
+      sizes: p.sizes.join(', '),
+      isNew: p.isNew,
+      isTrending: p.isTrending,
+      isSpotlight: p.isSpotlight,
+    });
+    setIsProductModalOpen(true);
+  };
+
+  // Submit Product Form
+  const handleSaveProduct = (e: React.FormEvent) => {
+    e.preventDefault();
+    const sizeArray = productForm.sizes.split(',').map((s) => s.trim()).filter(Boolean);
+
+    if (editingProductId) {
+      updateProduct(editingProductId, {
+        name: productForm.name,
+        subtitle: productForm.subtitle,
+        category: productForm.category,
+        categoryId: productForm.categoryId,
+        priceGhc: Number(productForm.priceGhc),
+        originalPriceGhc: productForm.originalPriceGhc ? Number(productForm.originalPriceGhc) : undefined,
+        fabric: productForm.fabric,
+        craftsmanship: productForm.craftsmanship,
+        description: productForm.description,
+        careInstructions: productForm.careInstructions,
+        images: [productForm.imageUrl],
+        stockStatus: productForm.stockStatus,
+        sizes: sizeArray.length > 0 ? sizeArray : ['M'],
+        isNew: productForm.isNew,
+        isTrending: productForm.isTrending,
+        isSpotlight: productForm.isSpotlight,
+      });
+    } else {
+      addProduct({
+        name: productForm.name,
+        subtitle: productForm.subtitle,
+        category: productForm.category,
+        categoryId: productForm.categoryId,
+        collectionId: 'col-ss26',
+        priceGhc: Number(productForm.priceGhc),
+        originalPriceGhc: productForm.originalPriceGhc ? Number(productForm.originalPriceGhc) : undefined,
+        discountPercent: productForm.originalPriceGhc ? Math.round(((productForm.originalPriceGhc - productForm.priceGhc) / productForm.originalPriceGhc) * 100) : 0,
+        isNew: productForm.isNew,
+        isTrending: productForm.isTrending,
+        isSpotlight: productForm.isSpotlight,
+        rating: 5.0,
+        reviewCount: 1,
+        images: [productForm.imageUrl],
+        colors: [{ name: 'Heritage Gold', hex: '#D4AF37' }],
+        sizes: sizeArray.length > 0 ? sizeArray : ['XS', 'S', 'M', 'L'],
+        variants: [],
+        fabric: productForm.fabric,
+        craftsmanship: productForm.craftsmanship,
+        description: productForm.description,
+        careInstructions: productForm.careInstructions,
+        stockStatus: productForm.stockStatus,
+      });
+    }
+    setIsProductModalOpen(false);
+  };
+
+  // Confirm delete product
+  const handleConfirmDeleteProduct = () => {
+    if (productToDelete) {
+      deleteProduct(productToDelete.id);
+      setProductToDelete(null);
+    }
+  };
+
+  // Save Site Content Form
+  const handleSaveSiteContent = (e: React.FormEvent) => {
+    e.preventDefault();
+    updateSiteContent(contentForm);
+    setContentSaved(true);
+    setTimeout(() => setContentSaved(false), 3000);
+  };
+
+  // Open Article Modal for Create
+  const handleOpenCreateArticle = () => {
+    setEditingArticleId(null);
+    setArticleForm({
+      title: '',
+      category: 'Styling Guide',
+      author: 'Tracey Kuukua Quansah',
+      readTime: '4 min read',
+      date: new Date().toLocaleDateString('en-GB', { day: 'numeric', month: 'long', year: 'numeric' }),
+      heroImage: 'https://images.unsplash.com/photo-1509631179647-0177331693ae?auto=format&fit=crop&w=1000&q=85',
+      excerpt: '',
+      content: '',
+    });
+    setIsArticleModalOpen(true);
+  };
+
+  // Open Article Modal for Edit
+  const handleOpenEditArticle = (art: JournalArticle) => {
+    setEditingArticleId(art.id);
+    setArticleForm({
+      title: art.title,
+      category: art.category,
+      author: art.author,
+      readTime: art.readTime,
+      date: art.date,
+      heroImage: art.heroImage,
+      excerpt: art.excerpt,
+      content: art.content,
+    });
+    setIsArticleModalOpen(true);
+  };
+
+  // Save Article
+  const handleSaveArticle = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (editingArticleId) {
+      updateArticle(editingArticleId, {
+        title: articleForm.title,
+        category: articleForm.category,
+        author: articleForm.author,
+        readTime: articleForm.readTime,
+        date: articleForm.date,
+        heroImage: articleForm.heroImage,
+        excerpt: articleForm.excerpt,
+        content: articleForm.content,
+      });
+    } else {
+      addArticle({
+        title: articleForm.title,
+        slug: articleForm.title.toLowerCase().replace(/[^a-z0-9]+/g, '-'),
+        category: articleForm.category,
+        author: articleForm.author,
+        readTime: articleForm.readTime,
+        date: articleForm.date,
+        heroImage: articleForm.heroImage,
+        excerpt: articleForm.excerpt,
+        content: articleForm.content,
+        tags: ['Couture', 'Atelier', 'Accra'],
+      });
+    }
+    setIsArticleModalOpen(false);
+  };
+
+  const handleConfirmDeleteArticle = () => {
+    if (articleToDelete) {
+      deleteArticle(articleToDelete.id);
+      setArticleToDelete(null);
+    }
+  };
 
   return (
     <div className="min-h-screen bg-[#F5F5F7] text-[#111113] pb-32">
@@ -45,20 +316,36 @@ export default function AdminView() {
                   TRACEY KUUKUA QUANSAH
                 </span>
                 <span className="bg-[#1F8A4C] text-[10px] font-bold px-2 py-0.5 rounded-full uppercase">
-                  Live Operations
+                  CMS Operations Active
                 </span>
               </div>
               <h1 className="text-xl sm:text-2xl font-bold tracking-tight">
-                Atelier Administration & Backoffice
+                Atelier Administration & Content Management
               </h1>
             </div>
           </div>
 
-          <div className="flex items-center gap-2">
-            <span className="text-xs text-white/70">Currency:</span>
-            <span className="bg-white/10 px-3 py-1 rounded-full text-xs font-semibold">
-              GH₵ (Ghana Cedi)
-            </span>
+          <div className="flex items-center gap-3">
+            <button
+              onClick={() => setActiveView('home')}
+              className="text-xs bg-white/10 hover:bg-white/20 text-white px-3.5 py-1.5 rounded-full flex items-center gap-1.5 transition-colors cursor-pointer"
+            >
+              <Eye className="w-3.5 h-3.5" />
+              <span>View Live Storefront</span>
+            </button>
+            <button
+              onClick={() => {
+                if (confirm('Reset products and site content to initial seed defaults?')) {
+                  resetToDefaultData();
+                  alert('Reset to default seed catalogue!');
+                }
+              }}
+              className="text-xs bg-white/10 hover:bg-[#E5384F]/30 text-white/80 hover:text-white px-3 py-1.5 rounded-full flex items-center gap-1.5 transition-colors cursor-pointer"
+              title="Reset to default seed data"
+            >
+              <RotateCcw className="w-3.5 h-3.5" />
+              <span>Reset Data</span>
+            </button>
           </div>
         </div>
       </section>
@@ -79,13 +366,13 @@ export default function AdminView() {
 
           <div className="bg-white rounded-2xl p-4 sm:p-5 border border-[#E6E6EA] shadow-sm">
             <div className="flex items-center justify-between text-[#8A8A8F] mb-1">
-              <span className="text-xs font-semibold uppercase tracking-wider">Total Orders</span>
-              <ShoppingBag className="w-4 h-4 text-[#6B73F0]" />
+              <span className="text-xs font-semibold uppercase tracking-wider">Catalogue Items</span>
+              <Package className="w-4 h-4 text-[#6B73F0]" />
             </div>
             <span className="text-xl sm:text-2xl font-bold text-[#111113]">
-              {orders.length} orders
+              {products.length} creations
             </span>
-            <span className="text-[11px] text-[#8A8A8F] block mt-1">{totalItemsSold} pieces fulfilled</span>
+            <span className="text-[11px] text-[#8A8A8F] block mt-1">{categories.length} categories</span>
           </div>
 
           <div className="bg-white rounded-2xl p-4 sm:p-5 border border-[#E6E6EA] shadow-sm">
@@ -96,7 +383,7 @@ export default function AdminView() {
             <span className="text-xl sm:text-2xl font-bold text-[#111113]">
               {enquiries.length} clients
             </span>
-            <span className="text-[11px] text-[#6B73F0] block mt-1">1 fitting scheduled this week</span>
+            <span className="text-[11px] text-[#6B73F0] block mt-1">Fittings scheduled this week</span>
           </div>
 
           <div className="bg-white rounded-2xl p-4 sm:p-5 border border-[#E6E6EA] shadow-sm">
@@ -116,8 +403,10 @@ export default function AdminView() {
       <section className="max-w-7xl mx-auto px-5 sm:px-8 mt-8">
         <div className="bg-white rounded-2xl p-1.5 border border-[#E6E6EA] flex space-x-1 overflow-x-auto no-scrollbar text-xs font-semibold">
           {[
+            { id: 'inventory', label: `Inventory & Products (${products.length})`, icon: Package },
+            { id: 'content', label: 'Site Features & Banners', icon: Sliders },
+            { id: 'journal', label: `Journal & Stories (${articles.length})`, icon: BookOpen },
             { id: 'orders', label: `Orders (${orders.length})`, icon: ShoppingBag },
-            { id: 'inventory', label: `Inventory & Stock (${products.length})`, icon: Package },
             { id: 'enquiries', label: `Bespoke Enquiries (${enquiries.length})`, icon: Scissors },
             { id: 'analytics', label: 'Financial Analytics', icon: TrendingUp },
           ].map((tab) => {
@@ -144,7 +433,431 @@ export default function AdminView() {
 
       {/* 4. Tab Content */}
       <section className="max-w-7xl mx-auto px-5 sm:px-8 mt-6">
-        {/* ORDERS TAB */}
+        {/* ────────── 1. INVENTORY & PRODUCTS (ADD, EDIT, DELETE) ────────── */}
+        {activeTab === 'inventory' && (
+          <div className="bg-white rounded-3xl border border-[#E6E6EA] overflow-hidden shadow-sm space-y-4">
+            <div className="p-5 border-b border-[#E6E6EA] flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+              <div>
+                <h3 className="text-base font-bold text-[#111113]">
+                  Product Inventory & Silhouette Registry
+                </h3>
+                <p className="text-xs text-[#8A8A8F]">
+                  Add new gowns, edit pricing and stories, or delete archival pieces in real-time.
+                </p>
+              </div>
+
+              {/* Add New Garment Button */}
+              <button
+                onClick={handleOpenCreateProduct}
+                className="h-11 px-5 rounded-full bg-[#111113] text-white hover:bg-[#3A3A3F] text-xs font-semibold flex items-center gap-2 shadow-sm transition-all cursor-pointer self-start sm:self-auto"
+              >
+                <Plus className="w-4 h-4" />
+                <span>+ Add New Creation</span>
+              </button>
+            </div>
+
+            {/* Filter & Search Bar */}
+            <div className="px-5 flex flex-col sm:flex-row items-center justify-between gap-3">
+              <input
+                type="text"
+                placeholder="Search products by title or fabric..."
+                value={inventorySearch}
+                onChange={(e) => setInventorySearch(e.target.value)}
+                className="w-full sm:max-w-xs h-10 px-4 rounded-full bg-[#F5F5F7] border border-[#E6E6EA] text-xs outline-none"
+              />
+
+              <div className="flex items-center gap-2 w-full sm:w-auto">
+                <span className="text-xs text-[#8A8A8F] whitespace-nowrap">Filter category:</span>
+                <select
+                  value={inventoryCategoryFilter}
+                  onChange={(e) => setInventoryCategoryFilter(e.target.value)}
+                  className="h-10 px-3 rounded-full bg-[#F5F5F7] border border-[#E6E6EA] text-xs font-medium text-[#111113] outline-none cursor-pointer"
+                >
+                  <option value="all">All Categories</option>
+                  {categories.map((c) => (
+                    <option key={c.id} value={c.name}>
+                      {c.name}
+                    </option>
+                  ))}
+                </select>
+                <span className="text-xs text-[#8A8A8F]">
+                  ({filteredInventory.length} items)
+                </span>
+              </div>
+            </div>
+
+            {/* Products Table */}
+            <div className="overflow-x-auto">
+              <table className="w-full text-left text-xs">
+                <thead className="bg-[#F5F5F7] border-b border-[#E6E6EA] text-[#8A8A8F] font-semibold uppercase tracking-wider">
+                  <tr>
+                    <th className="py-3.5 px-4">Garment</th>
+                    <th className="py-3.5 px-4">Category</th>
+                    <th className="py-3.5 px-4">Fabric</th>
+                    <th className="py-3.5 px-4">Price (GH₵)</th>
+                    <th className="py-3.5 px-4">Stock Status</th>
+                    <th className="py-3.5 px-4 text-right">Actions</th>
+                  </tr>
+                </thead>
+                <tbody className="divide-y divide-[#E6E6EA]">
+                  {filteredInventory.map((p) => (
+                    <tr key={p.id} className="hover:bg-[#F5F5F7] transition-colors">
+                      <td className="py-3 px-4">
+                        <div className="flex items-center gap-3">
+                          <img
+                            src={p.images[0]}
+                            alt=""
+                            className="w-12 h-14 object-cover rounded-xl bg-[#EDEDF0]"
+                          />
+                          <div>
+                            <span className="font-semibold text-[#111113] block">{p.name}</span>
+                            <span className="text-[10px] text-[#8A8A8F]">ID: {p.id} · {p.sizes.join(', ')}</span>
+                          </div>
+                        </div>
+                      </td>
+                      <td className="py-3 px-4 font-medium text-[#3A3A3F]">{p.category}</td>
+                      <td className="py-3 px-4 text-[#8A8A8F] max-w-[150px] truncate">{p.fabric}</td>
+                      <td className="py-3 px-4 font-bold text-[#111113]">
+                        GH₵ {p.priceGhc.toLocaleString()}
+                      </td>
+                      <td className="py-3 px-4">
+                        {p.stockStatus === 'in_stock' && (
+                          <span className="text-[10px] font-bold text-[#1F8A4C] bg-[#E8F5EE] px-2.5 py-1 rounded-full">
+                            In Stock
+                          </span>
+                        )}
+                        {p.stockStatus === 'low_stock' && (
+                          <span className="text-[10px] font-bold text-[#F5A524] bg-[#FDF4E7] px-2.5 py-1 rounded-full">
+                            Low Stock
+                          </span>
+                        )}
+                        {p.stockStatus === 'out_of_stock' && (
+                          <span className="text-[10px] font-bold text-[#E5384F] bg-[#FDECEE] px-2.5 py-1 rounded-full">
+                            Out of Stock
+                          </span>
+                        )}
+                      </td>
+                      <td className="py-3 px-4 text-right">
+                        <div className="flex items-center justify-end gap-1.5">
+                          {/* Edit Product */}
+                          <button
+                            onClick={() => handleOpenEditProduct(p)}
+                            className="p-2 rounded-lg bg-[#EDEDF0] hover:bg-[#111113] hover:text-white transition-colors cursor-pointer"
+                            title="Edit Product"
+                          >
+                            <Pencil className="w-3.5 h-3.5" />
+                          </button>
+                          {/* Delete Product */}
+                          <button
+                            onClick={() => setProductToDelete(p)}
+                            className="p-2 rounded-lg bg-[#FDECEE] text-[#E5384F] hover:bg-[#E5384F] hover:text-white transition-colors cursor-pointer"
+                            title="Delete Product"
+                          >
+                            <Trash2 className="w-3.5 h-3.5" />
+                          </button>
+                        </div>
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+          </div>
+        )}
+
+        {/* ────────── 2. SITE FEATURES & BANNERS (HERO, JUST LANDED, ANNOUNCEMENT) ────────── */}
+        {activeTab === 'content' && (
+          <div className="bg-white rounded-3xl border border-[#E6E6EA] p-6 sm:p-8 space-y-8 shadow-sm">
+            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-[#E6E6EA] pb-5">
+              <div>
+                <h3 className="text-base font-bold text-[#111113]">
+                  Homepage Features & Content Editor
+                </h3>
+                <p className="text-xs text-[#8A8A8F]">
+                  Modify hero typography, imagery, announcement banner, and toggle marketing sections.
+                </p>
+              </div>
+
+              <div className="flex items-center gap-3">
+                {contentSaved && (
+                  <span className="text-xs font-semibold text-[#1F8A4C] flex items-center gap-1">
+                    <Check className="w-4 h-4" />
+                    <span>Saved Live!</span>
+                  </span>
+                )}
+                <button
+                  onClick={handleSaveSiteContent}
+                  className="h-11 px-6 rounded-full bg-[#111113] text-white hover:bg-[#3A3A3F] text-xs font-semibold flex items-center gap-2 shadow-md cursor-pointer transition-all"
+                >
+                  <Save className="w-4 h-4" />
+                  <span>Save Live Changes</span>
+                </button>
+              </div>
+            </div>
+
+            <form onSubmit={handleSaveSiteContent} className="space-y-8">
+              {/* Top Announcement Bar */}
+              <div className="bg-[#F5F5F7] rounded-2xl p-5 border border-[#E6E6EA] space-y-3">
+                <span className="text-xs font-bold uppercase tracking-wider text-[#111113] block">
+                  Top Scrolling Announcement Bar
+                </span>
+                <input
+                  type="text"
+                  value={contentForm.announcementBarText}
+                  onChange={(e) =>
+                    setContentForm({ ...contentForm, announcementBarText: e.target.value })
+                  }
+                  className="w-full h-11 px-4 rounded-xl bg-white border border-[#E6E6EA] text-xs font-medium text-[#111113] outline-none focus:border-[#6B73F0]"
+                />
+              </div>
+
+              {/* Hero Section */}
+              <div className="bg-[#F5F5F7] rounded-2xl p-5 border border-[#E6E6EA] space-y-4">
+                <span className="text-xs font-bold uppercase tracking-wider text-[#111113] block">
+                  Campaign Hero Section (Top of Front Page)
+                </span>
+
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                  <div>
+                    <label className="text-[11px] font-medium text-[#8A8A8F] block mb-1">
+                      Campaign Badge
+                    </label>
+                    <input
+                      type="text"
+                      value={contentForm.heroCampaignBadge}
+                      onChange={(e) =>
+                        setContentForm({ ...contentForm, heroCampaignBadge: e.target.value })
+                      }
+                      className="w-full h-10 px-3 rounded-xl bg-white border border-[#E6E6EA] text-xs outline-none"
+                    />
+                  </div>
+
+                  <div>
+                    <label className="text-[11px] font-medium text-[#8A8A8F] block mb-1">
+                      Hero Campaign Image URL
+                    </label>
+                    <input
+                      type="url"
+                      value={contentForm.heroImageUrl}
+                      onChange={(e) =>
+                        setContentForm({ ...contentForm, heroImageUrl: e.target.value })
+                      }
+                      className="w-full h-10 px-3 rounded-xl bg-white border border-[#E6E6EA] text-xs outline-none"
+                    />
+                  </div>
+                </div>
+
+                <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
+                  <div>
+                    <label className="text-[11px] font-medium text-[#8A8A8F] block mb-1">
+                      Headline Prefix
+                    </label>
+                    <input
+                      type="text"
+                      value={contentForm.heroHeadlinePrefix}
+                      onChange={(e) =>
+                        setContentForm({ ...contentForm, heroHeadlinePrefix: e.target.value })
+                      }
+                      className="w-full h-10 px-3 rounded-xl bg-white border border-[#E6E6EA] text-xs outline-none"
+                    />
+                  </div>
+
+                  <div>
+                    <label className="text-[11px] font-medium text-[#8A8A8F] block mb-1">
+                      Accent Highlight Word (in purple)
+                    </label>
+                    <input
+                      type="text"
+                      value={contentForm.heroHeadlineAccent}
+                      onChange={(e) =>
+                        setContentForm({ ...contentForm, heroHeadlineAccent: e.target.value })
+                      }
+                      className="w-full h-10 px-3 rounded-xl bg-white border border-[#E6E6EA] text-xs font-bold text-[#6B73F0] outline-none"
+                    />
+                  </div>
+
+                  <div>
+                    <label className="text-[11px] font-medium text-[#8A8A8F] block mb-1">
+                      Headline Suffix
+                    </label>
+                    <input
+                      type="text"
+                      value={contentForm.heroHeadlineSuffix}
+                      onChange={(e) =>
+                        setContentForm({ ...contentForm, heroHeadlineSuffix: e.target.value })
+                      }
+                      className="w-full h-10 px-3 rounded-xl bg-white border border-[#E6E6EA] text-xs outline-none"
+                    />
+                  </div>
+                </div>
+
+                <div>
+                  <label className="text-[11px] font-medium text-[#8A8A8F] block mb-1">
+                    Hero Subtitle
+                  </label>
+                  <textarea
+                    rows={2}
+                    value={contentForm.heroSubtitle}
+                    onChange={(e) =>
+                      setContentForm({ ...contentForm, heroSubtitle: e.target.value })
+                    }
+                    className="w-full p-3 rounded-xl bg-white border border-[#E6E6EA] text-xs outline-none"
+                  />
+                </div>
+              </div>
+
+              {/* Just Landed Pink Banner */}
+              <div className="bg-[#F5F5F7] rounded-2xl p-5 border border-[#E6E6EA] space-y-4">
+                <div className="flex items-center justify-between">
+                  <span className="text-xs font-bold uppercase tracking-wider text-[#111113]">
+                    "Just Landed" Pink-Gradient Drop Banner
+                  </span>
+                  <label className="flex items-center gap-2 text-xs font-semibold cursor-pointer">
+                    <input
+                      type="checkbox"
+                      checked={contentForm.bannerVisible}
+                      onChange={(e) =>
+                        setContentForm({ ...contentForm, bannerVisible: e.target.checked })
+                      }
+                      className="rounded text-[#FF2D8A]"
+                    />
+                    <span>Banner Visible</span>
+                  </label>
+                </div>
+
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                  <div>
+                    <label className="text-[11px] font-medium text-[#8A8A8F] block mb-1">
+                      Banner Badge Tag
+                    </label>
+                    <input
+                      type="text"
+                      value={contentForm.bannerBadge}
+                      onChange={(e) =>
+                        setContentForm({ ...contentForm, bannerBadge: e.target.value })
+                      }
+                      className="w-full h-10 px-3 rounded-xl bg-white border border-[#E6E6EA] text-xs outline-none"
+                    />
+                  </div>
+
+                  <div>
+                    <label className="text-[11px] font-medium text-[#8A8A8F] block mb-1">
+                      Banner Headline
+                    </label>
+                    <input
+                      type="text"
+                      value={contentForm.bannerHeadline}
+                      onChange={(e) =>
+                        setContentForm({ ...contentForm, bannerHeadline: e.target.value })
+                      }
+                      className="w-full h-10 px-3 rounded-xl bg-white border border-[#E6E6EA] text-xs outline-none"
+                    />
+                  </div>
+                </div>
+
+                <div>
+                  <label className="text-[11px] font-medium text-[#8A8A8F] block mb-1">
+                    Banner Subtitle
+                  </label>
+                  <input
+                    type="text"
+                    value={contentForm.bannerSubtitle}
+                    onChange={(e) =>
+                      setContentForm({ ...contentForm, bannerSubtitle: e.target.value })
+                    }
+                    className="w-full h-10 px-3 rounded-xl bg-white border border-[#E6E6EA] text-xs outline-none"
+                  />
+                </div>
+
+                <div>
+                  <label className="text-[11px] font-medium text-[#8A8A8F] block mb-1">
+                    Discount / Promo Message
+                  </label>
+                  <input
+                    type="text"
+                    value={contentForm.bannerDiscountText}
+                    onChange={(e) =>
+                      setContentForm({ ...contentForm, bannerDiscountText: e.target.value })
+                    }
+                    className="w-full h-10 px-3 rounded-xl bg-white border border-[#E6E6EA] text-xs outline-none"
+                  />
+                </div>
+              </div>
+            </form>
+          </div>
+        )}
+
+        {/* ────────── 3. JOURNAL & EDITORIAL STORIES (ADD, EDIT, DELETE) ────────── */}
+        {activeTab === 'journal' && (
+          <div className="bg-white rounded-3xl border border-[#E6E6EA] overflow-hidden shadow-sm space-y-4">
+            <div className="p-5 border-b border-[#E6E6EA] flex items-center justify-between">
+              <div>
+                <h3 className="text-base font-bold text-[#111113]">
+                  Spotlight Editorial & Journal Stories
+                </h3>
+                <p className="text-xs text-[#8A8A8F]">
+                  Publish styling guides, artisan behind-the-scenes narratives, and runway reviews.
+                </p>
+              </div>
+
+              <button
+                onClick={handleOpenCreateArticle}
+                className="h-11 px-5 rounded-full bg-[#111113] text-white hover:bg-[#3A3A3F] text-xs font-semibold flex items-center gap-2 shadow-sm transition-all cursor-pointer"
+              >
+                <Plus className="w-4 h-4" />
+                <span>+ Write New Story</span>
+              </button>
+            </div>
+
+            <div className="divide-y divide-[#E6E6EA]">
+              {articles.map((art) => (
+                <div
+                  key={art.id}
+                  className="p-5 flex flex-col sm:flex-row sm:items-center justify-between gap-4 hover:bg-[#F5F5F7] transition-colors"
+                >
+                  <div className="flex items-center gap-4">
+                    <img
+                      src={art.heroImage}
+                      alt=""
+                      className="w-16 h-16 rounded-2xl object-cover bg-[#EDEDF0] flex-shrink-0"
+                    />
+                    <div>
+                      <div className="flex items-center gap-2">
+                        <span className="text-[10px] font-bold text-[#6B73F0] bg-[#ECEDFD] px-2.5 py-0.5 rounded-full uppercase">
+                          {art.category}
+                        </span>
+                        <span className="text-[11px] text-[#8A8A8F]">{art.date} · {art.readTime}</span>
+                      </div>
+                      <h4 className="font-bold text-sm text-[#111113] mt-1 line-clamp-1">
+                        {art.title}
+                      </h4>
+                      <p className="text-xs text-[#8A8A8F] line-clamp-1">{art.excerpt}</p>
+                    </div>
+                  </div>
+
+                  <div className="flex items-center gap-2 self-end sm:self-auto">
+                    <button
+                      onClick={() => handleOpenEditArticle(art)}
+                      className="p-2 rounded-lg bg-[#EDEDF0] hover:bg-[#111113] hover:text-white transition-colors cursor-pointer"
+                      title="Edit Story"
+                    >
+                      <Pencil className="w-3.5 h-3.5" />
+                    </button>
+                    <button
+                      onClick={() => setArticleToDelete(art)}
+                      className="p-2 rounded-lg bg-[#FDECEE] text-[#E5384F] hover:bg-[#E5384F] hover:text-white transition-colors cursor-pointer"
+                      title="Delete Story"
+                    >
+                      <Trash2 className="w-3.5 h-3.5" />
+                    </button>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+        )}
+
+        {/* ────────── 4. ORDERS TAB ────────── */}
         {activeTab === 'orders' && (
           <div className="bg-white rounded-3xl border border-[#E6E6EA] overflow-hidden shadow-sm">
             <div className="p-5 border-b border-[#E6E6EA] flex items-center justify-between">
@@ -240,82 +953,7 @@ export default function AdminView() {
           </div>
         )}
 
-        {/* INVENTORY TAB */}
-        {activeTab === 'inventory' && (
-          <div className="bg-white rounded-3xl border border-[#E6E6EA] overflow-hidden shadow-sm">
-            <div className="p-5 border-b border-[#E6E6EA] flex items-center justify-between">
-              <div>
-                <h3 className="text-base font-bold text-[#111113]">
-                  Product Inventory & Silhouette Registry
-                </h3>
-                <p className="text-xs text-[#8A8A8F]">
-                  Real-time inventory levels across ready-to-wear and couture archives.
-                </p>
-              </div>
-            </div>
-
-            <div className="overflow-x-auto">
-              <table className="w-full text-left text-xs">
-                <thead className="bg-[#F5F5F7] border-b border-[#E6E6EA] text-[#8A8A8F] font-semibold uppercase tracking-wider">
-                  <tr>
-                    <th className="py-3.5 px-4">Garment</th>
-                    <th className="py-3.5 px-4">Category</th>
-                    <th className="py-3.5 px-4">Fabric</th>
-                    <th className="py-3.5 px-4">Price (GH₵)</th>
-                    <th className="py-3.5 px-4">Sizes</th>
-                    <th className="py-3.5 px-4">Stock Status</th>
-                  </tr>
-                </thead>
-                <tbody className="divide-y divide-[#E6E6EA]">
-                  {products.map((p) => (
-                    <tr key={p.id} className="hover:bg-[#F5F5F7] transition-colors">
-                      <td className="py-3 px-4">
-                        <div className="flex items-center gap-3">
-                          <img
-                            src={p.images[0]}
-                            alt=""
-                            className="w-10 h-12 object-cover rounded-lg bg-[#EDEDF0]"
-                          />
-                          <div>
-                            <span className="font-semibold text-[#111113] block">{p.name}</span>
-                            <span className="text-[10px] text-[#8A8A8F]">ID: {p.id}</span>
-                          </div>
-                        </div>
-                      </td>
-                      <td className="py-3 px-4 text-[#3A3A3F]">{p.category}</td>
-                      <td className="py-3 px-4 text-[#8A8A8F] max-w-[150px] truncate">{p.fabric}</td>
-                      <td className="py-3 px-4 font-bold text-[#111113]">
-                        GH₵ {p.priceGhc.toLocaleString()}
-                      </td>
-                      <td className="py-3 px-4 text-[#3A3A3F]">
-                        {p.sizes.join(', ')}
-                      </td>
-                      <td className="py-3 px-4">
-                        {p.stockStatus === 'in_stock' && (
-                          <span className="text-[10px] font-bold text-[#1F8A4C] bg-[#E8F5EE] px-2.5 py-1 rounded-full">
-                            In Stock
-                          </span>
-                        )}
-                        {p.stockStatus === 'low_stock' && (
-                          <span className="text-[10px] font-bold text-[#F5A524] bg-[#FDF4E7] px-2.5 py-1 rounded-full">
-                            Low Stock (2 Left)
-                          </span>
-                        )}
-                        {p.stockStatus === 'out_of_stock' && (
-                          <span className="text-[10px] font-bold text-[#E5384F] bg-[#FDECEE] px-2.5 py-1 rounded-full">
-                            Out of Stock
-                          </span>
-                        )}
-                      </td>
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
-            </div>
-          </div>
-        )}
-
-        {/* BESPOKE ENQUIRIES TAB */}
+        {/* ────────── 5. BESPOKE ENQUIRIES TAB ────────── */}
         {activeTab === 'enquiries' && (
           <div className="bg-white rounded-3xl border border-[#E6E6EA] overflow-hidden shadow-sm">
             <div className="p-5 border-b border-[#E6E6EA]">
@@ -360,19 +998,19 @@ export default function AdminView() {
           </div>
         )}
 
-        {/* FINANCIAL ANALYTICS */}
+        {/* ────────── 6. FINANCIAL ANALYTICS ────────── */}
         {activeTab === 'analytics' && (
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             <div className="bg-white rounded-3xl p-6 border border-[#E6E6EA] shadow-sm space-y-4">
               <h3 className="text-sm font-bold text-[#111113] uppercase tracking-wider">
-                Ghana Payment Network Breakdown
+                Sales Volume by Category
               </h3>
               <div className="space-y-3">
                 {[
-                  { name: 'MTN Mobile Money', percent: 62, volume: 'GH₵ 38,400' },
-                  { name: 'Telecel Cash', percent: 18, volume: 'GH₵ 11,200' },
-                  { name: 'Credit / Debit Cards', percent: 14, volume: 'GH₵ 8,700' },
-                  { name: 'Pay on Doorstep Delivery', percent: 6, volume: 'GH₵ 3,700' },
+                  { name: 'Dresses & Gala Gowns', percent: 45, volume: 'GH₵ 42,500' },
+                  { name: 'Bonwire Kente Corsetry', percent: 30, volume: 'GH₵ 28,300' },
+                  { name: 'Tailored Velvet Suits', percent: 15, volume: 'GH₵ 14,200' },
+                  { name: 'Streetwear & Adornments', percent: 10, volume: 'GH₵ 9,400' },
                 ].map((item) => (
                   <div key={item.name} className="space-y-1">
                     <div className="flex justify-between text-xs font-semibold">
@@ -417,7 +1055,402 @@ export default function AdminView() {
         )}
       </section>
 
-      {/* 5. Printable Packing Slip Modal */}
+      {/* ────────── PRODUCT ADD / EDIT MODAL ────────── */}
+      {isProductModalOpen && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/75 backdrop-blur-sm overflow-y-auto">
+          <div className="bg-white rounded-[28px] max-w-2xl w-full p-6 sm:p-8 space-y-6 text-[#111113] relative border border-[#E6E6EA] shadow-2xl my-8">
+            <button
+              onClick={() => setIsProductModalOpen(false)}
+              className="absolute top-5 right-5 p-2 rounded-full bg-[#EDEDF0] hover:bg-[#E6E6EA] cursor-pointer"
+            >
+              <X className="w-4 h-4 text-[#111113]" />
+            </button>
+
+            <div className="border-b border-[#E6E6EA] pb-3">
+              <span className="text-[10px] font-bold tracking-widest uppercase text-[#6B73F0]">
+                ATELIER PRODUCT CMS
+              </span>
+              <h3 className="text-xl font-bold text-[#111113]">
+                {editingProductId ? 'Edit Archival Silhouette' : 'Create New Creation'}
+              </h3>
+            </div>
+
+            <form onSubmit={handleSaveProduct} className="space-y-4 max-h-[70vh] overflow-y-auto pr-1">
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                <div>
+                  <label className="text-xs font-semibold text-[#8A8A8F] block mb-1">
+                    Garment Name
+                  </label>
+                  <input
+                    type="text"
+                    required
+                    value={productForm.name}
+                    onChange={(e) => setProductForm({ ...productForm, name: e.target.value })}
+                    placeholder="e.g. Ashanti Silk Cape Gown"
+                    className="w-full h-11 px-3.5 rounded-xl bg-[#F5F5F7] border border-[#E6E6EA] text-xs font-semibold outline-none focus:border-[#6B73F0]"
+                  />
+                </div>
+
+                <div>
+                  <label className="text-xs font-semibold text-[#8A8A8F] block mb-1">
+                    Category
+                  </label>
+                  <select
+                    value={productForm.category}
+                    onChange={(e) => {
+                      const cat = categories.find((c) => c.name === e.target.value);
+                      setProductForm({
+                        ...productForm,
+                        category: e.target.value,
+                        categoryId: cat?.id || 'cat-dresses',
+                      });
+                    }}
+                    className="w-full h-11 px-3 rounded-xl bg-[#F5F5F7] border border-[#E6E6EA] text-xs font-semibold outline-none cursor-pointer"
+                  >
+                    {categories.map((c) => (
+                      <option key={c.id} value={c.name}>
+                        {c.name}
+                      </option>
+                    ))}
+                  </select>
+                </div>
+              </div>
+
+              <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
+                <div>
+                  <label className="text-xs font-semibold text-[#8A8A8F] block mb-1">
+                    Price (GH₵)
+                  </label>
+                  <input
+                    type="number"
+                    required
+                    value={productForm.priceGhc}
+                    onChange={(e) => setProductForm({ ...productForm, priceGhc: Number(e.target.value) })}
+                    className="w-full h-11 px-3.5 rounded-xl bg-[#F5F5F7] border border-[#E6E6EA] text-xs font-bold outline-none focus:border-[#6B73F0]"
+                  />
+                </div>
+
+                <div>
+                  <label className="text-xs font-semibold text-[#8A8A8F] block mb-1">
+                    Original Price (GH₵)
+                  </label>
+                  <input
+                    type="number"
+                    value={productForm.originalPriceGhc}
+                    onChange={(e) => setProductForm({ ...productForm, originalPriceGhc: Number(e.target.value) })}
+                    className="w-full h-11 px-3.5 rounded-xl bg-[#F5F5F7] border border-[#E6E6EA] text-xs outline-none"
+                  />
+                </div>
+
+                <div>
+                  <label className="text-xs font-semibold text-[#8A8A8F] block mb-1">
+                    Stock Status
+                  </label>
+                  <select
+                    value={productForm.stockStatus}
+                    onChange={(e) => setProductForm({ ...productForm, stockStatus: e.target.value as any })}
+                    className="w-full h-11 px-3 rounded-xl bg-[#F5F5F7] border border-[#E6E6EA] text-xs font-semibold outline-none cursor-pointer"
+                  >
+                    <option value="in_stock">In Stock</option>
+                    <option value="low_stock">Low Stock (2 Left)</option>
+                    <option value="out_of_stock">Out of Stock</option>
+                  </select>
+                </div>
+              </div>
+
+              <div>
+                <label className="text-xs font-semibold text-[#8A8A8F] block mb-1">
+                  Fabric & Material Origin
+                </label>
+                <input
+                  type="text"
+                  required
+                  value={productForm.fabric}
+                  onChange={(e) => setProductForm({ ...productForm, fabric: e.target.value })}
+                  placeholder="e.g. Bonwire Hand-Woven Silk"
+                  className="w-full h-11 px-3.5 rounded-xl bg-[#F5F5F7] border border-[#E6E6EA] text-xs outline-none"
+                />
+              </div>
+
+              <div>
+                <label className="text-xs font-semibold text-[#8A8A8F] block mb-1">
+                  The Story of This Piece (Displayed prominently in detail modal)
+                </label>
+                <textarea
+                  rows={3}
+                  required
+                  value={productForm.description}
+                  onChange={(e) => setProductForm({ ...productForm, description: e.target.value })}
+                  className="w-full p-3 rounded-xl bg-[#F5F5F7] border border-[#E6E6EA] text-xs outline-none"
+                />
+              </div>
+
+              <div>
+                <label className="text-xs font-semibold text-[#8A8A8F] block mb-1">
+                  Product Image URL
+                </label>
+                <input
+                  type="url"
+                  required
+                  value={productForm.imageUrl}
+                  onChange={(e) => setProductForm({ ...productForm, imageUrl: e.target.value })}
+                  className="w-full h-11 px-3.5 rounded-xl bg-[#F5F5F7] border border-[#E6E6EA] text-xs outline-none"
+                />
+              </div>
+
+              <div>
+                <label className="text-xs font-semibold text-[#8A8A8F] block mb-1">
+                  Available Sizes (comma-separated, e.g. XS, S, M, L, XL)
+                </label>
+                <input
+                  type="text"
+                  value={productForm.sizes}
+                  onChange={(e) => setProductForm({ ...productForm, sizes: e.target.value })}
+                  className="w-full h-11 px-3.5 rounded-xl bg-[#F5F5F7] border border-[#E6E6EA] text-xs outline-none"
+                />
+              </div>
+
+              <div className="flex items-center gap-6 pt-2">
+                <label className="flex items-center gap-2 text-xs font-medium cursor-pointer">
+                  <input
+                    type="checkbox"
+                    checked={productForm.isTrending}
+                    onChange={(e) => setProductForm({ ...productForm, isTrending: e.target.checked })}
+                    className="rounded text-[#111113]"
+                  />
+                  <span>Show on Front Page Trending</span>
+                </label>
+
+                <label className="flex items-center gap-2 text-xs font-medium cursor-pointer">
+                  <input
+                    type="checkbox"
+                    checked={productForm.isNew}
+                    onChange={(e) => setProductForm({ ...productForm, isNew: e.target.checked })}
+                    className="rounded text-[#111113]"
+                  />
+                  <span>Mark as New Drop</span>
+                </label>
+              </div>
+
+              <div className="flex gap-3 pt-4 border-t border-[#E6E6EA]">
+                <button
+                  type="button"
+                  onClick={() => setIsProductModalOpen(false)}
+                  className="flex-1 h-12 rounded-full border border-[#E6E6EA] text-xs font-semibold hover:bg-[#F5F5F7]"
+                >
+                  Cancel
+                </button>
+                <button
+                  type="submit"
+                  className="flex-1 h-12 rounded-full bg-[#111113] text-white text-xs font-semibold hover:bg-[#3A3A3F] shadow-md"
+                >
+                  {editingProductId ? 'Update Garment' : 'Add to Collection'}
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+      )}
+
+      {/* ────────── DELETE PRODUCT CONFIRMATION MODAL ────────── */}
+      {productToDelete && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/75 backdrop-blur-sm">
+          <div className="bg-white rounded-[28px] max-w-sm w-full p-6 text-center space-y-4 shadow-2xl">
+            <div className="w-12 h-12 rounded-full bg-[#FDECEE] text-[#E5384F] flex items-center justify-center mx-auto">
+              <Trash2 className="w-6 h-6" />
+            </div>
+            <div>
+              <h3 className="font-bold text-base text-[#111113]">Delete this creation?</h3>
+              <p className="text-xs text-[#8A8A8F] mt-1">
+                "{productToDelete.name}" will be removed from your store and archival catalogue.
+              </p>
+            </div>
+            <div className="flex gap-3 pt-2">
+              <button
+                onClick={() => setProductToDelete(null)}
+                className="flex-1 h-11 rounded-full border border-[#E6E6EA] text-xs font-semibold hover:bg-[#F5F5F7]"
+              >
+                Cancel
+              </button>
+              <button
+                onClick={handleConfirmDeleteProduct}
+                className="flex-1 h-11 rounded-full bg-[#E5384F] text-white text-xs font-semibold hover:bg-[#C52B40]"
+              >
+                Yes, Delete
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* ────────── ARTICLE ADD / EDIT MODAL ────────── */}
+      {isArticleModalOpen && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/75 backdrop-blur-sm overflow-y-auto">
+          <div className="bg-white rounded-[28px] max-w-2xl w-full p-6 sm:p-8 space-y-5 text-[#111113] relative border border-[#E6E6EA] shadow-2xl my-8">
+            <button
+              onClick={() => setIsArticleModalOpen(false)}
+              className="absolute top-5 right-5 p-2 rounded-full bg-[#EDEDF0] hover:bg-[#E6E6EA]"
+            >
+              <X className="w-4 h-4 text-[#111113]" />
+            </button>
+
+            <div className="border-b border-[#E6E6EA] pb-3">
+              <span className="text-[10px] font-bold tracking-widest uppercase text-[#6B73F0]">
+                JOURNAL & SPOTLIGHT CMS
+              </span>
+              <h3 className="text-xl font-bold text-[#111113]">
+                {editingArticleId ? 'Edit Editorial Story' : 'Write New Journal Feature'}
+              </h3>
+            </div>
+
+            <form onSubmit={handleSaveArticle} className="space-y-4 max-h-[70vh] overflow-y-auto pr-1">
+              <div>
+                <label className="text-xs font-semibold text-[#8A8A8F] block mb-1">
+                  Article Title
+                </label>
+                <input
+                  type="text"
+                  required
+                  value={articleForm.title}
+                  onChange={(e) => setArticleForm({ ...articleForm, title: e.target.value })}
+                  placeholder="e.g. The Loom of Kings: Inside Bonwire's Hereditary Workshops"
+                  className="w-full h-11 px-3.5 rounded-xl bg-[#F5F5F7] border border-[#E6E6EA] text-xs font-semibold outline-none focus:border-[#6B73F0]"
+                />
+              </div>
+
+              <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
+                <div>
+                  <label className="text-xs font-semibold text-[#8A8A8F] block mb-1">
+                    Category
+                  </label>
+                  <select
+                    value={articleForm.category}
+                    onChange={(e) => setArticleForm({ ...articleForm, category: e.target.value as any })}
+                    className="w-full h-10 px-3 rounded-xl bg-[#F5F5F7] border border-[#E6E6EA] text-xs outline-none cursor-pointer"
+                  >
+                    <option value="Styling Guide">Styling Guide</option>
+                    <option value="Behind The Scenes">Behind The Scenes</option>
+                    <option value="Heritage">Heritage</option>
+                    <option value="Press">Press</option>
+                  </select>
+                </div>
+
+                <div>
+                  <label className="text-xs font-semibold text-[#8A8A8F] block mb-1">
+                    Author
+                  </label>
+                  <input
+                    type="text"
+                    value={articleForm.author}
+                    onChange={(e) => setArticleForm({ ...articleForm, author: e.target.value })}
+                    className="w-full h-10 px-3 rounded-xl bg-[#F5F5F7] border border-[#E6E6EA] text-xs outline-none"
+                  />
+                </div>
+
+                <div>
+                  <label className="text-xs font-semibold text-[#8A8A8F] block mb-1">
+                    Read Time
+                  </label>
+                  <input
+                    type="text"
+                    value={articleForm.readTime}
+                    onChange={(e) => setArticleForm({ ...articleForm, readTime: e.target.value })}
+                    className="w-full h-10 px-3 rounded-xl bg-[#F5F5F7] border border-[#E6E6EA] text-xs outline-none"
+                  />
+                </div>
+              </div>
+
+              <div>
+                <label className="text-xs font-semibold text-[#8A8A8F] block mb-1">
+                  Hero Image URL
+                </label>
+                <input
+                  type="url"
+                  required
+                  value={articleForm.heroImage}
+                  onChange={(e) => setArticleForm({ ...articleForm, heroImage: e.target.value })}
+                  className="w-full h-10 px-3 rounded-xl bg-[#F5F5F7] border border-[#E6E6EA] text-xs outline-none"
+                />
+              </div>
+
+              <div>
+                <label className="text-xs font-semibold text-[#8A8A8F] block mb-1">
+                  Excerpt (One-sentence summary)
+                </label>
+                <input
+                  type="text"
+                  required
+                  value={articleForm.excerpt}
+                  onChange={(e) => setArticleForm({ ...articleForm, excerpt: e.target.value })}
+                  className="w-full h-10 px-3 rounded-xl bg-[#F5F5F7] border border-[#E6E6EA] text-xs outline-none"
+                />
+              </div>
+
+              <div>
+                <label className="text-xs font-semibold text-[#8A8A8F] block mb-1">
+                  Full Story Content
+                </label>
+                <textarea
+                  rows={5}
+                  required
+                  value={articleForm.content}
+                  onChange={(e) => setArticleForm({ ...articleForm, content: e.target.value })}
+                  className="w-full p-3 rounded-xl bg-[#F5F5F7] border border-[#E6E6EA] text-xs outline-none"
+                />
+              </div>
+
+              <div className="flex gap-3 pt-3 border-t border-[#E6E6EA]">
+                <button
+                  type="button"
+                  onClick={() => setIsArticleModalOpen(false)}
+                  className="flex-1 h-11 rounded-full border border-[#E6E6EA] text-xs font-semibold hover:bg-[#F5F5F7]"
+                >
+                  Cancel
+                </button>
+                <button
+                  type="submit"
+                  className="flex-1 h-11 rounded-full bg-[#111113] text-white text-xs font-semibold hover:bg-[#3A3A3F]"
+                >
+                  {editingArticleId ? 'Save Story' : 'Publish Article'}
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+      )}
+
+      {/* ────────── DELETE ARTICLE CONFIRMATION MODAL ────────── */}
+      {articleToDelete && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/75 backdrop-blur-sm">
+          <div className="bg-white rounded-[28px] max-w-sm w-full p-6 text-center space-y-4 shadow-2xl">
+            <div className="w-12 h-12 rounded-full bg-[#FDECEE] text-[#E5384F] flex items-center justify-center mx-auto">
+              <Trash2 className="w-6 h-6" />
+            </div>
+            <div>
+              <h3 className="font-bold text-base text-[#111113]">Delete this story?</h3>
+              <p className="text-xs text-[#8A8A8F] mt-1">
+                "{articleToDelete.title}" will be unpublished from the journal.
+              </p>
+            </div>
+            <div className="flex gap-3 pt-2">
+              <button
+                onClick={() => setArticleToDelete(null)}
+                className="flex-1 h-11 rounded-full border border-[#E6E6EA] text-xs font-semibold hover:bg-[#F5F5F7]"
+              >
+                Cancel
+              </button>
+              <button
+                onClick={handleConfirmDeleteArticle}
+                className="flex-1 h-11 rounded-full bg-[#E5384F] text-white text-xs font-semibold hover:bg-[#C52B40]"
+              >
+                Yes, Delete
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* ────────── PRINTABLE PACKING SLIP MODAL ────────── */}
       {selectedPackingSlipOrder && (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/70 backdrop-blur-sm">
           <div className="bg-white rounded-3xl max-w-lg w-full p-6 sm:p-8 space-y-6 text-[#111113] relative border border-[#E6E6EA] shadow-2xl">

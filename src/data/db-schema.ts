@@ -148,3 +148,19 @@ export interface BespokeEnquiry {
   createdAt: string;
   status: 'New' | 'Contacted' | 'Fitting Scheduled' | 'Completed';
 }
+
+export interface SiteContent {
+  announcementBarText: string;
+  heroCampaignBadge: string;
+  heroHeadlinePrefix: string;
+  heroHeadlineAccent: string;
+  heroHeadlineSuffix: string;
+  heroSubtitle: string;
+  heroImageUrl: string;
+  bannerVisible: boolean;
+  bannerBadge: string;
+  bannerHeadline: string;
+  bannerSubtitle: string;
+  bannerDiscountText: string;
+}
+

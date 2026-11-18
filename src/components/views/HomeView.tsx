@@ -7,6 +7,7 @@ import { ArrowRight, Heart, Plus, Sparkles, MapPin, ChevronRight, Play } from 'l
 import Button from '../ui/Button';
 import IconButton from '../ui/IconButton';
 import Badge from '../ui/Badge';
+import CategorySlider from '../ui/CategorySlider';
 
 export default function HomeView() {
   const {
@@ -17,6 +18,7 @@ export default function HomeView() {
     isWishlisted,
     addToCart,
     navigateToCategory,
+    siteContent,
     user,
   } = useStore();
 
@@ -44,7 +46,7 @@ export default function HomeView() {
         {/* Background Visual */}
         <div className="absolute inset-0 z-0">
           <img
-            src="https://images.unsplash.com/photo-1515886657613-9f3515b0c78f?auto=format&fit=crop&w=1800&q=85"
+            src={siteContent.heroImageUrl}
             alt="Tracey Kuukua Quansah Haute Couture"
             className="w-full h-full object-cover object-top filter brightness-[0.78] contrast-105"
           />
@@ -54,16 +56,19 @@ export default function HomeView() {
         <div className="max-w-7xl mx-auto px-6 sm:px-8 lg:px-12 w-full relative z-10 py-16 space-y-6">
           <div className="inline-flex items-center gap-2 bg-black/40 backdrop-blur-md px-3.5 py-1.5 rounded-full border border-white/20 text-xs font-semibold text-white">
             <span className="w-2 h-2 rounded-full bg-[#6B73F0] animate-ping" />
-            <span className="tracking-widest uppercase text-[10px]">SPRING / SUMMER 2026 CAMPAIGN</span>
+            <span className="tracking-widest uppercase text-[10px]">
+              {siteContent.heroCampaignBadge}
+            </span>
           </div>
 
           <h1 className="text-4xl sm:text-6xl lg:text-7xl font-bold tracking-tight text-white max-w-3xl leading-[1.08] font-display">
-            Sculpting Ancestral Ghanaian Splendor into Minimalist{' '}
-            <span className="text-[#6B73F0]">Couture</span>.
+            {siteContent.heroHeadlinePrefix}{' '}
+            <span className="text-[#6B73F0]">{siteContent.heroHeadlineAccent}</span>
+            {siteContent.heroHeadlineSuffix}
           </h1>
 
           <p className="text-sm sm:text-base text-gray-200 max-w-xl font-normal leading-relaxed">
-            Designed by Tracey Kuukua Quansah in Accra. Hand-loomed Bonwire silks, architectural velvet tailoring, and zero-waste bespoke silhouettes.
+            {siteContent.heroSubtitle}
           </p>
 
           <div className="flex flex-wrap items-center gap-4 pt-2">
@@ -87,80 +92,54 @@ export default function HomeView() {
         </div>
       </section>
 
-      {/* 2. Circular Category Shortcuts (Specification: 68x68px image circle, 12px label below, 76px wide tap area) */}
-      <section className="max-w-7xl mx-auto px-5 sm:px-8">
-        <div className="flex items-center justify-between pb-3">
-          <span className="text-[11px] font-medium tracking-[0.2em] text-[#8A8A8F] uppercase">
-            BROWSE BY CATEGORY
-          </span>
-          <button
-            onClick={() => navigateToCategory('all')}
-            className="text-[13px] font-semibold text-[#6B73F0] hover:underline"
-          >
-            See all categories →
-          </button>
-        </div>
+      {/* 2. Modern Category Showcase / Slider */}
+      <CategorySlider />
 
-        <div className="flex items-center gap-4 overflow-x-auto pb-4 pt-1 scrollbar-none">
-          {SEED_CATEGORIES.map((cat) => (
-            <div
-              key={cat.id}
-              onClick={() => navigateToCategory(cat.id)}
-              className="w-[76px] min-w-[76px] flex flex-col items-center gap-2 cursor-pointer group select-none"
-            >
-              <div className="w-[68px] h-[68px] rounded-full overflow-hidden bg-[#EDEDF0] border-2 border-transparent group-hover:border-[#6B73F0] shadow-sm transition-all duration-200 group-hover:scale-105">
-                <img
-                  src={cat.image}
-                  alt={cat.name}
-                  className="w-full h-full object-cover"
-                />
+      {/* 3. Just Landed Pink-Gradient Hero Banner */}
+      {siteContent.bannerVisible && (
+        <section className="max-w-7xl mx-auto px-5 sm:px-8">
+          <div className="relative rounded-[24px] overflow-hidden pink-gradient p-8 sm:p-12 text-white shadow-lg-nav">
+            <div className="grid grid-cols-1 md:grid-cols-12 gap-6 items-center">
+              <div className="md:col-span-8 space-y-3">
+                <span className="inline-block bg-white/20 backdrop-blur-md px-3 py-1 rounded-full text-[10px] font-bold tracking-widest uppercase">
+                  {siteContent.bannerBadge}
+                </span>
+                <h2 className="text-3xl sm:text-5xl font-bold font-display tracking-tight leading-tight">
+                  {siteContent.bannerHeadline}
+                </h2>
+                <p className="text-sm text-white/90 max-w-md font-light leading-relaxed">
+                  {siteContent.bannerSubtitle}
+                </p>
+                {siteContent.bannerDiscountText && (
+                  <p className="text-xs font-semibold text-[#FFCC00]">
+                    {siteContent.bannerDiscountText}
+                  </p>
+                )}
+                <div className="pt-2">
+                  <Button
+                    variant="get-started"
+                    onClick={() => setActiveView('explore')}
+                    className="shadow-md"
+                  >
+                    <span>Explore New Arrivals</span>
+                    <ArrowRight className="w-4 h-4 ml-2" />
+                  </Button>
+                </div>
               </div>
-              <span className="text-[12px] font-medium text-[#111113] text-center line-clamp-1 group-hover:text-[#6B73F0] transition-colors">
-                {cat.name}
-              </span>
-            </div>
-          ))}
-        </div>
-      </section>
 
-      {/* 3. Just Landed Pink-Gradient Hero Banner (Specification: promo-pink #FF2D8A to promo-pink-deep #8A1B4E) */}
-      <section className="max-w-7xl mx-auto px-5 sm:px-8">
-        <div className="relative rounded-[24px] overflow-hidden pink-gradient p-8 sm:p-12 text-white shadow-lg-nav">
-          <div className="grid grid-cols-1 md:grid-cols-12 gap-6 items-center">
-            <div className="md:col-span-8 space-y-3">
-              <span className="inline-block bg-white/20 backdrop-blur-md px-3 py-1 rounded-full text-[10px] font-bold tracking-widest uppercase">
-                JUST LANDED · 2026 DROP
-              </span>
-              <h2 className="text-3xl sm:text-5xl font-bold font-display tracking-tight leading-tight">
-                Accra Haute Couture Gala Drop
-              </h2>
-              <p className="text-sm text-white/90 max-w-md font-light leading-relaxed">
-                Enjoy complimentary express delivery across Greater Accra with bespoke garment packaging and fitting consultation.
-              </p>
-              <div className="pt-2">
-                <Button
-                  variant="get-started"
-                  onClick={() => setActiveView('explore')}
-                  className="shadow-md"
-                >
-                  <span>Explore New Arrivals</span>
-                  <ArrowRight className="w-4 h-4 ml-2" />
-                </Button>
-              </div>
-            </div>
-
-            <div className="md:col-span-4 flex justify-center md:justify-end">
-              <div className="w-56 h-64 rounded-[20px] overflow-hidden border-2 border-white/30 shadow-2xl transform rotate-2 hover:rotate-0 transition-transform">
-                <img
-                  src="https://images.unsplash.com/photo-1509631179647-0177331693ae?auto=format&fit=crop&w=600&q=85"
-                  alt="Just landed model"
-                  className="w-full h-full object-cover"
-                />
+              <div className="md:col-span-4 flex justify-center md:justify-end">
+                <div className="w-56 h-64 rounded-[20px] overflow-hidden border-2 border-white/30 shadow-2xl transform rotate-2 hover:rotate-0 transition-transform">
+                  <img
+                    src="https://images.unsplash.com/photo-1509631179647-0177331693ae?auto=format&fit=crop&w=600&q=85"
+                    alt="Just landed model"
+                    className="w-full h-full object-cover"
+                  />
+                </div>
               </div>
             </div>
           </div>
-        </div>
-      </section>
+        </section>
+      )}
 
       {/* 4. Trending Now 2-Column Product Grid with Hearts & See All (Specification) */}
       <section className="max-w-7xl mx-auto px-5 sm:px-8 space-y-6">

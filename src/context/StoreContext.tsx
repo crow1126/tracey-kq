@@ -1,8 +1,22 @@
 'use client';
 
 import React, { createContext, useContext, useState, useEffect } from 'react';
-import { Product, Order, OrderItem, Review, BespokeEnquiry } from '@/data/db-schema';
-import { SEED_PRODUCTS, SEED_REVIEWS } from '@/data/db-seed';
+import {
+  Product,
+  Order,
+  OrderItem,
+  Review,
+  BespokeEnquiry,
+  Category,
+  JournalArticle,
+  SiteContent,
+} from '@/data/db-schema';
+import {
+  SEED_PRODUCTS,
+  SEED_REVIEWS,
+  SEED_CATEGORIES,
+  SEED_ARTICLES,
+} from '@/data/db-seed';
 
 export interface CartLineItem {
   id: string;
@@ -30,14 +44,37 @@ export interface UserAccount {
   tier: 'Patron' | 'Connoisseur' | 'Ambassador';
 }
 
+export const DEFAULT_SITE_CONTENT: SiteContent = {
+  announcementBarText:
+    'ACCRA ATELIER TO WORLDWIDE DOORSTEP · EXPRESS SAME-DAY DELIVERY IN ACCRA METRO · USE CODE WELCOME10',
+  heroCampaignBadge: 'SPRING / SUMMER 2026 CAMPAIGN',
+  heroHeadlinePrefix: 'Sculpting Ancestral Ghanaian Splendor into Minimalist',
+  heroHeadlineAccent: 'Couture',
+  heroHeadlineSuffix: '.',
+  heroSubtitle:
+    'Designed by Tracey Kuukua Quansah in Accra. Hand-loomed Bonwire silks, architectural velvet tailoring, and zero-waste bespoke silhouettes.',
+  heroImageUrl:
+    'https://images.unsplash.com/photo-1515886657613-9f3515b0c78f?auto=format&fit=crop&w=1800&q=85',
+  bannerVisible: true,
+  bannerBadge: 'JUST LANDED · 2026 DROP',
+  bannerHeadline: 'Accra Haute Couture Gala Drop',
+  bannerSubtitle:
+    'Enjoy complimentary express delivery across Greater Accra with bespoke garment packaging and fitting consultation.',
+  bannerDiscountText: 'Up to 15% off select archive pieces with code VIPGHANA',
+};
+
 interface StoreContextType {
   products: Product[];
+  categories: Category[];
+  articles: JournalArticle[];
+  siteContent: SiteContent;
   cart: CartLineItem[];
   wishlist: string[];
   orders: Order[];
   enquiries: BespokeEnquiry[];
   user: UserAccount;
   activeView: string;
+  selectedCategory: string;
   quickViewProduct: Product | null;
   isBespokeModalOpen: boolean;
   isCartDrawerOpen: boolean;
@@ -45,17 +82,29 @@ interface StoreContextType {
   isBrandMenuOpen: boolean;
   isAuthModalOpen: boolean;
   isSizeGuideOpen: boolean;
-  selectedDeliveryZone: 'Accra Metro' | 'Tema / Spintex' | 'Kumasi' | 'Takoradi' | 'Nationwide Express';
-  selectedDeliveryMethod: 'Standard Courier (2-3 Days)' | 'Express Same-Day Priority';
+  selectedDeliveryZone:
+    | 'Accra Metro'
+    | 'Tema / Spintex'
+    | 'Kumasi'
+    | 'Takoradi'
+    | 'Nationwide Express';
+  selectedDeliveryMethod:
+    | 'Standard Courier (2-3 Days)'
+    | 'Express Same-Day Priority';
   appliedPromoCode: string | null;
   promoDiscountPercent: number;
   promoDiscountFixed: number;
-  selectedCategory: string;
+
+  // Actions
   setSelectedCategory: (catId: string) => void;
   navigateToCategory: (catId: string) => void;
-  
-  // Actions
-  addToCart: (product: Product, size?: string, colorName?: string, colorHex?: string, qty?: number) => void;
+  addToCart: (
+    product: Product,
+    size?: string,
+    colorName?: string,
+    colorHex?: string,
+    qty?: number
+  ) => void;
   removeFromCart: (lineId: string) => void;
   updateCartQuantity: (lineId: string, quantity: number) => void;
   clearCart: () => void;
@@ -69,22 +118,57 @@ interface StoreContextType {
   setIsBrandMenuOpen: (open: boolean) => void;
   setIsAuthModalOpen: (open: boolean) => void;
   setIsSizeGuideOpen: (open: boolean) => void;
-  setSelectedDeliveryZone: (zone: 'Accra Metro' | 'Tema / Spintex' | 'Kumasi' | 'Takoradi' | 'Nationwide Express') => void;
-  setSelectedDeliveryMethod: (method: 'Standard Courier (2-3 Days)' | 'Express Same-Day Priority') => void;
+  setSelectedDeliveryZone: (
+    zone:
+      | 'Accra Metro'
+      | 'Tema / Spintex'
+      | 'Kumasi'
+      | 'Takoradi'
+      | 'Nationwide Express'
+  ) => void;
+  setSelectedDeliveryMethod: (
+    method: 'Standard Courier (2-3 Days)' | 'Express Same-Day Priority'
+  ) => void;
   applyPromoCode: (code: string) => { success: boolean; message: string };
   removePromoCode: () => void;
-  submitBespokeEnquiry: (enquiry: Omit<BespokeEnquiry, 'id' | 'createdAt' | 'status'>) => void;
+  submitBespokeEnquiry: (
+    enquiry: Omit<BespokeEnquiry, 'id' | 'createdAt' | 'status'>
+  ) => void;
   placeOrder: (orderData: {
     customerName: string;
     customerEmail: string;
     customerPhone: string;
     deliveryAddress: string;
     city: string;
-    paymentMethod: 'MTN Mobile Money' | 'Telecel Cash' | 'AirtelTigo Money' | 'Credit / Debit Card' | 'Cash on Delivery';
+    paymentMethod:
+      | 'MTN Mobile Money'
+      | 'Telecel Cash'
+      | 'AirtelTigo Money'
+      | 'Credit / Debit Card'
+      | 'Cash on Delivery';
   }) => Order;
-  updateOrderStatus: (orderId: string, status: 'Packed' | 'Shipped' | 'Delivered' | 'Returned') => void;
+  updateOrderStatus: (
+    orderId: string,
+    status: 'Packed' | 'Shipped' | 'Delivered' | 'Returned'
+  ) => void;
   loginUser: (email: string, name?: string) => void;
   logoutUser: () => void;
+
+  // CRUD for Products (Admin)
+  addProduct: (product: Omit<Product, 'id'>) => Product;
+  updateProduct: (id: string, updates: Partial<Product>) => void;
+  deleteProduct: (id: string) => void;
+
+  // CRUD for Site Content / Banners (Admin)
+  updateSiteContent: (updates: Partial<SiteContent>) => void;
+
+  // CRUD for Articles / Journal (Admin)
+  addArticle: (article: Omit<JournalArticle, 'id'>) => JournalArticle;
+  updateArticle: (id: string, updates: Partial<JournalArticle>) => void;
+  deleteArticle: (id: string) => void;
+
+  // Reset to default data
+  resetToDefaultData: () => void;
 
   // Calculations
   cartCount: number;
@@ -92,15 +176,27 @@ interface StoreContextType {
   deliveryFeeGhc: number;
   discountAmountGhc: number;
   cartTotalGhc: number;
-  getWhatsAppOrderUrl: (product: Product, size?: string, color?: string) => string;
+  getWhatsAppOrderUrl: (
+    product: Product,
+    size?: string,
+    color?: string
+  ) => string;
 }
 
 const StoreContext = createContext<StoreContextType | undefined>(undefined);
 
 export function StoreProvider({ children }: { children: React.ReactNode }) {
   const [products, setProducts] = useState<Product[]>(SEED_PRODUCTS);
+  const [categories, setCategories] = useState<Category[]>(SEED_CATEGORIES);
+  const [articles, setArticles] = useState<JournalArticle[]>(SEED_ARTICLES);
+  const [siteContent, setSiteContent] = useState<SiteContent>(DEFAULT_SITE_CONTENT);
+
   const [cart, setCart] = useState<CartLineItem[]>([]);
-  const [wishlist, setWishlist] = useState<string[]>(['prod-01', 'prod-04', 'prod-10']);
+  const [wishlist, setWishlist] = useState<string[]>([
+    'prod-01',
+    'prod-04',
+    'prod-10',
+  ]);
   const [activeView, setActiveView] = useState<string>('home');
   const [selectedCategory, setSelectedCategory] = useState<string>('all');
   const [quickViewProduct, setQuickViewProduct] = useState<Product | null>(null);
@@ -111,8 +207,16 @@ export function StoreProvider({ children }: { children: React.ReactNode }) {
   const [isAuthModalOpen, setIsAuthModalOpen] = useState(false);
   const [isSizeGuideOpen, setIsSizeGuideOpen] = useState(false);
 
-  const [selectedDeliveryZone, setSelectedDeliveryZone] = useState<'Accra Metro' | 'Tema / Spintex' | 'Kumasi' | 'Takoradi' | 'Nationwide Express'>('Accra Metro');
-  const [selectedDeliveryMethod, setSelectedDeliveryMethod] = useState<'Standard Courier (2-3 Days)' | 'Express Same-Day Priority'>('Standard Courier (2-3 Days)');
+  const [selectedDeliveryZone, setSelectedDeliveryZone] = useState<
+    | 'Accra Metro'
+    | 'Tema / Spintex'
+    | 'Kumasi'
+    | 'Takoradi'
+    | 'Nationwide Express'
+  >('Accra Metro');
+  const [selectedDeliveryMethod, setSelectedDeliveryMethod] = useState<
+    'Standard Courier (2-3 Days)' | 'Express Same-Day Priority'
+  >('Standard Courier (2-3 Days)');
 
   const [appliedPromoCode, setAppliedPromoCode] = useState<string | null>(null);
   const [promoDiscountPercent, setPromoDiscountPercent] = useState(0);
@@ -162,7 +266,8 @@ export function StoreProvider({ children }: { children: React.ReactNode }) {
           id: 'item-1',
           productId: 'prod-01',
           productName: 'The Ashanti Silk Cape Gown',
-          productImage: 'https://images.unsplash.com/photo-1515886657613-9f3515b0c78f?auto=format&fit=crop&w=600&q=85',
+          productImage:
+            'https://images.unsplash.com/photo-1515886657613-9f3515b0c78f?auto=format&fit=crop&w=600&q=85',
           size: 'M',
           colorName: 'Royal Amber Gold',
           quantity: 1,
@@ -173,7 +278,11 @@ export function StoreProvider({ children }: { children: React.ReactNode }) {
       riderPhone: '+233 50 123 4567',
       trackingTimeline: [
         { title: 'Order Confirmed', time: '09:15 AM', completed: true },
-        { title: 'Garment Steamed & Inspected', time: '11:30 AM', completed: true },
+        {
+          title: 'Garment Steamed & Inspected',
+          time: '11:30 AM',
+          completed: true,
+        },
         { title: 'Dispatched with Courier', time: '01:45 PM', completed: true },
         { title: 'Delivered at Doorstep', time: 'Pending', completed: false },
       ],
@@ -189,15 +298,31 @@ export function StoreProvider({ children }: { children: React.ReactNode }) {
       serviceType: 'Bespoke Tailoring',
       preferredDate: '2026-03-15',
       budgetGhc: 'GH₵ 25,000+',
-      message: 'Looking for a custom Kente gala gown for the Independence Day Ball.',
+      message:
+        'Looking for a custom Kente gala gown for the Independence Day Ball.',
       createdAt: '2026-02-16',
       status: 'Fitting Scheduled',
     },
   ]);
 
-  // Load guest cart and wishlist from localStorage
+  // Load state from localStorage on mount
   useEffect(() => {
     try {
+      const savedProducts = localStorage.getItem('tkq_admin_products');
+      if (savedProducts) {
+        setProducts(JSON.parse(savedProducts));
+      }
+
+      const savedContent = localStorage.getItem('tkq_admin_site_content');
+      if (savedContent) {
+        setSiteContent(JSON.parse(savedContent));
+      }
+
+      const savedArticles = localStorage.getItem('tkq_admin_articles');
+      if (savedArticles) {
+        setArticles(JSON.parse(savedArticles));
+      }
+
       const savedCart = localStorage.getItem('tkq_guest_cart');
       if (savedCart) {
         setCart(JSON.parse(savedCart));
@@ -208,8 +333,8 @@ export function StoreProvider({ children }: { children: React.ReactNode }) {
             id: 'init-01',
             product: SEED_PRODUCTS[0],
             quantity: 1,
-            selectedColorName: SEED_PRODUCTS[0].colors[0].name,
-            selectedColorHex: SEED_PRODUCTS[0].colors[0].hex,
+            selectedColorName: SEED_PRODUCTS[0].colors[0]?.name || 'Gold',
+            selectedColorHex: SEED_PRODUCTS[0].colors[0]?.hex || '#D4AF37',
             selectedSize: 'M',
           },
         ]);
@@ -224,20 +349,114 @@ export function StoreProvider({ children }: { children: React.ReactNode }) {
     }
   }, []);
 
-  // Save guest cart & wishlist
+  // Sync to localStorage
   useEffect(() => {
     try {
       localStorage.setItem('tkq_guest_cart', JSON.stringify(cart));
       localStorage.setItem('tkq_guest_wishlist', JSON.stringify(wishlist));
-    } catch {
-      // Fallback
-    }
+    } catch {}
   }, [cart, wishlist]);
 
-  const addToCart = (product: Product, size?: string, colorName?: string, colorHex?: string, qty: number = 1) => {
-    const chosenSize = size || product.sizes[0];
-    const chosenColorName = colorName || product.colors[0].name;
-    const chosenColorHex = colorHex || product.colors[0].hex;
+  useEffect(() => {
+    try {
+      localStorage.setItem('tkq_admin_products', JSON.stringify(products));
+    } catch {}
+  }, [products]);
+
+  useEffect(() => {
+    try {
+      localStorage.setItem(
+        'tkq_admin_site_content',
+        JSON.stringify(siteContent)
+      );
+    } catch {}
+  }, [siteContent]);
+
+  useEffect(() => {
+    try {
+      localStorage.setItem('tkq_admin_articles', JSON.stringify(articles));
+    } catch {}
+  }, [articles]);
+
+  // Category navigation helper
+  const navigateToCategory = (catId: string) => {
+    setSelectedCategory(catId);
+    setActiveView('shop');
+    if (typeof window !== 'undefined') {
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+  };
+
+  // Add / Edit / Delete Products (Admin)
+  const addProduct = (productData: Omit<Product, 'id'>): Product => {
+    const newProduct: Product = {
+      ...productData,
+      id: `prod-${Date.now()}`,
+    };
+    setProducts((prev) => [newProduct, ...prev]);
+    return newProduct;
+  };
+
+  const updateProduct = (id: string, updates: Partial<Product>) => {
+    setProducts((prev) =>
+      prev.map((p) => (p.id === id ? { ...p, ...updates } : p))
+    );
+  };
+
+  const deleteProduct = (id: string) => {
+    setProducts((prev) => prev.filter((p) => p.id !== id));
+    // Also remove from cart/wishlist
+    setWishlist((prev) => prev.filter((pId) => pId !== id));
+    setCart((prev) => prev.filter((item) => item.product.id !== id));
+  };
+
+  // Site Content Updates (Admin)
+  const updateSiteContent = (updates: Partial<SiteContent>) => {
+    setSiteContent((prev) => ({ ...prev, ...updates }));
+  };
+
+  // Journal Articles CRUD (Admin)
+  const addArticle = (articleData: Omit<JournalArticle, 'id'>): JournalArticle => {
+    const newArticle: JournalArticle = {
+      ...articleData,
+      id: `art-${Date.now()}`,
+    };
+    setArticles((prev) => [newArticle, ...prev]);
+    return newArticle;
+  };
+
+  const updateArticle = (id: string, updates: Partial<JournalArticle>) => {
+    setArticles((prev) =>
+      prev.map((a) => (a.id === id ? { ...a, ...updates } : a))
+    );
+  };
+
+  const deleteArticle = (id: string) => {
+    setArticles((prev) => prev.filter((a) => a.id !== id));
+  };
+
+  // Reset to original seed data
+  const resetToDefaultData = () => {
+    setProducts(SEED_PRODUCTS);
+    setSiteContent(DEFAULT_SITE_CONTENT);
+    setArticles(SEED_ARTICLES);
+    try {
+      localStorage.removeItem('tkq_admin_products');
+      localStorage.removeItem('tkq_admin_site_content');
+      localStorage.removeItem('tkq_admin_articles');
+    } catch {}
+  };
+
+  const addToCart = (
+    product: Product,
+    size?: string,
+    colorName?: string,
+    colorHex?: string,
+    qty: number = 1
+  ) => {
+    const chosenSize = size || product.sizes[0] || 'M';
+    const chosenColorName = colorName || product.colors[0]?.name || 'Standard';
+    const chosenColorHex = colorHex || product.colors[0]?.hex || '#000000';
     const lineId = `${product.id}-${chosenSize}-${chosenColorName}`;
 
     setCart((prev) => {
@@ -277,19 +496,13 @@ export function StoreProvider({ children }: { children: React.ReactNode }) {
     );
   };
 
-  const navigateToCategory = (catId: string) => {
-    setSelectedCategory(catId);
-    setActiveView('shop');
-    if (typeof window !== 'undefined') {
-      window.scrollTo({ top: 0, behavior: 'smooth' });
-    }
-  };
-
   const clearCart = () => setCart([]);
 
   const toggleWishlist = (productId: string) => {
     setWishlist((prev) =>
-      prev.includes(productId) ? prev.filter((id) => id !== productId) : [...prev, productId]
+      prev.includes(productId)
+        ? prev.filter((id) => id !== productId)
+        : [...prev, productId]
     );
   };
 
@@ -315,7 +528,10 @@ export function StoreProvider({ children }: { children: React.ReactNode }) {
       setPromoDiscountFixed(50);
       return { success: true, message: 'GH₵ 50 instant credit applied!' };
     }
-    return { success: false, message: 'Invalid promo code. Try "WELCOME10" or "VIPGHANA"' };
+    return {
+      success: false,
+      message: 'Invalid promo code. Try "WELCOME10" or "VIPGHANA"',
+    };
   };
 
   const removePromoCode = () => {
@@ -324,7 +540,9 @@ export function StoreProvider({ children }: { children: React.ReactNode }) {
     setPromoDiscountFixed(0);
   };
 
-  const submitBespokeEnquiry = (data: Omit<BespokeEnquiry, 'id' | 'createdAt' | 'status'>) => {
+  const submitBespokeEnquiry = (
+    data: Omit<BespokeEnquiry, 'id' | 'createdAt' | 'status'>
+  ) => {
     const newEnquiry: BespokeEnquiry = {
       ...data,
       id: `enq-${Date.now()}`,
@@ -350,7 +568,10 @@ export function StoreProvider({ children }: { children: React.ReactNode }) {
   };
 
   const cartCount = cart.reduce((sum, item) => sum + item.quantity, 0);
-  const cartSubtotalGhc = cart.reduce((sum, item) => sum + item.product.priceGhc * item.quantity, 0);
+  const cartSubtotalGhc = cart.reduce(
+    (sum, item) => sum + item.product.priceGhc * item.quantity,
+    0
+  );
   const deliveryFeeGhc = cart.length === 0 ? 0 : getDeliveryFee();
 
   const discountAmountGhc =
@@ -358,7 +579,10 @@ export function StoreProvider({ children }: { children: React.ReactNode }) {
       ? Math.round((cartSubtotalGhc * promoDiscountPercent) / 100)
       : promoDiscountFixed;
 
-  const cartTotalGhc = Math.max(0, cartSubtotalGhc - discountAmountGhc + deliveryFeeGhc);
+  const cartTotalGhc = Math.max(
+    0,
+    cartSubtotalGhc - discountAmountGhc + deliveryFeeGhc
+  );
 
   const placeOrder = (orderData: {
     customerName: string;
@@ -366,7 +590,12 @@ export function StoreProvider({ children }: { children: React.ReactNode }) {
     customerPhone: string;
     deliveryAddress: string;
     city: string;
-    paymentMethod: 'MTN Mobile Money' | 'Telecel Cash' | 'AirtelTigo Money' | 'Credit / Debit Card' | 'Cash on Delivery';
+    paymentMethod:
+      | 'MTN Mobile Money'
+      | 'Telecel Cash'
+      | 'AirtelTigo Money'
+      | 'Credit / Debit Card'
+      | 'Cash on Delivery';
   }) => {
     const newOrder: Order = {
       id: `ord-${Date.now()}`,
@@ -380,13 +609,21 @@ export function StoreProvider({ children }: { children: React.ReactNode }) {
       deliveryFeeGhc,
       deliveryMethod: selectedDeliveryMethod,
       paymentMethod: orderData.paymentMethod,
-      paymentStatus: orderData.paymentMethod === 'Cash on Delivery' ? 'Pending' : 'Paid',
+      paymentStatus:
+        orderData.paymentMethod === 'Cash on Delivery' ? 'Pending' : 'Paid',
       subtotalGhc: cartSubtotalGhc,
       discountGhc: discountAmountGhc,
       totalGhc: cartTotalGhc,
       status: 'Packed',
-      date: new Date().toLocaleDateString('en-GB', { day: 'numeric', month: 'long', year: 'numeric' }),
-      estimatedDelivery: selectedDeliveryMethod === 'Express Same-Day Priority' ? 'Today by 6:00 PM' : '2-3 Business Days',
+      date: new Date().toLocaleDateString('en-GB', {
+        day: 'numeric',
+        month: 'long',
+        year: 'numeric',
+      }),
+      estimatedDelivery:
+        selectedDeliveryMethod === 'Express Same-Day Priority'
+          ? 'Today by 6:00 PM'
+          : '2-3 Business Days',
       items: cart.map((c) => ({
         id: c.id,
         productId: c.product.id,
@@ -400,8 +637,16 @@ export function StoreProvider({ children }: { children: React.ReactNode }) {
       riderName: 'Kojo Mensah',
       riderPhone: '+233 24 999 1122',
       trackingTimeline: [
-        { title: 'Order Received & Verified', time: 'Just now', completed: true },
-        { title: 'Garment Scenting & Packaging', time: 'In Progress', completed: true },
+        {
+          title: 'Order Received & Verified',
+          time: 'Just now',
+          completed: true,
+        },
+        {
+          title: 'Garment Scenting & Packaging',
+          time: 'In Progress',
+          completed: true,
+        },
         { title: 'Courier Pick-up', time: 'Pending', completed: false },
         { title: 'Delivered', time: 'Pending', completed: false },
       ],
@@ -412,7 +657,10 @@ export function StoreProvider({ children }: { children: React.ReactNode }) {
     return newOrder;
   };
 
-  const updateOrderStatus = (orderId: string, status: 'Packed' | 'Shipped' | 'Delivered' | 'Returned') => {
+  const updateOrderStatus = (
+    orderId: string,
+    status: 'Packed' | 'Shipped' | 'Delivered' | 'Returned'
+  ) => {
     setOrders((prev) =>
       prev.map((o) => (o.id === orderId ? { ...o, status } : o))
     );
@@ -434,9 +682,13 @@ export function StoreProvider({ children }: { children: React.ReactNode }) {
     }));
   };
 
-  const getWhatsAppOrderUrl = (product: Product, size?: string, color?: string) => {
-    const s = size || product.sizes[0];
-    const c = color || product.colors[0].name;
+  const getWhatsAppOrderUrl = (
+    product: Product,
+    size?: string,
+    color?: string
+  ) => {
+    const s = size || product.sizes[0] || 'M';
+    const c = color || product.colors[0]?.name || 'Standard';
     const message = encodeURIComponent(
       `Hello Tracey Kuukua Quansah Atelier! I would like to order: ${product.name} (GH₵ ${product.priceGhc.toLocaleString()}) in Size ${s}, Color ${c}. Please guide me on delivery to my address.`
     );
@@ -447,12 +699,16 @@ export function StoreProvider({ children }: { children: React.ReactNode }) {
     <StoreContext.Provider
       value={{
         products,
+        categories,
+        articles,
+        siteContent,
         cart,
         wishlist,
         orders,
         enquiries,
         user,
         activeView,
+        selectedCategory,
         quickViewProduct,
         isBespokeModalOpen,
         isCartDrawerOpen,
@@ -465,7 +721,6 @@ export function StoreProvider({ children }: { children: React.ReactNode }) {
         appliedPromoCode,
         promoDiscountPercent,
         promoDiscountFixed,
-        selectedCategory,
         setSelectedCategory,
         navigateToCategory,
         addToCart,
@@ -491,6 +746,14 @@ export function StoreProvider({ children }: { children: React.ReactNode }) {
         updateOrderStatus,
         loginUser,
         logoutUser,
+        addProduct,
+        updateProduct,
+        deleteProduct,
+        updateSiteContent,
+        addArticle,
+        updateArticle,
+        deleteArticle,
+        resetToDefaultData,
         cartCount,
         cartSubtotalGhc,
         deliveryFeeGhc,
