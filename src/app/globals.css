@@ -125,27 +125,30 @@
 }
 
 /* Professional Fashion Motion & Ken Burns Animations */
-@keyframes kenburns-slow {
+@keyframes kenburns-3s-a {
   0% {
-    transform: scale(1.03) translate(0%, 0%);
-  }
-  50% {
-    transform: scale(1.12) translate(-1.5%, -1%);
+    transform: scale(1.0) translate(0%, 0%);
   }
   100% {
-    transform: scale(1.06) translate(1%, 0.8%);
+    transform: scale(1.08) translate(-1.2%, -0.8%);
   }
 }
 
-@keyframes kenburns-alternate {
+@keyframes kenburns-3s-b {
   0% {
-    transform: scale(1.1) translate(1.5%, 1%);
-  }
-  50% {
-    transform: scale(1.04) translate(-1%, -0.5%);
+    transform: scale(1.08) translate(1%, 0.8%);
   }
   100% {
-    transform: scale(1.12) translate(0%, -1.2%);
+    transform: scale(1.01) translate(-0.8%, -0.6%);
+  }
+}
+
+@keyframes kenburns-3s-c {
+  0% {
+    transform: scale(1.02) translate(-0.6%, 0.8%);
+  }
+  100% {
+    transform: scale(1.09) translate(1%, -0.8%);
   }
 }
 
@@ -177,38 +180,27 @@
   }
 }
 
-@keyframes hotspot-pulse {
-  0% {
-    box-shadow: 0 0 0 0 rgba(107, 115, 240, 0.7);
-  }
-  70% {
-    box-shadow: 0 0 0 16px rgba(107, 115, 240, 0);
-  }
-  100% {
-    box-shadow: 0 0 0 0 rgba(107, 115, 240, 0);
-  }
-}
-
-.animate-kenburns {
-  animation: kenburns-slow 22s cubic-bezier(0.25, 1, 0.5, 1) infinite alternate;
+.animate-kenburns-3s-1 {
+  animation: kenburns-3s-a 3.4s cubic-bezier(0.25, 1, 0.5, 1) forwards;
   will-change: transform;
 }
 
-.animate-kenburns-alt {
-  animation: kenburns-alternate 24s cubic-bezier(0.25, 1, 0.5, 1) infinite alternate;
+.animate-kenburns-3s-2 {
+  animation: kenburns-3s-b 3.4s cubic-bezier(0.25, 1, 0.5, 1) forwards;
+  will-change: transform;
+}
+
+.animate-kenburns-3s-3 {
+  animation: kenburns-3s-c 3.4s cubic-bezier(0.25, 1, 0.5, 1) forwards;
   will-change: transform;
 }
 
 .animate-light-sweep {
-  animation: runway-light-sweep 12s cubic-bezier(0.4, 0, 0.2, 1) infinite;
+  animation: runway-light-sweep 6s cubic-bezier(0.4, 0, 0.2, 1) infinite;
 }
 
 .animate-ambient-glow {
-  animation: ambient-glow-pulse 10s ease-in-out infinite;
-}
-
-.animate-hotspot {
-  animation: hotspot-pulse 2.2s infinite;
+  animation: ambient-glow-pulse 6s ease-in-out infinite;
 }
 
 /* animate-in utility */
