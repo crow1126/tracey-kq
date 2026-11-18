@@ -1,0 +1,74 @@
+@import "tailwindcss";
+
+@layer base {
+  :root {
+    --forest-950: #122410;
+    --forest-900: #183015;
+    --forest-800: #1E3D1A;
+    --forest-700: #2A4E1F;
+    --forest-600: #3A662C;
+    --forest-500: #4D853A;
+    --accent-lime: #C8E96B;
+    --accent-lime-hover: #b8db56;
+    --cream-100: #FAFAF7;
+    --cream-200: #F4F1EA;
+    --cream-300: #E6E2D8;
+    --dark-text: #172715;
+  }
+}
+
+@keyframes floatSlow {
+  0%, 100% { transform: translateY(0px); }
+  50% { transform: translateY(-8px); }
+}
+
+@keyframes pulseGlow {
+  0%, 100% { opacity: 0.8; transform: scale(1); }
+  50% { opacity: 1; transform: scale(1.04); }
+}
+
+@keyframes marquee {
+  0% { transform: translateX(0%); }
+  100% { transform: translateX(-50%); }
+}
+
+.animate-float-slow {
+  animation: floatSlow 5s ease-in-out infinite;
+}
+
+.animate-pulse-glow {
+  animation: pulseGlow 3s ease-in-out infinite;
+}
+
+.animate-marquee {
+  display: flex;
+  width: 200%;
+  animation: marquee 20s linear infinite;
+}
+
+/* Custom outline text for large fashion hero brand names */
+.text-stroke-white {
+  -webkit-text-stroke: 1.5px rgba(255, 255, 255, 0.28);
+  color: transparent;
+}
+
+.text-stroke-lime {
+  -webkit-text-stroke: 1.5px rgba(200, 233, 107, 0.35);
+  color: transparent;
+}
+
+/* Custom scrollbar */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+::-webkit-scrollbar-track {
+  background: #183015;
+}
+::-webkit-scrollbar-thumb {
+  background: #3A662C;
+  border-radius: 9999px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #C8E96B;
+}
