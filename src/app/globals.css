@@ -1,74 +1,148 @@
 @import "tailwindcss";
 
+@theme {
+  --color-app-bg: #F5F5F7;
+  --color-surface: #FFFFFF;
+  --color-surface-muted: #EDEDF0;
+  --color-border-card: #E6E6EA;
+  --color-border-dashed: #D4D4DA;
+  --color-ink: #111113;
+  --color-ink-soft: #3A3A3F;
+  --color-muted-ink: #8A8A8F;
+  --color-disabled-ink: #C7C7CC;
+
+  --color-accent: #6B73F0;
+  --color-accent-soft: #C9CCF5;
+  --color-accent-wash: #ECEDFD;
+
+  --color-promo-pink: #FF2D8A;
+  --color-promo-pink-deep: #8A1B4E;
+  --color-success: #1F8A4C;
+  --color-danger: #E5384F;
+  --color-warning: #F5A524;
+  --color-star: #F5B400;
+
+  --color-dark-bg: #111113;
+  --color-dark-surface: #1C1C1F;
+  --color-on-dark: #FFFFFF;
+  --color-on-dark-muted: #A1A1A8;
+
+  --font-sans: 'Poppins', 'Inter', system-ui, -apple-system, sans-serif;
+  --font-display: 'Poppins', 'Inter', system-ui, -apple-system, sans-serif;
+}
+
 @layer base {
   :root {
-    --forest-950: #122410;
-    --forest-900: #183015;
-    --forest-800: #1E3D1A;
-    --forest-700: #2A4E1F;
-    --forest-600: #3A662C;
-    --forest-500: #4D853A;
-    --accent-lime: #C8E96B;
-    --accent-lime-hover: #b8db56;
-    --cream-100: #FAFAF7;
-    --cream-200: #F4F1EA;
-    --cream-300: #E6E2D8;
-    --dark-text: #172715;
+    --bg: #F5F5F7;
+    --surface: #FFFFFF;
+    --surface-muted: #EDEDF0;
+    --border: #E6E6EA;
+    --border-dashed: #D4D4DA;
+    --ink: #111113;
+    --ink-soft: #3A3A3F;
+    --muted: #8A8A8F;
+    --disabled: #C7C7CC;
+    --accent: #6B73F0;
+    --accent-soft: #C9CCF5;
+    --accent-wash: #ECEDFD;
+    --promo-pink: #FF2D8A;
+    --promo-pink-deep: #8A1B4E;
+    --success: #1F8A4C;
+    --danger: #E5384F;
+    --warning: #F5A524;
+    --star: #F5B400;
+    --dark-bg: #111113;
+    --dark-surface: #1C1C1F;
+    --on-dark: #FFFFFF;
+    --on-dark-muted: #A1A1A8;
+  }
+
+  body {
+    background-color: #F5F5F7;
+    color: #111113;
+    font-family: 'Poppins', 'Inter', system-ui, -apple-system, sans-serif;
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
   }
 }
 
-@keyframes floatSlow {
-  0%, 100% { transform: translateY(0px); }
-  50% { transform: translateY(-8px); }
+/* Glass & scrim overlays */
+.glass {
+  background: rgba(255, 255, 255, 0.85);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
 }
 
-@keyframes pulseGlow {
-  0%, 100% { opacity: 0.8; transform: scale(1); }
-  50% { opacity: 1; transform: scale(1.04); }
+.glass-dark {
+  background: rgba(28, 28, 31, 0.85);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
 }
 
-@keyframes marquee {
-  0% { transform: translateX(0%); }
-  100% { transform: translateX(-50%); }
+.image-scrim {
+  background: linear-gradient(to top, rgba(0, 0, 0, 0.65) 0%, rgba(0, 0, 0, 0.2) 50%, transparent 80%);
 }
 
-.animate-float-slow {
-  animation: floatSlow 5s ease-in-out infinite;
+.pink-gradient {
+  background: linear-gradient(135deg, #FF2D8A 0%, #8A1B4E 100%);
 }
 
-.animate-pulse-glow {
-  animation: pulseGlow 3s ease-in-out infinite;
+.shadow-sm-card {
+  box-shadow: 0 1px 2px rgba(17, 17, 19, 0.06);
 }
 
-.animate-marquee {
-  display: flex;
-  width: 200%;
-  animation: marquee 20s linear infinite;
+.shadow-md-card {
+  box-shadow: 0 8px 24px rgba(17, 17, 19, 0.08);
 }
 
-/* Custom outline text for large fashion hero brand names */
-.text-stroke-white {
-  -webkit-text-stroke: 1.5px rgba(255, 255, 255, 0.28);
-  color: transparent;
+.shadow-lg-nav {
+  box-shadow: 0 16px 40px rgba(17, 17, 19, 0.18);
 }
 
-.text-stroke-lime {
-  -webkit-text-stroke: 1.5px rgba(200, 233, 107, 0.35);
-  color: transparent;
-}
-
-/* Custom scrollbar */
+/* Custom scrollbars */
 ::-webkit-scrollbar {
   width: 6px;
   height: 6px;
 }
 ::-webkit-scrollbar-track {
-  background: #183015;
+  background: #F5F5F7;
 }
 ::-webkit-scrollbar-thumb {
-  background: #3A662C;
+  background: #D4D4DA;
   border-radius: 9999px;
 }
 ::-webkit-scrollbar-thumb:hover {
-  background: #C8E96B;
+  background: #8A8A8F;
 }
+
+/* Hide scrollbar utility (used in horizontal chip rows, thumbnail rows) */
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+.no-scrollbar {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+/* animate-in utility */
+@keyframes fade-in {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+@keyframes zoom-in-95 {
+  from { transform: scale(0.95); }
+  to   { transform: scale(1); }
+}
+.animate-in {
+  animation-fill-mode: both;
+}
+.fade-in {
+  animation-name: fade-in;
+}
+.zoom-in-95 {
+  animation-name: zoom-in-95;
+}
+.duration-200 {
+  animation-duration: 200ms;
+}
+
