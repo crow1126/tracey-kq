@@ -8,6 +8,7 @@ import Button from '../ui/Button';
 import IconButton from '../ui/IconButton';
 import Badge from '../ui/Badge';
 import CategorySlider from '../ui/CategorySlider';
+import HeroMotionSection from '../ui/HeroMotionSection';
 
 export default function HomeView() {
   const {
@@ -41,56 +42,8 @@ export default function HomeView() {
         </div>
       )}
 
-      {/* 1. Full-Bleed Campaign Hero Section */}
-      <section className="relative min-h-[580px] sm:min-h-[640px] bg-[#111113] text-white flex items-center overflow-hidden">
-        {/* Background Visual */}
-        <div className="absolute inset-0 z-0">
-          <img
-            src={siteContent.heroImageUrl}
-            alt="Tracey Kuukua Quansah Haute Couture"
-            className="w-full h-full object-cover object-top filter brightness-[0.78] contrast-105"
-          />
-          <div className="absolute inset-0 image-scrim" />
-        </div>
-
-        <div className="max-w-7xl mx-auto px-6 sm:px-8 lg:px-12 w-full relative z-10 py-16 space-y-6">
-          <div className="inline-flex items-center gap-2 bg-black/40 backdrop-blur-md px-3.5 py-1.5 rounded-full border border-white/20 text-xs font-semibold text-white">
-            <span className="w-2 h-2 rounded-full bg-[#6B73F0] animate-ping" />
-            <span className="tracking-widest uppercase text-[10px]">
-              {siteContent.heroCampaignBadge}
-            </span>
-          </div>
-
-          <h1 className="text-4xl sm:text-6xl lg:text-7xl font-bold tracking-tight text-white max-w-3xl leading-[1.08] font-display">
-            {siteContent.heroHeadlinePrefix}{' '}
-            <span className="text-[#6B73F0]">{siteContent.heroHeadlineAccent}</span>
-            {siteContent.heroHeadlineSuffix}
-          </h1>
-
-          <p className="text-sm sm:text-base text-gray-200 max-w-xl font-normal leading-relaxed">
-            {siteContent.heroSubtitle}
-          </p>
-
-          <div className="flex flex-wrap items-center gap-4 pt-2">
-            <Button
-              variant="get-started"
-              onClick={() => setActiveView('shop')}
-              className="flex items-center gap-2 shadow-xl"
-            >
-              <span>Shop Now</span>
-              <ArrowRight className="w-5 h-5 text-[#111113]" />
-            </Button>
-
-            <Button
-              variant="outline"
-              onClick={() => setActiveView('our-story')}
-              className="bg-black/30 backdrop-blur-md text-white border-white/30 hover:bg-white/20"
-            >
-              <span>Our Story</span>
-            </Button>
-          </div>
-        </div>
-      </section>
+      {/* 1. Full-Bleed Campaign Hero Section with Cinematic Motion & Hotspots */}
+      <HeroMotionSection />
 
       {/* 2. Modern Category Showcase / Slider */}
       <CategorySlider />

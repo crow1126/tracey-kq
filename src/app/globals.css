@@ -124,6 +124,93 @@
   scrollbar-width: none;
 }
 
+/* Professional Fashion Motion & Ken Burns Animations */
+@keyframes kenburns-slow {
+  0% {
+    transform: scale(1.03) translate(0%, 0%);
+  }
+  50% {
+    transform: scale(1.12) translate(-1.5%, -1%);
+  }
+  100% {
+    transform: scale(1.06) translate(1%, 0.8%);
+  }
+}
+
+@keyframes kenburns-alternate {
+  0% {
+    transform: scale(1.1) translate(1.5%, 1%);
+  }
+  50% {
+    transform: scale(1.04) translate(-1%, -0.5%);
+  }
+  100% {
+    transform: scale(1.12) translate(0%, -1.2%);
+  }
+}
+
+@keyframes runway-light-sweep {
+  0% {
+    transform: translateX(-100%) rotate(25deg);
+    opacity: 0;
+  }
+  30% {
+    opacity: 0.15;
+  }
+  60% {
+    opacity: 0.15;
+  }
+  100% {
+    transform: translateX(200%) rotate(25deg);
+    opacity: 0;
+  }
+}
+
+@keyframes ambient-glow-pulse {
+  0%, 100% {
+    transform: scale(1) translate(0, 0);
+    opacity: 0.35;
+  }
+  50% {
+    transform: scale(1.25) translate(4%, -3%);
+    opacity: 0.55;
+  }
+}
+
+@keyframes hotspot-pulse {
+  0% {
+    box-shadow: 0 0 0 0 rgba(107, 115, 240, 0.7);
+  }
+  70% {
+    box-shadow: 0 0 0 16px rgba(107, 115, 240, 0);
+  }
+  100% {
+    box-shadow: 0 0 0 0 rgba(107, 115, 240, 0);
+  }
+}
+
+.animate-kenburns {
+  animation: kenburns-slow 22s cubic-bezier(0.25, 1, 0.5, 1) infinite alternate;
+  will-change: transform;
+}
+
+.animate-kenburns-alt {
+  animation: kenburns-alternate 24s cubic-bezier(0.25, 1, 0.5, 1) infinite alternate;
+  will-change: transform;
+}
+
+.animate-light-sweep {
+  animation: runway-light-sweep 12s cubic-bezier(0.4, 0, 0.2, 1) infinite;
+}
+
+.animate-ambient-glow {
+  animation: ambient-glow-pulse 10s ease-in-out infinite;
+}
+
+.animate-hotspot {
+  animation: hotspot-pulse 2.2s infinite;
+}
+
 /* animate-in utility */
 @keyframes fade-in {
   from { opacity: 0; }
