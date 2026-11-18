@@ -21,7 +21,7 @@ export default function BrandFooter() {
   };
 
   return (
-    <footer className="bg-[#111113] text-white pt-16 pb-28 md:pb-16 px-6 sm:px-8 lg:px-12 border-t border-white/10">
+    <footer className="bg-[#111113] text-white pt-16 pb-36 md:pb-16 px-6 sm:px-8 lg:px-12 border-t border-white/10">
       <div className="max-w-7xl mx-auto space-y-16">
         {/* Newsletter Section */}
         <div className="bg-[#1C1C1F] border border-white/10 rounded-[24px] p-8 sm:p-12 grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
@@ -142,17 +142,23 @@ export default function BrandFooter() {
 
           <div className="col-span-2 md:col-span-4 space-y-4">
             <h4 className="text-xs font-semibold tracking-[0.2em] text-white uppercase">
-              Ghana Payment & Deliveries
+              Accra Atelier Concierge
             </h4>
-            <p className="text-xs text-[#A1A1A8] font-light">
-              We accept all local and international payments processed securely via Paystack & Hubtel.
+            <p className="text-xs text-[#A1A1A8] font-light leading-relaxed">
+              Experience private made-to-measure fittings, fabric consultations, and bespoke commissions at our Airport Residential Area atelier.
             </p>
-            <div className="flex flex-wrap gap-2 text-[11px] font-mono text-[#111113]">
-              <span className="bg-[#FFCC00] px-2.5 py-1 rounded font-bold">MTN MoMo</span>
-              <span className="bg-[#E60000] text-white px-2.5 py-1 rounded font-bold">Telecel Cash</span>
-              <span className="bg-[#003399] text-white px-2.5 py-1 rounded font-bold">AirtelTigo</span>
-              <span className="bg-white px-2.5 py-1 rounded font-bold">Visa / Mastercard</span>
-              <span className="bg-[#EDEDF0] px-2.5 py-1 rounded font-bold">Cash on Delivery</span>
+            <div className="pt-1">
+              <button
+                onClick={() => {
+                  setActiveView('bespoke');
+                  if (typeof window !== 'undefined') {
+                    window.scrollTo({ top: 0, behavior: 'smooth' });
+                  }
+                }}
+                className="inline-flex items-center gap-2 text-xs font-semibold text-[#6B73F0] hover:text-white transition-colors cursor-pointer"
+              >
+                <span>Book a Bespoke Consultation →</span>
+              </button>
             </div>
           </div>
         </div>

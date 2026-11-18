@@ -284,16 +284,16 @@ export default function CheckoutView() {
             </div>
           </div>
 
-          {/* 3. Payment Option Rows: 72px high, 24px radio */}
+          {/* 3. Order Reservation & Payment Method */}
           <div className="bg-white rounded-3xl p-6 sm:p-7 border border-[#E6E6EA] shadow-sm space-y-5">
             <div className="flex items-center gap-3">
               <span className="w-7 h-7 rounded-full bg-[#111113] text-white text-xs font-bold flex items-center justify-center">
                 3
               </span>
               <div>
-                <h2 className="text-lg font-bold text-[#111113]">Ghana Payment Gateway</h2>
+                <h2 className="text-lg font-bold text-[#111113]">Order Confirmation & Payment</h2>
                 <p className="text-xs text-[#8A8A8F]">
-                  Supports all local mobile money networks and international Visa / Mastercard.
+                  Automated gateway is currently in private preview. Select how you prefer our concierge to arrange payment:
                 </p>
               </div>
             </div>
@@ -301,35 +301,17 @@ export default function CheckoutView() {
             <div className="space-y-3">
               {[
                 {
-                  id: 'MTN Mobile Money',
-                  title: 'MTN Mobile Money (MoMo)',
-                  subtitle: 'Instant prompt sent to your MTN phone',
-                  icon: Smartphone,
-                  badge: 'Instant Prompt',
-                },
-                {
-                  id: 'Telecel Cash',
-                  title: 'Telecel Cash (formerly Vodafone)',
-                  subtitle: 'Direct voucher or wallet prompt',
-                  icon: Smartphone,
-                },
-                {
-                  id: 'AirtelTigo Money',
-                  title: 'ATMoney / AirtelTigo',
-                  subtitle: 'Instant mobile wallet payment',
-                  icon: Smartphone,
-                },
-                {
-                  id: 'Credit / Debit Card',
-                  title: 'Credit / Debit Card (Visa, Mastercard)',
-                  subtitle: 'International cards accepted',
-                  icon: CreditCard,
-                },
-                {
                   id: 'Cash on Delivery',
                   title: 'Pay on Doorstep Delivery',
-                  subtitle: 'Cash or MoMo to rider upon inspection',
+                  subtitle: 'Inspect garment with rider, pay via MoMo or cash upon delivery',
                   icon: Truck,
+                  badge: 'Recommended',
+                },
+                {
+                  id: 'MTN Mobile Money',
+                  title: 'Direct Concierge WhatsApp Invoice',
+                  subtitle: 'Our atelier desk sends a direct invoice & payment request to your phone',
+                  icon: Smartphone,
                 },
               ].map((method) => {
                 const isSelected = paymentMethod === method.id;
@@ -369,7 +351,7 @@ export default function CheckoutView() {
                     </div>
 
                     {method.badge && (
-                      <span className="text-[10px] font-bold text-[#6B73F0] bg-[#ECEDFD] px-2.5 py-1 rounded-full hidden sm:block">
+                      <span className="text-[10px] font-bold text-[#1F8A4C] bg-[#E8F5EE] px-2.5 py-1 rounded-full hidden sm:block">
                         {method.badge}
                       </span>
                     )}
@@ -378,19 +360,14 @@ export default function CheckoutView() {
               })}
             </div>
 
-            {/* Mobile Money Prompt Preview */}
-            {(paymentMethod === 'MTN Mobile Money' ||
-              paymentMethod === 'Telecel Cash' ||
-              paymentMethod === 'AirtelTigo Money') && (
-              <div className="p-4 rounded-2xl bg-[#ECEDFD] border border-[#C9CCF5] text-xs space-y-2">
-                <span className="font-semibold text-[#111113] block">
-                  How Mobile Money Checkout Works:
-                </span>
-                <p className="text-[#3A3A3F]">
-                  After tapping <strong>Place Order</strong>, you will receive an automatic prompt on <strong>{customerPhone}</strong> requesting approval for <strong>GH₵ {cartTotalGhc.toLocaleString()}</strong>.
-                </p>
-              </div>
-            )}
+            <div className="p-4 rounded-2xl bg-[#F5F5F7] border border-[#E6E6EA] text-xs space-y-1.5 text-[#3A3A3F]">
+              <span className="font-semibold text-[#111113] block">
+                Atelier Guarantee:
+              </span>
+              <p>
+                Your order reserves your selected garment and initiates bespoke steaming and scenting at our Accra atelier. No prepayment required upfront.
+              </p>
+            </div>
           </div>
 
           {/* 4. Order Review Line Items */}

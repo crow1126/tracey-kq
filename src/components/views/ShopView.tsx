@@ -10,9 +10,16 @@ import Badge from '../ui/Badge';
 import IconButton from '../ui/IconButton';
 
 export default function ShopView() {
-  const { products, setQuickViewProduct, addToCart, toggleWishlist, isWishlisted } = useStore();
+  const {
+    products,
+    setQuickViewProduct,
+    addToCart,
+    toggleWishlist,
+    isWishlisted,
+    selectedCategory,
+    setSelectedCategory,
+  } = useStore();
 
-  const [selectedCategory, setSelectedCategory] = useState<string>('all');
   const [searchQuery, setSearchQuery] = useState('');
   const [sortBy, setSortBy] = useState<'featured' | 'price-asc' | 'price-desc' | 'rating' | 'newest'>('featured');
   const [onlyInStock, setOnlyInStock] = useState(false);

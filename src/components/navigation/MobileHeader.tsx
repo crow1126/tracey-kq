@@ -42,7 +42,12 @@ export default function MobileHeader() {
 
         <IconButton
           variant="home-bag"
-          onClick={() => setIsCartDrawerOpen(true)}
+          onClick={() => {
+            setActiveView('bag');
+            if (typeof window !== 'undefined') {
+              window.scrollTo({ top: 0, behavior: 'smooth' });
+            }
+          }}
           aria-label="Bag"
           className="relative"
         >

@@ -199,6 +199,29 @@ export default function ProductDetailModal() {
                     </span>
                   </div>
 
+                  {/* The Story of This Creation */}
+                  <div className="bg-[#F5F5F7] rounded-2xl p-4 sm:p-5 border border-[#E6E6EA] space-y-2.5">
+                    <div className="flex items-center justify-between">
+                      <span className="text-[11px] font-bold tracking-[0.2em] uppercase text-[#6B73F0] flex items-center gap-1.5">
+                        <Sparkles className="w-3.5 h-3.5" />
+                        <span>The Story of This Creation</span>
+                      </span>
+                      <span className="text-[10px] text-[#8A8A8F] uppercase font-semibold">
+                        Accra Atelier Archive
+                      </span>
+                    </div>
+                    <p className="text-xs sm:text-[13px] text-[#3A3A3F] leading-relaxed font-normal">
+                      {product.description}
+                    </p>
+                    <p className="text-xs text-[#8A8A8F] italic leading-relaxed">
+                      "{product.craftsmanship || 'Hand-loomed in the Ashanti region of Bonwire by hereditary master weavers. Finished with French seams and architectural interior boning.'}"
+                    </p>
+                    <div className="pt-2 border-t border-[#E6E6EA] flex flex-wrap items-center justify-between text-[11px] text-[#8A8A8F] gap-2">
+                      <span>Fabric: <strong className="text-[#111113]">{product.fabric}</strong></span>
+                      <span className="text-[#1F8A4C] font-semibold">Ethically Tailored in Ghana</span>
+                    </div>
+                  </div>
+
                   {/* "Fits True to Size" Meter */}
                   <div className="bg-[#F5F5F7] rounded-2xl p-3.5 flex items-center justify-between text-xs">
                     <div className="space-y-0.5">

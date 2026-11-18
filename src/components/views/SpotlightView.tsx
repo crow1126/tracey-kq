@@ -23,7 +23,7 @@ export default function SpotlightView() {
   };
 
   return (
-    <div className="bg-[#F5F5F7] min-h-screen py-12 px-5 sm:px-8 lg:px-12 space-y-16 max-w-6xl mx-auto">
+    <div className="bg-[#F5F5F7] min-h-screen pt-12 pb-32 px-5 sm:px-8 lg:px-12 space-y-16 max-w-6xl mx-auto">
       {/* Editorial Header */}
       <div className="text-center space-y-3 max-w-2xl mx-auto">
         <span className="text-[11px] font-medium tracking-[0.2em] text-[#6B73F0] uppercase">

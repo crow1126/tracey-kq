@@ -2,7 +2,7 @@
 
 import React from 'react';
 import { useStore } from '@/context/StoreContext';
-import { X, Sparkles, Scissors, MapPin, BookOpen, MessageCircle, ShieldCheck, ChevronRight, Compass } from 'lucide-react';
+import { X, Sparkles, Scissors, MapPin, BookOpen, MessageCircle, ShieldCheck, ChevronRight, Compass, ShoppingBag } from 'lucide-react';
 
 export default function BrandMenuSheet() {
   const { isBrandMenuOpen, setIsBrandMenuOpen, setActiveView } = useStore();
@@ -56,7 +56,18 @@ export default function BrandMenuSheet() {
               >
                 <div className="flex items-center gap-3">
                   <Compass className="w-4 h-4 text-[#6B73F0]" />
-                  <span>Shop All Pieces</span>
+                  <span>Browse & Shop Pieces</span>
+                </div>
+                <ChevronRight className="w-4 h-4 text-[#8A8A8F]" />
+              </button>
+
+              <button
+                onClick={() => navigateTo('bag')}
+                className="w-full flex items-center justify-between px-3 py-2.5 rounded-xl text-[15px] font-medium text-[#111113] hover:bg-[#EDEDF0] transition-colors"
+              >
+                <div className="flex items-center gap-3">
+                  <ShoppingBag className="w-4 h-4 text-[#111113]" />
+                  <span>Shopping Bag</span>
                 </div>
                 <ChevronRight className="w-4 h-4 text-[#8A8A8F]" />
               </button>

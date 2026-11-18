@@ -50,6 +50,9 @@ interface StoreContextType {
   appliedPromoCode: string | null;
   promoDiscountPercent: number;
   promoDiscountFixed: number;
+  selectedCategory: string;
+  setSelectedCategory: (catId: string) => void;
+  navigateToCategory: (catId: string) => void;
   
   // Actions
   addToCart: (product: Product, size?: string, colorName?: string, colorHex?: string, qty?: number) => void;
@@ -99,6 +102,7 @@ export function StoreProvider({ children }: { children: React.ReactNode }) {
   const [cart, setCart] = useState<CartLineItem[]>([]);
   const [wishlist, setWishlist] = useState<string[]>(['prod-01', 'prod-04', 'prod-10']);
   const [activeView, setActiveView] = useState<string>('home');
+  const [selectedCategory, setSelectedCategory] = useState<string>('all');
   const [quickViewProduct, setQuickViewProduct] = useState<Product | null>(null);
   const [isBespokeModalOpen, setIsBespokeModalOpen] = useState(false);
   const [isCartDrawerOpen, setIsCartDrawerOpen] = useState(false);
@@ -271,6 +275,14 @@ export function StoreProvider({ children }: { children: React.ReactNode }) {
     setCart((prev) =>
       prev.map((item) => (item.id === lineId ? { ...item, quantity } : item))
     );
+  };
+
+  const navigateToCategory = (catId: string) => {
+    setSelectedCategory(catId);
+    setActiveView('shop');
+    if (typeof window !== 'undefined') {
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
   };
 
   const clearCart = () => setCart([]);
@@ -453,6 +465,9 @@ export function StoreProvider({ children }: { children: React.ReactNode }) {
         appliedPromoCode,
         promoDiscountPercent,
         promoDiscountFixed,
+        selectedCategory,
+        setSelectedCategory,
+        navigateToCategory,
         addToCart,
         removeFromCart,
         updateCartQuantity,

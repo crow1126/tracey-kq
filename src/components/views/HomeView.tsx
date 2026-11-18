@@ -16,6 +16,7 @@ export default function HomeView() {
     toggleWishlist,
     isWishlisted,
     addToCart,
+    navigateToCategory,
     user,
   } = useStore();
 
@@ -30,7 +31,7 @@ export default function HomeView() {
   };
 
   return (
-    <div className="space-y-12 pb-24 md:pb-16">
+    <div className="space-y-12 pb-32 md:pb-16">
       {/* Logged in personalized greeting banner */}
       {user.isLoggedIn && (
         <div className="bg-[#ECEDFD] border-b border-[#C9CCF5] py-2 px-6 text-center text-xs text-[#3A3A3F]">
@@ -93,7 +94,7 @@ export default function HomeView() {
             BROWSE BY CATEGORY
           </span>
           <button
-            onClick={() => setActiveView('shop')}
+            onClick={() => navigateToCategory('all')}
             className="text-[13px] font-semibold text-[#6B73F0] hover:underline"
           >
             See all categories →
@@ -104,7 +105,7 @@ export default function HomeView() {
           {SEED_CATEGORIES.map((cat) => (
             <div
               key={cat.id}
-              onClick={() => setActiveView('shop')}
+              onClick={() => navigateToCategory(cat.id)}
               className="w-[76px] min-w-[76px] flex flex-col items-center gap-2 cursor-pointer group select-none"
             >
               <div className="w-[68px] h-[68px] rounded-full overflow-hidden bg-[#EDEDF0] border-2 border-transparent group-hover:border-[#6B73F0] shadow-sm transition-all duration-200 group-hover:scale-105">
@@ -225,15 +226,12 @@ export default function HomeView() {
                   <h3 className="font-semibold text-[14px] sm:text-[15px] text-[#111113] line-clamp-1 group-hover:text-[#6B73F0] transition-colors">
                     {product.name}
                   </h3>
-                  <div className="flex items-baseline gap-2 pt-1">
-                    <span className="text-[15px] sm:text-[16px] font-bold text-[#111113]">
-                      GH₵ {product.priceGhc.toLocaleString()}
-                    </span>
-                    {product.originalPriceGhc && (
-                      <span className="text-[12px] text-[#8A8A8F] line-through">
-                        GH₵ {product.originalPriceGhc.toLocaleString()}
-                      </span>
-                    )}
+                  <p className="text-[11px] text-[#8A8A8F] line-clamp-1">
+                    {product.fabric}
+                  </p>
+                  <div className="pt-2 flex items-center justify-between text-[11px] font-semibold text-[#6B73F0] group-hover:text-[#111113] transition-colors">
+                    <span>Discover Story & Price</span>
+                    <span className="text-xs">→</span>
                   </div>
                 </div>
               </div>
@@ -257,23 +255,29 @@ export default function HomeView() {
               </div>
 
               {/* Shoppable Floating Tag Card (Specification: glass + quick add + button) */}
-              <div className="absolute bottom-4 inset-x-4 glass text-[#111113] p-4 rounded-[20px] shadow-lg flex items-center justify-between border border-white/60">
+              <div
+                onClick={() => setQuickViewProduct(products[3] || products[0])}
+                className="absolute bottom-4 inset-x-4 glass text-[#111113] p-4 rounded-[20px] shadow-lg flex items-center justify-between border border-white/60 cursor-pointer hover:bg-white transition-colors"
+              >
                 <div className="min-w-0 pr-2">
                   <span className="text-[10px] font-bold uppercase tracking-wider text-[#6B73F0] block">
-                    SHOP THIS EDIT
+                    FEATURED SILHOUETTE
                   </span>
                   <p className="font-bold text-sm truncate">
                     Bonwire Kente Corset Blazer
                   </p>
                   <p className="text-xs font-semibold text-[#111113]">
-                    GH₵ 12,500
+                    Handcrafted in Bonwire · Read Story & View Details →
                   </p>
                 </div>
                 {/* Quick-add "+" on tag card: 40x40px circle, ink bg */}
                 <IconButton
                   variant="quick-add"
-                  onClick={() => addToCart(products[3])}
-                  aria-label="Quick add"
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    setQuickViewProduct(products[3] || products[0]);
+                  }}
+                  aria-label="View story & details"
                 >
                   <Plus className="w-5 h-5 text-white" />
                 </IconButton>
