@@ -151,12 +151,36 @@ export interface BespokeEnquiry {
 
 export interface SiteContent {
   announcementBarText: string;
+  // Slide 1
   heroCampaignBadge: string;
   heroHeadlinePrefix: string;
   heroHeadlineAccent: string;
   heroHeadlineSuffix: string;
   heroSubtitle: string;
   heroImageUrl: string;
+  heroPrimaryCta?: string;
+  heroSecondaryCta?: string;
+  heroPrimaryView?: string;
+  heroSecondaryView?: string;
+
+  // Slide 2
+  hero2CampaignBadge?: string;
+  hero2HeadlinePrefix?: string;
+  hero2HeadlineAccent?: string;
+  hero2HeadlineSuffix?: string;
+  hero2Subtitle?: string;
+  hero2ImageUrl?: string;
+  hero2PrimaryCta?: string;
+  hero2SecondaryCta?: string;
+  hero2PrimaryView?: string;
+  hero2SecondaryView?: string;
+
+  // Hero Carousel & Animation Controls
+  heroSlideDuration?: number; // duration in seconds
+  heroAutoplay?: boolean; // toggle auto-transition
+  heroTransitionEffect?: 'crossfade' | 'instant';
+
+  // Banner
   bannerVisible: boolean;
   bannerBadge: string;
   bannerHeadline: string;

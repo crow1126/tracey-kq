@@ -3,7 +3,7 @@
 
 import React, { useState, useEffect, useRef } from 'react';
 import { useStore } from '@/context/StoreContext';
-import { ArrowRight } from 'lucide-react';
+import { ArrowRight, ChevronLeft, ChevronRight } from 'lucide-react';
 import Button from './Button';
 
 interface Slide {
@@ -27,6 +27,7 @@ export default function HeroMotionSection() {
     {
       id: 'slide-1',
       badge: siteContent.heroCampaignBadge || 'ACCRA HAUTE COUTURE 2026',
+      // Slide 1: Editorial Haute Couture Silhouette
       image:
         siteContent.heroImageUrl ||
         'https://images.unsplash.com/photo-1539109136881-3be0616acf4b?auto=format&fit=crop&w=1800&q=85',
@@ -36,25 +37,28 @@ export default function HeroMotionSection() {
       subtitle:
         siteContent.heroSubtitle ||
         'Hand-woven Kente, brass-cast details, and architectural silhouettes — crafted for the modern African icon.',
-      primaryCta: 'Shop Now',
-      secondaryCta: 'Our Story',
-      primaryView: 'shop',
-      secondaryView: 'our-story',
+      primaryCta: siteContent.heroPrimaryCta || 'Shop Now',
+      secondaryCta: siteContent.heroSecondaryCta || 'Our Story',
+      primaryView: siteContent.heroPrimaryView || 'shop',
+      secondaryView: siteContent.heroSecondaryView || 'our-story',
     },
     {
       id: 'slide-2',
-      badge: 'RUNWAY SS26 · BONWIRE ATELIER',
+      badge: siteContent.hero2CampaignBadge || 'RUNWAY SS26 · BONWIRE ATELIER',
+      // Slide 2: Distinct Runway Contemporary Fashion Look
       image:
+        siteContent.hero2ImageUrl ||
         'https://images.unsplash.com/photo-1515886657613-9f3515b0c78f?auto=format&fit=crop&w=1800&q=85',
-      headlinePrefix: 'Ancestral Craft,',
-      headlineAccent: 'Contemporary',
-      headlineSuffix: ' Soul.',
+      headlinePrefix: siteContent.hero2HeadlinePrefix || 'Ancestral Craft,',
+      headlineAccent: siteContent.hero2HeadlineAccent || 'Contemporary',
+      headlineSuffix: siteContent.hero2HeadlineSuffix || ' Soul.',
       subtitle:
+        siteContent.hero2Subtitle ||
         'From the looms of Bonwire to the runways of Accra — each piece carries generations of mastery, reimagined for today.',
-      primaryCta: 'Explore Collections',
-      secondaryCta: 'View Lookbook',
-      primaryView: 'collections',
-      secondaryView: 'collections',
+      primaryCta: siteContent.hero2PrimaryCta || 'Explore Collections',
+      secondaryCta: siteContent.hero2SecondaryCta || 'View Lookbook',
+      primaryView: siteContent.hero2PrimaryView || 'collections',
+      secondaryView: siteContent.hero2SecondaryView || 'collections',
     },
   ];
 
@@ -62,14 +66,17 @@ export default function HeroMotionSection() {
   const [mouseOffset, setMouseOffset] = useState({ x: 0, y: 0 });
   const containerRef = useRef<HTMLDivElement>(null);
 
-  const SLIDE_DURATION = 5000;
+  // Controlled dynamically via CMS
+  const isAutoplay = siteContent.heroAutoplay !== false;
+  const slideDuration = (siteContent.heroSlideDuration || 5) * 1000;
 
   useEffect(() => {
+    if (!isAutoplay) return;
     const timer = setInterval(() => {
       setCurrentSlide((curr) => (curr + 1) % slides.length);
-    }, SLIDE_DURATION);
+    }, slideDuration);
     return () => clearInterval(timer);
-  }, [slides.length]);
+  }, [isAutoplay, slideDuration, slides.length]);
 
   const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
     if (!containerRef.current) return;
@@ -83,6 +90,9 @@ export default function HeroMotionSection() {
     setMouseOffset({ x: 0, y: 0 });
   };
 
+  const nextSlide = () => setCurrentSlide((curr) => (curr + 1) % slides.length);
+  const prevSlide = () => setCurrentSlide((curr) => (curr - 1 + slides.length) % slides.length);
+
   return (
     <section
       ref={containerRef}
@@ -90,7 +100,7 @@ export default function HeroMotionSection() {
       onMouseLeave={handleMouseLeave}
       className="relative min-h-[600px] sm:min-h-[680px] lg:min-h-[740px] bg-[#111113] text-white flex items-center overflow-hidden select-none"
     >
-      {/* Background image layer — crossfade only, no Ken Burns */}
+      {/* Background image layer — smooth crossfade, no glide/zoom */}
       <div
         className="absolute inset-0 z-0 transition-transform duration-700 ease-out"
         style={{
@@ -116,7 +126,7 @@ export default function HeroMotionSection() {
         <div className="absolute top-1/4 -left-20 w-96 h-96 rounded-full bg-[#6B73F0]/20 blur-[130px] pointer-events-none animate-ambient-glow" />
         <div className="absolute bottom-10 right-10 w-[500px] h-[500px] rounded-full bg-[#FF2D8A]/12 blur-[150px] pointer-events-none animate-ambient-glow delay-700" />
 
-        {/* Light sweep */}
+        {/* Diagonal Light sweep */}
         <div className="absolute inset-0 pointer-events-none overflow-hidden">
           <div className="w-[200%] h-full bg-gradient-to-r from-transparent via-white/8 to-transparent -rotate-12 translate-x-[-100%] animate-light-sweep" />
         </div>
@@ -180,15 +190,32 @@ export default function HeroMotionSection() {
         ))}
       </div>
 
+      {/* Manual Slide Previous / Next Controls on Desktop */}
+      <button
+        onClick={prevSlide}
+        aria-label="Previous Slide"
+        className="hidden md:flex absolute left-4 top-1/2 -translate-y-1/2 z-30 w-10 h-10 rounded-full bg-black/30 hover:bg-black/60 border border-white/20 items-center justify-center text-white backdrop-blur-md transition-all hover:scale-110 active:scale-95"
+      >
+        <ChevronLeft className="w-5 h-5" />
+      </button>
+
+      <button
+        onClick={nextSlide}
+        aria-label="Next Slide"
+        className="hidden md:flex absolute right-4 top-1/2 -translate-y-1/2 z-30 w-10 h-10 rounded-full bg-black/30 hover:bg-black/60 border border-white/20 items-center justify-center text-white backdrop-blur-md transition-all hover:scale-110 active:scale-95"
+      >
+        <ChevronRight className="w-5 h-5" />
+      </button>
+
       {/* Slide indicator dots */}
-      <div className="absolute bottom-6 left-1/2 -translate-x-1/2 z-30 flex gap-2">
+      <div className="absolute bottom-6 left-1/2 -translate-x-1/2 z-30 flex items-center gap-2 bg-black/40 backdrop-blur-md px-3 py-1.5 rounded-full border border-white/10">
         {slides.map((_, index) => (
           <button
             key={index}
             onClick={() => setCurrentSlide(index)}
             aria-label={`Go to slide ${index + 1}`}
-            className={`h-1.5 rounded-full transition-all duration-500 ${
-              index === currentSlide ? 'w-8 bg-white' : 'w-2 bg-white/40 hover:bg-white/60'
+            className={`h-2 rounded-full transition-all duration-500 ${
+              index === currentSlide ? 'w-8 bg-[#6B73F0]' : 'w-2 bg-white/40 hover:bg-white/70'
             }`}
           />
         ))}

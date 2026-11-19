@@ -47,14 +47,40 @@ export interface UserAccount {
 export const DEFAULT_SITE_CONTENT: SiteContent = {
   announcementBarText:
     'ACCRA ATELIER TO WORLDWIDE DOORSTEP · EXPRESS SAME-DAY DELIVERY IN ACCRA METRO · USE CODE WELCOME10',
-  heroCampaignBadge: 'SPRING / SUMMER 2026 CAMPAIGN',
-  heroHeadlinePrefix: 'Sculpting Ancestral Ghanaian Splendor into Minimalist',
-  heroHeadlineAccent: 'Couture',
-  heroHeadlineSuffix: '.',
+  // Slide 1
+  heroCampaignBadge: 'ACCRA HAUTE COUTURE 2026',
+  heroHeadlinePrefix: 'Where African Heritage',
+  heroHeadlineAccent: 'Redefines',
+  heroHeadlineSuffix: ' Luxury.',
   heroSubtitle:
-    'Designed by Tracey Kuukua Quansah in Accra. Hand-loomed Bonwire silks, architectural velvet tailoring, and zero-waste bespoke silhouettes.',
+    'Hand-woven Kente, brass-cast details, and architectural silhouettes — crafted for the modern African icon.',
   heroImageUrl:
+    'https://images.unsplash.com/photo-1539109136881-3be0616acf4b?auto=format&fit=crop&w=1800&q=85',
+  heroPrimaryCta: 'Shop Now',
+  heroSecondaryCta: 'Our Story',
+  heroPrimaryView: 'shop',
+  heroSecondaryView: 'our-story',
+
+  // Slide 2
+  hero2CampaignBadge: 'RUNWAY SS26 · BONWIRE ATELIER',
+  hero2HeadlinePrefix: 'Ancestral Craft,',
+  hero2HeadlineAccent: 'Contemporary',
+  hero2HeadlineSuffix: ' Soul.',
+  hero2Subtitle:
+    'From the looms of Bonwire to the runways of Accra — each piece carries generations of mastery, reimagined for today.',
+  hero2ImageUrl:
     'https://images.unsplash.com/photo-1515886657613-9f3515b0c78f?auto=format&fit=crop&w=1800&q=85',
+  hero2PrimaryCta: 'Explore Collections',
+  hero2SecondaryCta: 'View Lookbook',
+  hero2PrimaryView: 'collections',
+  hero2SecondaryView: 'collections',
+
+  // Hero Display & Transition Settings
+  heroSlideDuration: 5,
+  heroAutoplay: true,
+  heroTransitionEffect: 'crossfade',
+
+  // Just Landed Banner
   bannerVisible: true,
   bannerBadge: 'JUST LANDED · 2026 DROP',
   bannerHeadline: 'Accra Haute Couture Gala Drop',
@@ -315,7 +341,7 @@ export function StoreProvider({ children }: { children: React.ReactNode }) {
 
       const savedContent = localStorage.getItem('tkq_admin_site_content');
       if (savedContent) {
-        setSiteContent(JSON.parse(savedContent));
+        setSiteContent({ ...DEFAULT_SITE_CONTENT, ...JSON.parse(savedContent) });
       }
 
       const savedArticles = localStorage.getItem('tkq_admin_articles');
