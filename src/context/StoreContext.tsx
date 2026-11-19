@@ -373,6 +373,25 @@ export function StoreProvider({ children }: { children: React.ReactNode }) {
     } catch {
       // LocalStorage access fallback
     }
+
+    // Sync with Neon Database if connected
+    fetch('/api/products')
+      .then((res) => res.json())
+      .then((data) => {
+        if (data?.products && data.products.length > 0 && data.source === 'neon') {
+          setProducts(data.products);
+        }
+      })
+      .catch(() => {});
+
+    fetch('/api/content')
+      .then((res) => res.json())
+      .then((data) => {
+        if (data?.content && data.source === 'neon') {
+          setSiteContent({ ...DEFAULT_SITE_CONTENT, ...data.content });
+        }
+      })
+      .catch(() => {});
   }, []);
 
   // Sync to localStorage
@@ -420,6 +439,12 @@ export function StoreProvider({ children }: { children: React.ReactNode }) {
       id: `prod-${Date.now()}`,
     };
     setProducts((prev) => [newProduct, ...prev]);
+    // Sync with Neon Database
+    fetch('/api/products', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(newProduct),
+    }).catch(() => {});
     return newProduct;
   };
 
@@ -427,6 +452,12 @@ export function StoreProvider({ children }: { children: React.ReactNode }) {
     setProducts((prev) =>
       prev.map((p) => (p.id === id ? { ...p, ...updates } : p))
     );
+    // Sync with Neon Database
+    fetch('/api/products', {
+      method: 'PUT',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ id, ...updates }),
+    }).catch(() => {});
   };
 
   const deleteProduct = (id: string) => {
@@ -434,11 +465,22 @@ export function StoreProvider({ children }: { children: React.ReactNode }) {
     // Also remove from cart/wishlist
     setWishlist((prev) => prev.filter((pId) => pId !== id));
     setCart((prev) => prev.filter((item) => item.product.id !== id));
+    // Sync with Neon Database
+    fetch(`/api/products?id=${id}`, {
+      method: 'DELETE',
+    }).catch(() => {});
   };
 
   // Site Content Updates (Admin)
   const updateSiteContent = (updates: Partial<SiteContent>) => {
-    setSiteContent((prev) => ({ ...prev, ...updates }));
+    const updated = { ...siteContent, ...updates };
+    setSiteContent(updated);
+    // Sync with Neon Database
+    fetch('/api/content', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(updated),
+    }).catch(() => {});
   };
 
   // Journal Articles CRUD (Admin)
@@ -448,6 +490,11 @@ export function StoreProvider({ children }: { children: React.ReactNode }) {
       id: `art-${Date.now()}`,
     };
     setArticles((prev) => [newArticle, ...prev]);
+    fetch('/api/articles', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(newArticle),
+    }).catch(() => {});
     return newArticle;
   };
 
@@ -455,10 +502,16 @@ export function StoreProvider({ children }: { children: React.ReactNode }) {
     setArticles((prev) =>
       prev.map((a) => (a.id === id ? { ...a, ...updates } : a))
     );
+    fetch('/api/articles', {
+      method: 'PUT',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ id, ...updates }),
+    }).catch(() => {});
   };
 
   const deleteArticle = (id: string) => {
     setArticles((prev) => prev.filter((a) => a.id !== id));
+    fetch(`/api/articles?id=${id}`, { method: 'DELETE' }).catch(() => {});
   };
 
   // Reset to original seed data
@@ -680,6 +733,11 @@ export function StoreProvider({ children }: { children: React.ReactNode }) {
 
     setOrders((prev) => [newOrder, ...prev]);
     clearCart();
+    fetch('/api/orders', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(newOrder),
+    }).catch(() => {});
     return newOrder;
   };
 
@@ -690,6 +748,11 @@ export function StoreProvider({ children }: { children: React.ReactNode }) {
     setOrders((prev) =>
       prev.map((o) => (o.id === orderId ? { ...o, status } : o))
     );
+    fetch('/api/orders', {
+      method: 'PATCH',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ id: orderId, status }),
+    }).catch(() => {});
   };
 
   const loginUser = (email: string, name?: string) => {

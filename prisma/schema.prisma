@@ -1,0 +1,164 @@
+// This is your Prisma schema file for Neon Serverless PostgreSQL
+// Learn more: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Product {
+  id               String   @id @default(cuid())
+  name             String
+  subtitle         String?
+  category         String
+  categoryId       String
+  collectionId     String?
+  priceGhc         Float
+  originalPriceGhc Float?
+  discountPercent  Int?
+  isNew            Boolean  @default(false)
+  isTrending       Boolean  @default(false)
+  isSpotlight      Boolean  @default(false)
+  rating           Float    @default(5.0)
+  reviewCount      Int      @default(0)
+  images           Json     // string[]
+  colors           Json     // { name: string, hex: string }[]
+  sizes            Json     // string[]
+  variants         Json?    // ProductVariant[]
+  fabric           String
+  craftsmanship    String
+  description      String
+  careInstructions String
+  stockStatus      String   @default("in_stock") // 'in_stock' | 'low_stock' | 'out_of_stock'
+  createdAt        DateTime @default(now())
+  updatedAt        DateTime @updatedAt
+
+  @@index([category])
+  @@index([isTrending])
+}
+
+model Category {
+  id          String @id
+  name        String
+  slug        String @unique
+  itemCount   Int    @default(0)
+  image       String
+  description String
+}
+
+model Collection {
+  id          String @id
+  title       String
+  subtitle    String
+  season      String
+  year        Int
+  coverImage  String
+  description String
+  hotspots    Json   // Hotspot[]
+}
+
+model JournalArticle {
+  id                 String   @id @default(cuid())
+  title              String
+  slug               String   @unique
+  category           String
+  author             String
+  readTime           String
+  date               String
+  heroImage          String
+  excerpt            String
+  content            String
+  shoppableProductId String?
+  tags               Json     // string[]
+  createdAt          DateTime @default(now())
+  updatedAt          DateTime @updatedAt
+}
+
+model Order {
+  id                String   @id @default(cuid())
+  orderNumber       String   @unique
+  customerName      String
+  customerEmail     String
+  customerPhone     String
+  deliveryAddress   String
+  city              String
+  deliveryZone      String
+  deliveryFeeGhc    Float
+  deliveryMethod    String
+  paymentMethod     String
+  paymentStatus     String   @default("Pending") // 'Paid' | 'Pending'
+  subtotalGhc       Float
+  discountGhc       Float    @default(0)
+  totalGhc          Float
+  status            String   @default("Packed")  // 'Packed' | 'Shipped' | 'Delivered' | 'Returned'
+  date              String
+  estimatedDelivery String
+  items             Json     // OrderItem[]
+  riderName         String?
+  riderPhone        String?
+  trackingTimeline  Json     // { title: string, time: string, completed: boolean }[]
+  createdAt         DateTime @default(now())
+  updatedAt         DateTime @updatedAt
+
+  @@index([orderNumber])
+  @@index([status])
+}
+
+model BespokeEnquiry {
+  id            String   @id @default(cuid())
+  name          String
+  email         String
+  phone         String
+  serviceType   String
+  preferredDate String
+  budgetGhc     String?
+  message       String
+  status        String   @default("New") // 'New' | 'Contacted' | 'Fitting Scheduled' | 'Completed'
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+}
+
+model SiteContent {
+  id                   String   @id @default("default")
+  announcementBarText  String
+  // Slide 1
+  heroCampaignBadge    String
+  heroHeadlinePrefix   String
+  heroHeadlineAccent   String
+  heroHeadlineSuffix   String
+  heroSubtitle         String
+  heroImageUrl         String
+  heroPrimaryCta       String?  @default("Shop Now")
+  heroSecondaryCta     String?  @default("Our Story")
+  heroPrimaryView      String?  @default("shop")
+  heroSecondaryView    String?  @default("our-story")
+
+  // Slide 2
+  hero2CampaignBadge   String?  @default("RUNWAY SS26 · BONWIRE ATELIER")
+  hero2HeadlinePrefix  String?  @default("Ancestral Craft,")
+  hero2HeadlineAccent  String?  @default("Contemporary")
+  hero2HeadlineSuffix  String?  @default(" Soul.")
+  hero2Subtitle        String?  @default("From the looms of Bonwire to the runways of Accra — each piece carries generations of mastery, reimagined for today.")
+  hero2ImageUrl        String?  @default("https://images.unsplash.com/photo-1515886657613-9f3515b0c78f?auto=format&fit=crop&w=1800&q=85")
+  hero2PrimaryCta      String?  @default("Explore Collections")
+  hero2SecondaryCta    String?  @default("View Lookbook")
+  hero2PrimaryView     String?  @default("collections")
+  hero2SecondaryView   String?  @default("collections")
+
+  // Slideshow Timing & Motion
+  heroSlideDuration    Int?     @default(5)
+  heroAutoplay         Boolean? @default(true)
+  heroTransitionEffect String?  @default("crossfade")
+
+  // Banner
+  bannerVisible        Boolean  @default(true)
+  bannerBadge          String
+  bannerHeadline       String
+  bannerSubtitle       String
+  bannerDiscountText   String
+  updatedAt            DateTime @updatedAt
+}
