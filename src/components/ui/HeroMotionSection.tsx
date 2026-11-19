@@ -1,3 +1,4 @@
+/* eslint-disable @next/next/no-img-element */
 'use client';
 
 import React, { useState, useEffect, useRef } from 'react';
@@ -81,8 +82,6 @@ export default function HeroMotionSection() {
   const handleMouseLeave = () => {
     setMouseOffset({ x: 0, y: 0 });
   };
-
-  const active = slides[currentSlide];
 
   return (
     <section
