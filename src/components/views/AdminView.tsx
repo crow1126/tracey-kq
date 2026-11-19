@@ -306,31 +306,31 @@ export default function AdminView() {
   return (
     <div className="min-h-screen bg-[#F5F5F7] text-[#111113] pb-32">
       {/* 1. Admin Header */}
-      <section className="bg-[#111113] text-white py-8 border-b border-white/10">
+      <section className="bg-[#111113] text-white py-6 sm:py-8 border-b border-white/10">
         <div className="max-w-7xl mx-auto px-5 sm:px-8 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
-          <div className="flex items-center gap-3">
-            <div className="w-10 h-10 rounded-full bg-[#6B73F0] flex items-center justify-center text-white">
-              <ShieldCheck className="w-6 h-6" />
+          <div className="flex items-start sm:items-center gap-3">
+            <div className="w-10 h-10 rounded-full bg-[#6B73F0] flex items-center justify-center text-white flex-shrink-0 mt-0.5 sm:mt-0">
+              <ShieldCheck className="w-5 h-5 sm:w-6 sm:h-6" />
             </div>
             <div>
-              <div className="flex items-center gap-2">
-                <span className="font-bold text-sm tracking-widest uppercase">
+              <div className="flex flex-wrap items-center gap-2">
+                <span className="font-bold text-xs sm:text-sm tracking-widest uppercase">
                   TRACEY KUUKUA QUANSAH
                 </span>
-                <span className="bg-[#1F8A4C] text-[10px] font-bold px-2 py-0.5 rounded-full uppercase">
+                <span className="bg-[#1F8A4C] text-[9px] sm:text-[10px] font-bold px-2 py-0.5 rounded-full uppercase">
                   CMS Operations Active
                 </span>
               </div>
-              <h1 className="text-xl sm:text-2xl font-bold tracking-tight">
+              <h1 className="text-lg sm:text-2xl font-bold tracking-tight mt-0.5">
                 Atelier Administration & Content Management
               </h1>
             </div>
           </div>
 
-          <div className="flex items-center gap-3">
+          <div className="flex items-center gap-2 sm:gap-3">
             <button
               onClick={() => setActiveView('home')}
-              className="text-xs bg-white/10 hover:bg-white/20 text-white px-3.5 py-1.5 rounded-full flex items-center gap-1.5 transition-colors cursor-pointer"
+              className="flex-1 sm:flex-initial text-xs bg-white/10 hover:bg-white/20 text-white px-3.5 py-2 rounded-full flex items-center justify-center gap-1.5 transition-colors cursor-pointer"
             >
               <Eye className="w-3.5 h-3.5" />
               <span>View Live Storefront</span>
@@ -342,7 +342,7 @@ export default function AdminView() {
                   alert('Reset to default seed catalogue!');
                 }
               }}
-              className="text-xs bg-white/10 hover:bg-[#E5384F]/30 text-white/80 hover:text-white px-3 py-1.5 rounded-full flex items-center gap-1.5 transition-colors cursor-pointer"
+              className="text-xs bg-white/10 hover:bg-[#E5384F]/30 text-white/80 hover:text-white px-3 py-2 rounded-full flex items-center justify-center gap-1.5 transition-colors cursor-pointer"
               title="Reset to default seed data"
             >
               <RotateCcw className="w-3.5 h-3.5" />
@@ -402,15 +402,15 @@ export default function AdminView() {
       </section>
 
       {/* 3. Navigation Tabs */}
-      <section className="max-w-7xl mx-auto px-5 sm:px-8 mt-8">
-        <div className="bg-white rounded-2xl p-1.5 border border-[#E6E6EA] flex space-x-1 overflow-x-auto no-scrollbar text-xs font-semibold">
+      <section className="max-w-7xl mx-auto px-5 sm:px-8 mt-6 sm:mt-8">
+        <div className="bg-white rounded-2xl p-1.5 border border-[#E6E6EA] flex space-x-1.5 overflow-x-auto no-scrollbar text-xs font-semibold shadow-xs">
           {[
-            { id: 'inventory', label: `Inventory & Products (${products.length})`, icon: Package },
+            { id: 'inventory', label: `Inventory (${products.length})`, icon: Package },
             { id: 'content', label: 'Site Features & Banners', icon: Sliders },
-            { id: 'journal', label: `Journal & Stories (${articles.length})`, icon: BookOpen },
+            { id: 'journal', label: `Journal (${articles.length})`, icon: BookOpen },
             { id: 'orders', label: `Orders (${orders.length})`, icon: ShoppingBag },
-            { id: 'enquiries', label: `Bespoke Enquiries (${enquiries.length})`, icon: Scissors },
-            { id: 'analytics', label: 'Financial Analytics', icon: TrendingUp },
+            { id: 'enquiries', label: `Enquiries (${enquiries.length})`, icon: Scissors },
+            { id: 'analytics', label: 'Analytics', icon: TrendingUp },
           ].map((tab) => {
             const isActive = activeTab === tab.id;
             const Icon = tab.icon;
@@ -419,7 +419,7 @@ export default function AdminView() {
               <button
                 key={tab.id}
                 onClick={() => setActiveTab(tab.id as any)}
-                className={`flex-1 py-3 px-4 rounded-xl flex items-center justify-center gap-2 transition-all cursor-pointer whitespace-nowrap ${
+                className={`flex-shrink-0 py-2.5 sm:py-3 px-3.5 sm:px-4 rounded-xl flex items-center justify-center gap-2 transition-all cursor-pointer whitespace-nowrap ${
                   isActive
                     ? 'bg-[#111113] text-white shadow-sm'
                     : 'text-[#8A8A8F] hover:text-[#111113] hover:bg-[#F5F5F7]'
@@ -488,8 +488,8 @@ export default function AdminView() {
               </div>
             </div>
 
-            {/* Products Table */}
-            <div className="overflow-x-auto">
+            {/* Products Desktop Table */}
+            <div className="hidden md:block overflow-x-auto">
               <table className="w-full text-left text-xs">
                 <thead className="bg-[#F5F5F7] border-b border-[#E6E6EA] text-[#8A8A8F] font-semibold uppercase tracking-wider">
                   <tr>
@@ -509,7 +509,7 @@ export default function AdminView() {
                           <img
                             src={p.images[0]}
                             alt=""
-                            className="w-12 h-14 object-cover rounded-xl bg-[#EDEDF0]"
+                            className="w-12 h-14 object-cover object-top rounded-xl bg-[#EDEDF0]"
                           />
                           <div>
                             <span className="font-semibold text-[#111113] block">{p.name}</span>
@@ -563,6 +563,61 @@ export default function AdminView() {
                   ))}
                 </tbody>
               </table>
+            </div>
+
+            {/* Mobile Product Card List (md:hidden) */}
+            <div className="md:hidden divide-y divide-[#E6E6EA]">
+              {filteredInventory.map((p) => (
+                <div key={p.id} className="p-4 space-y-3">
+                  <div className="flex gap-3">
+                    <img
+                      src={p.images[0]}
+                      alt=""
+                      className="w-16 h-20 object-cover object-top rounded-xl bg-[#EDEDF0] flex-shrink-0"
+                    />
+                    <div className="min-w-0 flex-1 space-y-1">
+                      <div className="flex items-start justify-between gap-2">
+                        <h4 className="font-bold text-sm text-[#111113] line-clamp-1">{p.name}</h4>
+                        {p.stockStatus === 'in_stock' && (
+                          <span className="text-[9px] font-bold text-[#1F8A4C] bg-[#E8F5EE] px-2 py-0.5 rounded-full flex-shrink-0">
+                            In Stock
+                          </span>
+                        )}
+                        {p.stockStatus === 'low_stock' && (
+                          <span className="text-[9px] font-bold text-[#F5A524] bg-[#FDF4E7] px-2 py-0.5 rounded-full flex-shrink-0">
+                            Low Stock
+                          </span>
+                        )}
+                        {p.stockStatus === 'out_of_stock' && (
+                          <span className="text-[9px] font-bold text-[#E5384F] bg-[#FDECEE] px-2 py-0.5 rounded-full flex-shrink-0">
+                            Out of Stock
+                          </span>
+                        )}
+                      </div>
+                      <p className="text-[11px] text-[#6B73F0] font-medium">{p.category} · {p.fabric}</p>
+                      <p className="font-bold text-sm text-[#111113]">GH₵ {p.priceGhc.toLocaleString()}</p>
+                      <p className="text-[10px] text-[#8A8A8F]">Sizes: {p.sizes.join(', ')}</p>
+                    </div>
+                  </div>
+
+                  <div className="flex items-center justify-end gap-2 pt-1 border-t border-[#F5F5F7]">
+                    <button
+                      onClick={() => handleOpenEditProduct(p)}
+                      className="px-3.5 py-1.5 rounded-lg bg-[#EDEDF0] hover:bg-[#111113] hover:text-white text-xs font-semibold flex items-center gap-1.5 transition-colors"
+                    >
+                      <Pencil className="w-3.5 h-3.5" />
+                      <span>Edit</span>
+                    </button>
+                    <button
+                      onClick={() => setProductToDelete(p)}
+                      className="px-3.5 py-1.5 rounded-lg bg-[#FDECEE] text-[#E5384F] hover:bg-[#E5384F] hover:text-white text-xs font-semibold flex items-center gap-1.5 transition-colors"
+                    >
+                      <Trash2 className="w-3.5 h-3.5" />
+                      <span>Delete</span>
+                    </button>
+                  </div>
+                </div>
+              ))}
             </div>
           </div>
         )}
@@ -626,7 +681,7 @@ export default function AdminView() {
                   </div>
 
                   {/* Slideshow Global Settings */}
-                  <div className="flex flex-wrap items-center gap-4 bg-white px-3 py-1.5 rounded-xl border border-[#E6E6EA] shadow-xs">
+                  <div className="flex flex-wrap items-center justify-between sm:justify-start gap-3 bg-white px-3.5 py-2 rounded-xl border border-[#E6E6EA] shadow-xs w-full sm:w-auto">
                     <label className="flex items-center gap-2 text-xs font-semibold cursor-pointer text-[#111113]">
                       <input
                         type="checkbox"
@@ -649,7 +704,7 @@ export default function AdminView() {
                             heroSlideDuration: Number(e.target.value),
                           })
                         }
-                        className="bg-[#F5F5F7] border border-[#E6E6EA] rounded-lg px-2 py-0.5 text-xs text-[#111113] font-medium outline-none"
+                        className="bg-[#F5F5F7] border border-[#E6E6EA] rounded-lg px-2 py-1 text-xs text-[#111113] font-medium outline-none cursor-pointer"
                       >
                         <option value={3}>3 seconds</option>
                         <option value={5}>5 seconds</option>
@@ -661,22 +716,22 @@ export default function AdminView() {
                 </div>
 
                 {/* Slide Switcher Tabs */}
-                <div className="flex items-center gap-2">
+                <div className="grid grid-cols-2 gap-2 w-full">
                   <button
                     type="button"
                     onClick={() => setHeroSlideTab(1)}
-                    className={`px-4 py-2 rounded-xl text-xs font-bold transition-all ${
+                    className={`py-2.5 px-3 rounded-xl text-xs font-bold transition-all text-center ${
                       heroSlideTab === 1
                         ? 'bg-[#111113] text-white shadow-md'
                         : 'bg-white text-[#8A8A8F] hover:text-[#111113] border border-[#E6E6EA]'
                     }`}
                   >
-                    Slide 1 · Haute Couture Editorial
+                    Slide 1 · Haute Couture
                   </button>
                   <button
                     type="button"
                     onClick={() => setHeroSlideTab(2)}
-                    className={`px-4 py-2 rounded-xl text-xs font-bold transition-all ${
+                    className={`py-2.5 px-3 rounded-xl text-xs font-bold transition-all text-center ${
                       heroSlideTab === 2
                         ? 'bg-[#111113] text-white shadow-md'
                         : 'bg-white text-[#8A8A8F] hover:text-[#111113] border border-[#E6E6EA]'
@@ -1074,6 +1129,27 @@ export default function AdminView() {
                   />
                 </div>
               </div>
+
+              {/* Mobile Floating Save Bar */}
+              <div className="sm:hidden sticky bottom-4 z-20 bg-[#111113] text-white p-3 rounded-2xl shadow-2xl flex items-center justify-between gap-3 border border-white/10">
+                <span className="text-xs text-white/70">
+                  {contentSaved ? (
+                    <span className="text-[#1F8A4C] font-semibold flex items-center gap-1">
+                      <Check className="w-3.5 h-3.5 text-white" /> Saved Live!
+                    </span>
+                  ) : (
+                    'Ready to publish'
+                  )}
+                </span>
+                <button
+                  type="button"
+                  onClick={handleSaveSiteContent}
+                  className="h-9 px-4 rounded-full bg-white text-[#111113] text-xs font-bold flex items-center gap-1.5 shadow-md cursor-pointer active:scale-95 transition-transform"
+                >
+                  <Save className="w-3.5 h-3.5" />
+                  <span>Save Live</span>
+                </button>
+              </div>
             </form>
           </div>
         )}
@@ -1160,7 +1236,8 @@ export default function AdminView() {
               </div>
             </div>
 
-            <div className="overflow-x-auto">
+            {/* Orders Desktop Table */}
+            <div className="hidden md:block overflow-x-auto">
               <table className="w-full text-left text-xs">
                 <thead className="bg-[#F5F5F7] border-b border-[#E6E6EA] text-[#8A8A8F] font-semibold uppercase tracking-wider">
                   <tr>
@@ -1240,6 +1317,67 @@ export default function AdminView() {
                   ))}
                 </tbody>
               </table>
+            </div>
+
+            {/* Mobile Orders Card List (md:hidden) */}
+            <div className="md:hidden divide-y divide-[#E6E6EA]">
+              {orders.map((ord) => (
+                <div key={ord.id} className="p-4 space-y-3">
+                  <div className="flex items-center justify-between">
+                    <div>
+                      <span className="font-mono font-bold text-sm text-[#111113] block">
+                        {ord.orderNumber}
+                      </span>
+                      <span className="text-[10px] text-[#8A8A8F]">{ord.date}</span>
+                    </div>
+                    <span
+                      className={`text-[10px] font-bold px-2.5 py-0.5 rounded-full ${
+                        ord.paymentStatus === 'Paid'
+                          ? 'bg-[#E8F5EE] text-[#1F8A4C]'
+                          : 'bg-[#FDF4E7] text-[#F5A524]'
+                      }`}
+                    >
+                      {ord.paymentStatus} · {ord.paymentMethod}
+                    </span>
+                  </div>
+
+                  <div className="text-xs space-y-1">
+                    <p className="font-semibold text-[#111113]">
+                      {ord.customerName} · <span className="text-[#8A8A8F] font-normal">{ord.customerPhone}</span>
+                    </p>
+                    <p className="text-[#8A8A8F]">
+                      {ord.city} ({ord.deliveryZone}) · {ord.items.length} {ord.items.length === 1 ? 'item' : 'items'}
+                    </p>
+                    <p className="font-bold text-sm text-[#111113] pt-0.5">
+                      GH₵ {ord.totalGhc.toLocaleString()}
+                    </p>
+                  </div>
+
+                  <div className="flex items-center justify-between gap-2 pt-1 border-t border-[#F5F5F7]">
+                    <div className="flex items-center gap-1.5 text-xs">
+                      <span className="text-[#8A8A8F] text-[11px]">Status:</span>
+                      <select
+                        value={ord.status}
+                        onChange={(e) => updateOrderStatus(ord.id, e.target.value as any)}
+                        className="px-2.5 py-1.5 rounded-lg text-xs font-semibold bg-[#EDEDF0] text-[#111113] outline-none"
+                      >
+                        <option value="Packed">Packed</option>
+                        <option value="Shipped">Shipped</option>
+                        <option value="Delivered">Delivered</option>
+                        <option value="Returned">Returned</option>
+                      </select>
+                    </div>
+
+                    <button
+                      onClick={() => setSelectedPackingSlipOrder(ord)}
+                      className="px-3 py-1.5 rounded-lg bg-[#EDEDF0] text-[#111113] hover:bg-[#E6E6EA] text-xs font-semibold flex items-center gap-1.5 transition-colors"
+                    >
+                      <Printer className="w-3.5 h-3.5" />
+                      <span>Packing Slip</span>
+                    </button>
+                  </div>
+                </div>
+              ))}
             </div>
           </div>
         )}
