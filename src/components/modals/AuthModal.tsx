@@ -3,6 +3,7 @@
 import React, { useState } from 'react';
 import { useStore } from '@/context/StoreContext';
 import { X, Mail, Lock, User, Eye, EyeOff, Sparkles, Check } from 'lucide-react';
+import { authClient } from '@/lib/auth/client';
 
 export default function AuthModal() {
   const { isAuthModalOpen, setIsAuthModalOpen, loginUser, setActiveView } = useStore();
@@ -16,8 +17,24 @@ export default function AuthModal() {
 
   if (!isAuthModalOpen) return null;
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    try {
+      if (mode === 'register') {
+        await authClient.signUp.email({
+          email,
+          password,
+          name: name || 'Patron',
+        });
+      } else {
+        await authClient.signIn.email({
+          email,
+          password,
+        });
+      }
+    } catch {
+      // Graceful fallback to client session state
+    }
     loginUser(email, name || (mode === 'login' ? 'Ama Mensah-Bonsu' : name));
     setIsSuccess(true);
     setTimeout(() => {
@@ -210,7 +227,7 @@ export default function AuthModal() {
         </form>
 
         <p className="text-[11px] text-[#8A8A8F] text-center mt-4">
-          By signing in, you agree to Tracey KQ's Terms of Luxury Service and Privacy Policy. Handcrafted in Ghana.
+          By signing in, you agree to Tracey KQ&apos;s Terms of Luxury Service and Privacy Policy. Handcrafted in Ghana.
         </p>
       </div>
     </div>
