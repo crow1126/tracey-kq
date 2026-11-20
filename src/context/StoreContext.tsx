@@ -17,6 +17,7 @@ import {
   SEED_CATEGORIES,
   SEED_ARTICLES,
 } from '@/data/db-seed';
+import { authClient } from '@/lib/auth/client';
 
 export interface CartLineItem {
   id: string;
@@ -177,7 +178,7 @@ interface StoreContextType {
     orderId: string,
     status: 'Packed' | 'Shipped' | 'Delivered' | 'Returned'
   ) => void;
-  loginUser: (email: string, name?: string) => void;
+  loginUser: (email: string, name?: string, id?: string) => void;
   logoutUser: () => void;
 
   // CRUD for Products (Admin)
@@ -370,9 +371,37 @@ export function StoreProvider({ children }: { children: React.ReactNode }) {
       if (savedWishlist) {
         setWishlist(JSON.parse(savedWishlist));
       }
+
+      const savedUser = localStorage.getItem('tkq_user_session');
+      if (savedUser) {
+        setUser(JSON.parse(savedUser));
+      }
     } catch {
       // LocalStorage access fallback
     }
+
+    // Verify authenticated session with Neon Auth
+    authClient
+      .getSession()
+      .then((session) => {
+        if (session?.data?.user) {
+          const u = session.data.user;
+          setUser((prev) => {
+            const updated: UserAccount = {
+              ...prev,
+              id: u.id,
+              name: u.name || prev.name,
+              email: u.email,
+              isLoggedIn: true,
+            };
+            try {
+              localStorage.setItem('tkq_user_session', JSON.stringify(updated));
+            } catch {}
+            return updated;
+          });
+        }
+      })
+      .catch(() => {});
 
     // Sync with Neon Database if connected
     fetch('/api/products')
@@ -755,20 +784,31 @@ export function StoreProvider({ children }: { children: React.ReactNode }) {
     }).catch(() => {});
   };
 
-  const loginUser = (email: string, name?: string) => {
-    setUser((prev) => ({
-      ...prev,
-      email,
-      name: name || prev.name,
-      isLoggedIn: true,
-    }));
+  const loginUser = (email: string, name?: string, id?: string) => {
+    setUser((prev) => {
+      const updated: UserAccount = {
+        ...prev,
+        id: id || prev.id,
+        email,
+        name: name || prev.name,
+        isLoggedIn: true,
+      };
+      try {
+        localStorage.setItem('tkq_user_session', JSON.stringify(updated));
+      } catch {}
+      return updated;
+    });
   };
 
   const logoutUser = () => {
+    authClient.signOut().catch(() => {});
     setUser((prev) => ({
       ...prev,
       isLoggedIn: false,
     }));
+    try {
+      localStorage.removeItem('tkq_user_session');
+    } catch {}
   };
 
   const getWhatsAppOrderUrl = (
