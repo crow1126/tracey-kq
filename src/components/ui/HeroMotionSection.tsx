@@ -61,8 +61,6 @@ export default function HeroMotionSection() {
   ];
 
   const [currentSlide, setCurrentSlide] = useState(0);
-  const [mouseOffset, setMouseOffset] = useState({ x: 0, y: 0 });
-  const containerRef = useRef<HTMLDivElement>(null);
   const touchStartXRef = useRef<number | null>(null);
 
   // Controlled dynamically via CMS
@@ -76,18 +74,6 @@ export default function HeroMotionSection() {
     }, slideDuration);
     return () => clearInterval(timer);
   }, [isAutoplay, slideDuration, slides.length]);
-
-  const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
-    if (!containerRef.current) return;
-    const rect = containerRef.current.getBoundingClientRect();
-    const x = (e.clientX - rect.left) / rect.width - 0.5;
-    const y = (e.clientY - rect.top) / rect.height - 0.5;
-    setMouseOffset({ x: x * 14, y: y * 14 });
-  };
-
-  const handleMouseLeave = () => {
-    setMouseOffset({ x: 0, y: 0 });
-  };
 
   const nextSlide = () => setCurrentSlide((curr) => (curr + 1) % slides.length);
   const prevSlide = () => setCurrentSlide((curr) => (curr - 1 + slides.length) % slides.length);
@@ -112,106 +98,103 @@ export default function HeroMotionSection() {
 
   return (
     <section
-      ref={containerRef}
-      onMouseMove={handleMouseMove}
-      onMouseLeave={handleMouseLeave}
       onTouchStart={handleTouchStart}
       onTouchEnd={handleTouchEnd}
-      className="relative min-h-[560px] sm:min-h-[640px] lg:min-h-[720px] bg-[#111113] text-white flex items-center overflow-hidden select-none"
+      className="relative min-h-[580px] sm:min-h-[640px] lg:min-h-[720px] bg-[#111113] text-white flex items-center overflow-hidden select-none"
     >
-      {/* Background image layer — smooth, flicker-free crossfade */}
-      <div
-        className="absolute inset-0 z-0 transition-transform duration-1000 ease-out will-change-transform"
-        style={{
-          transform: `translate3d(${mouseOffset.x}px, ${mouseOffset.y}px, 0) scale(1.02)`,
-        }}
-      >
-        {slides.map((slide, index) => (
-          <div
-            key={slide.id}
-            className={`absolute inset-0 transition-opacity duration-1000 ease-in-out ${
-              index === currentSlide
-                ? 'opacity-100 z-[2] pointer-events-auto'
-                : 'opacity-0 z-[1] pointer-events-none'
-            }`}
-          >
-            <img
-              src={slide.image}
-              alt="Tracey Kuukua Quansah Haute Couture"
-              loading={index === 0 ? 'eager' : 'lazy'}
-              className="w-full h-full object-cover object-center filter brightness-[0.78] contrast-105"
-            />
-          </div>
-        ))}
+      {/* ── Background Slides Layer (GPU-accelerated, zero-jitter crossfade) ── */}
+      <div className="absolute inset-0 z-0">
+        {slides.map((slide, index) => {
+          const isActive = index === currentSlide;
+          return (
+            <div
+              key={slide.id}
+              className={`absolute inset-0 transition-opacity duration-1000 ease-in-out transform-gpu will-change-[opacity] ${
+                isActive ? 'opacity-100 z-10' : 'opacity-0 z-0 pointer-events-none'
+              }`}
+            >
+              <img
+                src={slide.image}
+                alt={slide.badge}
+                loading={index === 0 ? 'eager' : 'lazy'}
+                className="w-full h-full object-cover object-center"
+              />
+            </div>
+          );
+        })}
 
-        {/* Ambient glow accents */}
-        <div className="absolute top-1/4 -left-20 w-80 sm:w-96 h-80 sm:h-96 rounded-full bg-[#6B73F0]/20 blur-[130px] pointer-events-none animate-ambient-glow z-[3]" />
-        <div className="absolute bottom-10 right-10 w-80 sm:w-[500px] h-80 sm:h-[500px] rounded-full bg-[#FF2D8A]/12 blur-[150px] pointer-events-none animate-ambient-glow delay-700 z-[3]" />
+        {/* High-performance scrim overlays — ensures text readability without CPU filters */}
+        <div className="absolute inset-0 bg-black/45 z-20 pointer-events-none" />
+        <div className="absolute inset-0 bg-gradient-to-r from-black/85 via-black/40 to-transparent z-20 pointer-events-none" />
+        <div className="absolute inset-0 bg-gradient-to-t from-[#111113] via-transparent to-black/30 z-20 pointer-events-none" />
 
-        {/* Scrims optimized for mobile & desktop contrast — sit strictly above images */}
-        <div className="absolute inset-0 bg-gradient-to-r from-black/90 via-black/55 to-black/30 z-[4] sm:from-black/85 sm:via-black/40 sm:to-transparent pointer-events-none" />
-        <div className="absolute inset-0 bg-gradient-to-t from-[#111113] via-transparent to-black/40 z-[4] pointer-events-none" />
+        {/* Ambient atmospheric lighting */}
+        <div className="absolute top-1/4 -left-20 w-80 sm:w-96 h-80 sm:h-96 rounded-full bg-[#6B73F0]/25 blur-[100px] pointer-events-none z-20" />
+        <div className="absolute bottom-10 right-10 w-80 sm:w-[450px] h-80 sm:h-[450px] rounded-full bg-[#FF2D8A]/15 blur-[120px] pointer-events-none z-20" />
       </div>
 
-      {/* Editorial content — crossfades with the slide */}
-      <div className="max-w-7xl mx-auto px-5 sm:px-8 lg:px-12 w-full relative z-20 py-12 sm:py-20 lg:py-24">
-        {slides.map((slide, index) => (
-          <div
-            key={slide.id}
-            className={`space-y-4 sm:space-y-6 transition-opacity duration-700 ease-in-out ${
-              index === currentSlide
-                ? 'opacity-100 pointer-events-auto'
-                : 'opacity-0 pointer-events-none absolute inset-0 flex flex-col justify-center px-5 sm:px-8 lg:px-12 py-12 sm:py-20 lg:py-24'
-            }`}
-          >
-            {/* Campaign badge */}
-            <div className="inline-flex items-center gap-2 bg-black/60 backdrop-blur-md px-3.5 py-1.5 rounded-full border border-white/20 text-xs font-semibold text-white shadow-lg">
-              <span className="w-2 h-2 rounded-full bg-[#6B73F0] animate-ping" />
-              <span className="tracking-widest uppercase text-[9px] sm:text-[10px] font-medium text-white/95">
-                {slide.badge}
-              </span>
-            </div>
-
-            {/* Headline with responsive mobile typography */}
-            <h1 className="text-3xl sm:text-5xl lg:text-7xl font-bold tracking-tight text-white max-w-3xl leading-[1.12] sm:leading-[1.08] font-display drop-shadow-md">
-              {slide.headlinePrefix}{' '}
-              <span className="text-[#6B73F0] drop-shadow-sm">{slide.headlineAccent}</span>
-              {slide.headlineSuffix}
-            </h1>
-
-            {/* Subtitle */}
-            <p className="text-xs sm:text-base text-gray-200/90 max-w-xl font-normal leading-relaxed drop-shadow line-clamp-3 sm:line-clamp-none">
-              {slide.subtitle}
-            </p>
-
-            {/* CTAs - Stack nicely on mobile, side-by-side on sm+ */}
-            <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-3 pt-2 max-w-md sm:max-w-none">
-              <Button
-                variant="get-started"
-                onClick={() => setActiveView(slide.primaryView as never)}
-                className="h-12 flex items-center justify-center gap-2 shadow-2xl active:scale-95 transition-transform"
+      {/* ── Editorial Content (CSS Grid stack — prevents height jump / layout shifts) ── */}
+      <div className="max-w-7xl mx-auto px-5 sm:px-8 lg:px-12 w-full relative z-30 py-12 sm:py-20 lg:py-24">
+        <div className="grid grid-cols-1 grid-rows-1">
+          {slides.map((slide, index) => {
+            const isActive = index === currentSlide;
+            return (
+              <div
+                key={slide.id}
+                className={`col-start-1 row-start-1 space-y-4 sm:space-y-6 transition-opacity duration-700 ease-in-out ${
+                  isActive ? 'opacity-100 pointer-events-auto' : 'opacity-0 pointer-events-none'
+                }`}
               >
-                <span>{slide.primaryCta}</span>
-                <ArrowRight className="w-4 h-4 text-[#111113]" />
-              </Button>
+                {/* Campaign badge */}
+                <div className="inline-flex items-center gap-2 bg-black/60 backdrop-blur-md px-3.5 py-1.5 rounded-full border border-white/20 text-xs font-semibold text-white shadow-lg">
+                  <span className="w-2 h-2 rounded-full bg-[#6B73F0] animate-ping" />
+                  <span className="tracking-widest uppercase text-[9px] sm:text-[10px] font-medium text-white/95">
+                    {slide.badge}
+                  </span>
+                </div>
 
-              <Button
-                variant="outline"
-                onClick={() => setActiveView(slide.secondaryView as never)}
-                className="h-12 bg-black/40 backdrop-blur-md text-white border-white/30 hover:bg-white/20 hover:border-white/50 active:scale-95 transition-colors shadow-lg flex items-center justify-center"
-              >
-                <span>{slide.secondaryCta}</span>
-              </Button>
-            </div>
-          </div>
-        ))}
+                {/* Headline with responsive mobile typography */}
+                <h1 className="text-3xl sm:text-5xl lg:text-7xl font-bold tracking-tight text-white max-w-3xl leading-[1.12] sm:leading-[1.08] font-display drop-shadow-md">
+                  {slide.headlinePrefix}{' '}
+                  <span className="text-[#6B73F0] drop-shadow-sm">{slide.headlineAccent}</span>
+                  {slide.headlineSuffix}
+                </h1>
+
+                {/* Subtitle */}
+                <p className="text-xs sm:text-base text-gray-200/90 max-w-xl font-normal leading-relaxed drop-shadow line-clamp-3 sm:line-clamp-none">
+                  {slide.subtitle}
+                </p>
+
+                {/* CTAs */}
+                <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-3 pt-2 max-w-md sm:max-w-none">
+                  <Button
+                    variant="get-started"
+                    onClick={() => setActiveView(slide.primaryView as never)}
+                    className="h-12 flex items-center justify-center gap-2 shadow-2xl active:scale-95 transition-transform"
+                  >
+                    <span>{slide.primaryCta}</span>
+                    <ArrowRight className="w-4 h-4 text-[#111113]" />
+                  </Button>
+
+                  <Button
+                    variant="outline"
+                    onClick={() => setActiveView(slide.secondaryView as never)}
+                    className="h-12 bg-black/40 backdrop-blur-md text-white border-white/30 hover:bg-white/20 hover:border-white/50 active:scale-95 transition-colors shadow-lg flex items-center justify-center"
+                  >
+                    <span>{slide.secondaryCta}</span>
+                  </Button>
+                </div>
+              </div>
+            );
+          })}
+        </div>
       </div>
 
-      {/* Manual Slide Previous / Next Controls on Desktop */}
+      {/* ── Manual Previous / Next Desktop Controls ── */}
       <button
         onClick={prevSlide}
         aria-label="Previous Slide"
-        className="hidden md:flex absolute left-4 top-1/2 -translate-y-1/2 z-30 w-10 h-10 rounded-full bg-black/30 hover:bg-black/60 border border-white/20 items-center justify-center text-white backdrop-blur-md transition-all hover:scale-110 active:scale-95"
+        className="hidden md:flex absolute left-4 top-1/2 -translate-y-1/2 z-40 w-10 h-10 rounded-full bg-black/30 hover:bg-black/60 border border-white/20 items-center justify-center text-white backdrop-blur-md transition-all hover:scale-110 active:scale-95 cursor-pointer"
       >
         <ChevronLeft className="w-5 h-5" />
       </button>
@@ -219,13 +202,13 @@ export default function HeroMotionSection() {
       <button
         onClick={nextSlide}
         aria-label="Next Slide"
-        className="hidden md:flex absolute right-4 top-1/2 -translate-y-1/2 z-30 w-10 h-10 rounded-full bg-black/30 hover:bg-black/60 border border-white/20 items-center justify-center text-white backdrop-blur-md transition-all hover:scale-110 active:scale-95"
+        className="hidden md:flex absolute right-4 top-1/2 -translate-y-1/2 z-40 w-10 h-10 rounded-full bg-black/30 hover:bg-black/60 border border-white/20 items-center justify-center text-white backdrop-blur-md transition-all hover:scale-110 active:scale-95 cursor-pointer"
       >
         <ChevronRight className="w-5 h-5" />
       </button>
 
-      {/* Slide indicator dots - touch friendly */}
-      <div className="absolute bottom-5 left-1/2 -translate-x-1/2 z-30 flex items-center gap-2 bg-black/50 backdrop-blur-md px-3.5 py-1.5 rounded-full border border-white/15 shadow-lg">
+      {/* ── Slide Indicator Dots ── */}
+      <div className="absolute bottom-5 left-1/2 -translate-x-1/2 z-40 flex items-center gap-2 bg-black/50 backdrop-blur-md px-3.5 py-1.5 rounded-full border border-white/15 shadow-lg">
         {slides.map((_, index) => (
           <button
             key={index}
