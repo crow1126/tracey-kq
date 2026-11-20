@@ -28,6 +28,7 @@ import {
   Save,
 } from 'lucide-react';
 import Badge from '../ui/Badge';
+import ImageUploader from '../ui/ImageUploader';
 
 export default function AdminView() {
   const {
@@ -746,20 +747,11 @@ export default function AdminView() {
                   <div className="space-y-4 pt-1 animate-in fade-in duration-300">
                     <div className="grid grid-cols-1 sm:grid-cols-12 gap-4 items-center">
                       <div className="sm:col-span-8 space-y-3">
-                        <div>
-                          <label className="text-[11px] font-medium text-[#8A8A8F] block mb-1">
-                            Slide 1 Image URL
-                          </label>
-                          <input
-                            type="url"
-                            value={contentForm.heroImageUrl}
-                            onChange={(e) =>
-                              setContentForm({ ...contentForm, heroImageUrl: e.target.value })
-                            }
-                            placeholder="https://images.unsplash.com/..."
-                            className="w-full h-10 px-3 rounded-xl bg-white border border-[#E6E6EA] text-xs outline-none"
-                          />
-                        </div>
+                        <ImageUploader
+                          label="Slide 1 Image"
+                          value={contentForm.heroImageUrl}
+                          onChange={(url) => setContentForm({ ...contentForm, heroImageUrl: url })}
+                        />
 
                         <div>
                           <label className="text-[11px] font-medium text-[#8A8A8F] block mb-1">
@@ -895,23 +887,14 @@ export default function AdminView() {
                   <div className="space-y-4 pt-1 animate-in fade-in duration-300">
                     <div className="grid grid-cols-1 sm:grid-cols-12 gap-4 items-center">
                       <div className="sm:col-span-8 space-y-3">
-                        <div>
-                          <label className="text-[11px] font-medium text-[#8A8A8F] block mb-1">
-                            Slide 2 Image URL (Distinct Picture)
-                          </label>
-                          <input
-                            type="url"
-                            value={
-                              contentForm.hero2ImageUrl ||
-                              'https://images.unsplash.com/photo-1515886657613-9f3515b0c78f?auto=format&fit=crop&w=1800&q=85'
-                            }
-                            onChange={(e) =>
-                              setContentForm({ ...contentForm, hero2ImageUrl: e.target.value })
-                            }
-                            placeholder="https://images.unsplash.com/..."
-                            className="w-full h-10 px-3 rounded-xl bg-white border border-[#E6E6EA] text-xs outline-none"
-                          />
-                        </div>
+                        <ImageUploader
+                          label="Slide 2 Image (Distinct Picture)"
+                          value={
+                            contentForm.hero2ImageUrl ||
+                            'https://images.unsplash.com/photo-1515886657613-9f3515b0c78f?auto=format&fit=crop&w=1800&q=85'
+                          }
+                          onChange={(url) => setContentForm({ ...contentForm, hero2ImageUrl: url })}
+                        />
 
                         <div>
                           <label className="text-[11px] font-medium text-[#8A8A8F] block mb-1">
@@ -1614,18 +1597,11 @@ export default function AdminView() {
                 />
               </div>
 
-              <div>
-                <label className="text-xs font-semibold text-[#8A8A8F] block mb-1">
-                  Product Image URL
-                </label>
-                <input
-                  type="url"
-                  required
-                  value={productForm.imageUrl}
-                  onChange={(e) => setProductForm({ ...productForm, imageUrl: e.target.value })}
-                  className="w-full h-11 px-3.5 rounded-xl bg-[#F5F5F7] border border-[#E6E6EA] text-xs outline-none"
-                />
-              </div>
+              <ImageUploader
+                label="Product Image"
+                value={productForm.imageUrl}
+                onChange={(url) => setProductForm({ ...productForm, imageUrl: url })}
+              />
 
               <div>
                 <label className="text-xs font-semibold text-[#8A8A8F] block mb-1">
@@ -1790,16 +1766,11 @@ export default function AdminView() {
               </div>
 
               <div>
-                <label className="text-xs font-semibold text-[#8A8A8F] block mb-1">
-                  Hero Image URL
-                </label>
-                <input
-                  type="url"
-                  required
-                  value={articleForm.heroImage}
-                  onChange={(e) => setArticleForm({ ...articleForm, heroImage: e.target.value })}
-                  className="w-full h-10 px-3 rounded-xl bg-[#F5F5F7] border border-[#E6E6EA] text-xs outline-none"
-                />
+              <ImageUploader
+                label="Hero Image"
+                value={articleForm.heroImage}
+                onChange={(url) => setArticleForm({ ...articleForm, heroImage: url })}
+              />
               </div>
 
               <div>
