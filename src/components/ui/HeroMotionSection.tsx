@@ -4,7 +4,6 @@
 import React, { useState, useEffect, useRef, useCallback } from 'react';
 import { useStore } from '@/context/StoreContext';
 import { ArrowRight, ChevronLeft, ChevronRight } from 'lucide-react';
-import Button from './Button';
 
 interface Slide {
   id: string;
@@ -66,8 +65,7 @@ export default function HeroMotionSection() {
   const isAutoplay = siteContent.heroAutoplay !== false;
   const slideDuration = (siteContent.heroSlideDuration || 5) * 1000;
 
-  // ── Silently warm browser cache for all slides on mount
-  // (no state callbacks — avoids the opacity-locking bug)
+  // Pre-fetch both images on mount
   useEffect(() => {
     slides.forEach((slide) => {
       const img = new window.Image();
@@ -85,14 +83,12 @@ export default function HeroMotionSection() {
     [slides.length]
   );
 
-  // ── Auto-advance
   useEffect(() => {
     if (!isAutoplay) return;
     const timer = setInterval(nextSlide, slideDuration);
     return () => clearInterval(timer);
   }, [isAutoplay, slideDuration, nextSlide]);
 
-  // ── Mobile swipe gestures
   const handleTouchStart = (e: React.TouchEvent<HTMLDivElement>) => {
     touchStartXRef.current = e.touches[0].clientX;
   };
@@ -110,18 +106,21 @@ export default function HeroMotionSection() {
     <section
       onTouchStart={handleTouchStart}
       onTouchEnd={handleTouchEnd}
-      className="relative min-h-[580px] sm:min-h-[640px] lg:min-h-[720px] bg-[#111113] text-white flex items-center overflow-hidden select-none"
+      className="relative min-h-[460px] sm:min-h-[580px] lg:min-h-[680px] bg-[#111113] text-white flex items-center overflow-hidden select-none"
     >
-      {/* ── Image Layers — all stacked, only opacity transitions ── */}
+      {/* ── Background Slides (Rock-solid inline-style crossfade for iOS Safari) ── */}
       {slides.map((slide, index) => {
         const isActive = index === currentSlide;
         return (
           <div
             key={slide.id}
             aria-hidden={!isActive}
-            className={`absolute inset-0 transition-opacity duration-1000 ease-in-out transform-gpu ${
-              isActive ? 'opacity-100 z-10' : 'opacity-0 z-0 pointer-events-none'
-            }`}
+            style={{
+              opacity: isActive ? 1 : 0,
+              zIndex: isActive ? 5 : 1,
+              transition: 'opacity 700ms ease-in-out',
+            }}
+            className="absolute inset-0 pointer-events-none"
           >
             <img
               src={slide.image}
@@ -129,70 +128,74 @@ export default function HeroMotionSection() {
               loading="eager"
               decoding="async"
               fetchPriority={index === 0 ? 'high' : 'low'}
-              className="w-full h-full object-cover object-center"
+              className="w-full h-full object-cover object-top sm:object-center"
             />
           </div>
         );
       })}
 
-      {/* ── Scrims (above images, below content) ── */}
-      <div className="absolute inset-0 bg-black/45 z-20 pointer-events-none" />
-      <div className="absolute inset-0 bg-gradient-to-r from-black/85 via-black/40 to-transparent z-20 pointer-events-none" />
-      <div className="absolute inset-0 bg-gradient-to-t from-[#111113] via-transparent to-black/30 z-20 pointer-events-none" />
+      {/* ── Refined, lighter scrims so photos remain crisp and vibrant ── */}
+      <div className="absolute inset-0 bg-black/40 z-10 pointer-events-none" />
+      <div className="absolute inset-0 bg-gradient-to-r from-black/80 via-black/35 to-transparent z-10 pointer-events-none" />
+      <div className="absolute inset-0 bg-gradient-to-t from-[#111113] via-transparent to-black/20 z-10 pointer-events-none" />
 
-      {/* ── Ambient glow ── */}
-      <div className="absolute top-1/4 -left-20 w-80 sm:w-96 h-80 sm:h-96 rounded-full bg-[#6B73F0]/25 blur-[100px] pointer-events-none z-20" />
-      <div className="absolute bottom-10 right-10 w-80 sm:w-[450px] h-80 sm:h-[450px] rounded-full bg-[#FF2D8A]/15 blur-[120px] pointer-events-none z-20" />
+      {/* ── Subtle ambient illumination ── */}
+      <div className="absolute top-1/4 -left-20 w-64 sm:w-96 h-64 sm:h-96 rounded-full bg-[#6B73F0]/20 blur-[90px] pointer-events-none z-10" />
+      <div className="absolute bottom-10 right-10 w-64 sm:w-[400px] h-64 sm:h-[400px] rounded-full bg-[#FF2D8A]/15 blur-[100px] pointer-events-none z-10" />
 
-      {/* ── Editorial Content — CSS grid stack prevents height jumps ── */}
-      <div className="max-w-7xl mx-auto px-5 sm:px-8 lg:px-12 w-full relative z-30 py-12 sm:py-20 lg:py-24">
+      {/* ── Editorial Content (Compact, proportional mobile typography) ── */}
+      <div className="max-w-7xl mx-auto px-5 sm:px-8 lg:px-12 w-full relative z-20 py-8 sm:py-16 lg:py-20">
         <div className="grid grid-cols-1 grid-rows-1">
           {slides.map((slide, index) => {
             const isActive = index === currentSlide;
             return (
               <div
                 key={slide.id}
-                className={`col-start-1 row-start-1 space-y-4 sm:space-y-6 transition-opacity duration-700 ease-in-out ${
-                  isActive ? 'opacity-100 pointer-events-auto' : 'opacity-0 pointer-events-none'
-                }`}
+                style={{
+                  opacity: isActive ? 1 : 0,
+                  transition: 'opacity 500ms ease-in-out',
+                  pointerEvents: isActive ? 'auto' : 'none',
+                }}
+                className="col-start-1 row-start-1 space-y-2.5 sm:space-y-4"
               >
                 {/* Campaign badge */}
-                <div className="inline-flex items-center gap-2 bg-black/60 backdrop-blur-md px-3.5 py-1.5 rounded-full border border-white/20 text-xs font-semibold text-white shadow-lg">
-                  <span className="w-2 h-2 rounded-full bg-[#6B73F0] animate-ping" />
-                  <span className="tracking-widest uppercase text-[9px] sm:text-[10px] font-medium text-white/95">
+                <div className="inline-flex items-center gap-1.5 bg-black/60 backdrop-blur-md px-3 py-1 rounded-full border border-white/20 text-[10px] font-semibold text-white shadow-md">
+                  <span className="w-1.5 h-1.5 rounded-full bg-[#6B73F0] animate-ping" />
+                  <span className="tracking-widest uppercase font-medium text-white/90">
                     {slide.badge}
                   </span>
                 </div>
 
-                {/* Headline */}
-                <h1 className="text-3xl sm:text-5xl lg:text-7xl font-bold tracking-tight text-white max-w-3xl leading-[1.12] sm:leading-[1.08] font-display drop-shadow-md">
+                {/* Headline — sleek & readable */}
+                <h1 className="text-2xl sm:text-4xl lg:text-6xl font-bold tracking-tight text-white max-w-2xl leading-[1.15] sm:leading-[1.1] font-display drop-shadow">
                   {slide.headlinePrefix}{' '}
                   <span className="text-[#6B73F0] drop-shadow-sm">{slide.headlineAccent}</span>
                   {slide.headlineSuffix}
                 </h1>
 
-                {/* Subtitle */}
-                <p className="text-xs sm:text-base text-gray-200/90 max-w-xl font-normal leading-relaxed drop-shadow line-clamp-3 sm:line-clamp-none">
+                {/* Subtitle — 2 lines max on mobile */}
+                <p className="text-xs sm:text-sm text-gray-200/90 max-w-lg font-normal leading-relaxed drop-shadow line-clamp-2 sm:line-clamp-none">
                   {slide.subtitle}
                 </p>
 
-                {/* CTAs */}
-                <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-3 pt-2 max-w-md sm:max-w-none">
-                  <Button
-                    variant="get-started"
+                {/* Compact Action Buttons (horizontal row, no giant stacked blocks) */}
+                <div className="flex flex-row items-center gap-2.5 pt-1.5">
+                  <button
+                    type="button"
                     onClick={() => setActiveView(slide.primaryView as never)}
-                    className="h-12 flex items-center justify-center gap-2 shadow-2xl active:scale-95 transition-transform"
+                    className="h-10 px-5 rounded-full bg-white text-[#111113] text-xs font-bold hover:bg-gray-100 active:scale-95 transition-transform shadow-lg flex items-center gap-1.5 cursor-pointer"
                   >
                     <span>{slide.primaryCta}</span>
-                    <ArrowRight className="w-4 h-4 text-[#111113]" />
-                  </Button>
-                  <Button
-                    variant="outline"
+                    <ArrowRight className="w-3.5 h-3.5 text-[#111113]" />
+                  </button>
+
+                  <button
+                    type="button"
                     onClick={() => setActiveView(slide.secondaryView as never)}
-                    className="h-12 bg-black/40 backdrop-blur-md text-white border-white/30 hover:bg-white/20 hover:border-white/50 active:scale-95 transition-colors shadow-lg flex items-center justify-center"
+                    className="h-10 px-4 rounded-full bg-white/15 backdrop-blur-md border border-white/30 text-white text-xs font-semibold hover:bg-white/25 active:scale-95 transition-colors shadow flex items-center justify-center cursor-pointer"
                   >
                     <span>{slide.secondaryCta}</span>
-                  </Button>
+                  </button>
                 </div>
               </div>
             );
@@ -200,31 +203,31 @@ export default function HeroMotionSection() {
         </div>
       </div>
 
-      {/* ── Prev / Next controls ── */}
+      {/* ── Prev / Next Controls (Desktop) ── */}
       <button
         onClick={prevSlide}
         aria-label="Previous Slide"
-        className="hidden md:flex absolute left-4 top-1/2 -translate-y-1/2 z-40 w-10 h-10 rounded-full bg-black/30 hover:bg-black/60 border border-white/20 items-center justify-center text-white backdrop-blur-md transition-all hover:scale-110 active:scale-95 cursor-pointer"
+        className="hidden md:flex absolute left-4 top-1/2 -translate-y-1/2 z-30 w-9 h-9 rounded-full bg-black/40 hover:bg-black/70 border border-white/20 items-center justify-center text-white backdrop-blur-md transition-all hover:scale-105 active:scale-95 cursor-pointer"
       >
-        <ChevronLeft className="w-5 h-5" />
+        <ChevronLeft className="w-4 h-4" />
       </button>
       <button
         onClick={nextSlide}
         aria-label="Next Slide"
-        className="hidden md:flex absolute right-4 top-1/2 -translate-y-1/2 z-40 w-10 h-10 rounded-full bg-black/30 hover:bg-black/60 border border-white/20 items-center justify-center text-white backdrop-blur-md transition-all hover:scale-110 active:scale-95 cursor-pointer"
+        className="hidden md:flex absolute right-4 top-1/2 -translate-y-1/2 z-30 w-9 h-9 rounded-full bg-black/40 hover:bg-black/70 border border-white/20 items-center justify-center text-white backdrop-blur-md transition-all hover:scale-105 active:scale-95 cursor-pointer"
       >
-        <ChevronRight className="w-5 h-5" />
+        <ChevronRight className="w-4 h-4" />
       </button>
 
-      {/* ── Slide dots ── */}
-      <div className="absolute bottom-5 left-1/2 -translate-x-1/2 z-40 flex items-center gap-2 bg-black/50 backdrop-blur-md px-3.5 py-1.5 rounded-full border border-white/15 shadow-lg">
+      {/* ── Slide indicator dots ── */}
+      <div className="absolute bottom-3.5 left-1/2 -translate-x-1/2 z-30 flex items-center gap-1.5 bg-black/50 backdrop-blur-md px-3 py-1 rounded-full border border-white/15 shadow-md">
         {slides.map((_, index) => (
           <button
             key={index}
             onClick={() => setCurrentSlide(index)}
             aria-label={`Go to slide ${index + 1}`}
-            className={`h-2 rounded-full transition-all duration-500 cursor-pointer ${
-              index === currentSlide ? 'w-7 sm:w-8 bg-[#6B73F0]' : 'w-2 bg-white/40 hover:bg-white/70'
+            className={`h-1.5 rounded-full transition-all duration-300 cursor-pointer ${
+              index === currentSlide ? 'w-6 bg-[#6B73F0]' : 'w-1.5 bg-white/40 hover:bg-white/70'
             }`}
           />
         ))}
