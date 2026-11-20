@@ -61,25 +61,16 @@ export default function HeroMotionSection() {
   ];
 
   const [currentSlide, setCurrentSlide] = useState(0);
-  const [imagesReady, setImagesReady] = useState<boolean[]>(
-    slides.map(() => false)
-  );
   const touchStartXRef = useRef<number | null>(null);
 
-  // Controlled dynamically via CMS
   const isAutoplay = siteContent.heroAutoplay !== false;
   const slideDuration = (siteContent.heroSlideDuration || 5) * 1000;
 
-  // ── Preload ALL slide images eagerly on mount so slide 2 is ready
+  // ── Silently warm browser cache for all slides on mount
+  // (no state callbacks — avoids the opacity-locking bug)
   useEffect(() => {
-    slides.forEach((slide, idx) => {
+    slides.forEach((slide) => {
       const img = new window.Image();
-      img.onload = () =>
-        setImagesReady((prev) => {
-          const next = [...prev];
-          next[idx] = true;
-          return next;
-        });
       img.src = slide.image;
     });
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -90,34 +81,27 @@ export default function HeroMotionSection() {
     [slides.length]
   );
   const prevSlide = useCallback(
-    () =>
-      setCurrentSlide(
-        (curr) => (curr - 1 + slides.length) % slides.length
-      ),
+    () => setCurrentSlide((curr) => (curr - 1 + slides.length) % slides.length),
     [slides.length]
   );
 
-  // ── Auto-advance slides
+  // ── Auto-advance
   useEffect(() => {
     if (!isAutoplay) return;
     const timer = setInterval(nextSlide, slideDuration);
     return () => clearInterval(timer);
   }, [isAutoplay, slideDuration, nextSlide]);
 
-  // Mobile swipe gestures
+  // ── Mobile swipe gestures
   const handleTouchStart = (e: React.TouchEvent<HTMLDivElement>) => {
     touchStartXRef.current = e.touches[0].clientX;
   };
-
   const handleTouchEnd = (e: React.TouchEvent<HTMLDivElement>) => {
     if (touchStartXRef.current === null) return;
     const diff = touchStartXRef.current - e.changedTouches[0].clientX;
     if (Math.abs(diff) > 40) {
-      if (diff > 0) {
-        nextSlide();
-      } else {
-        prevSlide();
-      }
+      if (diff > 0) nextSlide();
+      else prevSlide();
     }
     touchStartXRef.current = null;
   };
@@ -128,41 +112,39 @@ export default function HeroMotionSection() {
       onTouchEnd={handleTouchEnd}
       className="relative min-h-[580px] sm:min-h-[640px] lg:min-h-[720px] bg-[#111113] text-white flex items-center overflow-hidden select-none"
     >
-      {/* ── Background Slides Layer (GPU-accelerated, zero-jitter crossfade) ── */}
-      <div className="absolute inset-0 z-0">
-        {slides.map((slide, index) => {
-          const isActive = index === currentSlide;
-          return (
-            <div
-              key={slide.id}
-              className={`absolute inset-0 transition-opacity duration-1000 ease-in-out transform-gpu will-change-[opacity] ${
-                isActive ? 'opacity-100 z-10' : 'opacity-0 z-0 pointer-events-none'
-              }`}
-            >
-              <img
-                src={slide.image}
-                alt={slide.badge}
-                loading="eager"
-                decoding="async"
-                fetchPriority={index === 0 ? 'high' : 'low'}
-                className="w-full h-full object-cover object-center"
-                style={{ opacity: imagesReady[index] ? 1 : 0, transition: 'opacity 0.3s' }}
-              />
-            </div>
-          );
-        })}
+      {/* ── Image Layers — all stacked, only opacity transitions ── */}
+      {slides.map((slide, index) => {
+        const isActive = index === currentSlide;
+        return (
+          <div
+            key={slide.id}
+            aria-hidden={!isActive}
+            className={`absolute inset-0 transition-opacity duration-1000 ease-in-out transform-gpu ${
+              isActive ? 'opacity-100 z-10' : 'opacity-0 z-0 pointer-events-none'
+            }`}
+          >
+            <img
+              src={slide.image}
+              alt={slide.badge}
+              loading="eager"
+              decoding="async"
+              fetchPriority={index === 0 ? 'high' : 'low'}
+              className="w-full h-full object-cover object-center"
+            />
+          </div>
+        );
+      })}
 
-        {/* High-performance scrim overlays — ensures text readability without CPU filters */}
-        <div className="absolute inset-0 bg-black/45 z-20 pointer-events-none" />
-        <div className="absolute inset-0 bg-gradient-to-r from-black/85 via-black/40 to-transparent z-20 pointer-events-none" />
-        <div className="absolute inset-0 bg-gradient-to-t from-[#111113] via-transparent to-black/30 z-20 pointer-events-none" />
+      {/* ── Scrims (above images, below content) ── */}
+      <div className="absolute inset-0 bg-black/45 z-20 pointer-events-none" />
+      <div className="absolute inset-0 bg-gradient-to-r from-black/85 via-black/40 to-transparent z-20 pointer-events-none" />
+      <div className="absolute inset-0 bg-gradient-to-t from-[#111113] via-transparent to-black/30 z-20 pointer-events-none" />
 
-        {/* Ambient atmospheric lighting */}
-        <div className="absolute top-1/4 -left-20 w-80 sm:w-96 h-80 sm:h-96 rounded-full bg-[#6B73F0]/25 blur-[100px] pointer-events-none z-20" />
-        <div className="absolute bottom-10 right-10 w-80 sm:w-[450px] h-80 sm:h-[450px] rounded-full bg-[#FF2D8A]/15 blur-[120px] pointer-events-none z-20" />
-      </div>
+      {/* ── Ambient glow ── */}
+      <div className="absolute top-1/4 -left-20 w-80 sm:w-96 h-80 sm:h-96 rounded-full bg-[#6B73F0]/25 blur-[100px] pointer-events-none z-20" />
+      <div className="absolute bottom-10 right-10 w-80 sm:w-[450px] h-80 sm:h-[450px] rounded-full bg-[#FF2D8A]/15 blur-[120px] pointer-events-none z-20" />
 
-      {/* ── Editorial Content (CSS Grid stack — prevents height jump / layout shifts) ── */}
+      {/* ── Editorial Content — CSS grid stack prevents height jumps ── */}
       <div className="max-w-7xl mx-auto px-5 sm:px-8 lg:px-12 w-full relative z-30 py-12 sm:py-20 lg:py-24">
         <div className="grid grid-cols-1 grid-rows-1">
           {slides.map((slide, index) => {
@@ -182,7 +164,7 @@ export default function HeroMotionSection() {
                   </span>
                 </div>
 
-                {/* Headline with responsive mobile typography */}
+                {/* Headline */}
                 <h1 className="text-3xl sm:text-5xl lg:text-7xl font-bold tracking-tight text-white max-w-3xl leading-[1.12] sm:leading-[1.08] font-display drop-shadow-md">
                   {slide.headlinePrefix}{' '}
                   <span className="text-[#6B73F0] drop-shadow-sm">{slide.headlineAccent}</span>
@@ -204,7 +186,6 @@ export default function HeroMotionSection() {
                     <span>{slide.primaryCta}</span>
                     <ArrowRight className="w-4 h-4 text-[#111113]" />
                   </Button>
-
                   <Button
                     variant="outline"
                     onClick={() => setActiveView(slide.secondaryView as never)}
@@ -219,7 +200,7 @@ export default function HeroMotionSection() {
         </div>
       </div>
 
-      {/* ── Manual Previous / Next Desktop Controls ── */}
+      {/* ── Prev / Next controls ── */}
       <button
         onClick={prevSlide}
         aria-label="Previous Slide"
@@ -227,7 +208,6 @@ export default function HeroMotionSection() {
       >
         <ChevronLeft className="w-5 h-5" />
       </button>
-
       <button
         onClick={nextSlide}
         aria-label="Next Slide"
@@ -236,7 +216,7 @@ export default function HeroMotionSection() {
         <ChevronRight className="w-5 h-5" />
       </button>
 
-      {/* ── Slide Indicator Dots ── */}
+      {/* ── Slide dots ── */}
       <div className="absolute bottom-5 left-1/2 -translate-x-1/2 z-40 flex items-center gap-2 bg-black/50 backdrop-blur-md px-3.5 py-1.5 rounded-full border border-white/15 shadow-lg">
         {slides.map((_, index) => (
           <button
