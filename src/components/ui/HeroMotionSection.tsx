@@ -1,7 +1,7 @@
 /* eslint-disable @next/next/no-img-element */
 'use client';
 
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect, useRef, useCallback } from 'react';
 import { useStore } from '@/context/StoreContext';
 import { ArrowRight, ChevronLeft, ChevronRight } from 'lucide-react';
 import Button from './Button';
@@ -61,22 +61,48 @@ export default function HeroMotionSection() {
   ];
 
   const [currentSlide, setCurrentSlide] = useState(0);
+  const [imagesReady, setImagesReady] = useState<boolean[]>(
+    slides.map(() => false)
+  );
   const touchStartXRef = useRef<number | null>(null);
 
   // Controlled dynamically via CMS
   const isAutoplay = siteContent.heroAutoplay !== false;
   const slideDuration = (siteContent.heroSlideDuration || 5) * 1000;
 
+  // ── Preload ALL slide images eagerly on mount so slide 2 is ready
+  useEffect(() => {
+    slides.forEach((slide, idx) => {
+      const img = new window.Image();
+      img.onload = () =>
+        setImagesReady((prev) => {
+          const next = [...prev];
+          next[idx] = true;
+          return next;
+        });
+      img.src = slide.image;
+    });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  const nextSlide = useCallback(
+    () => setCurrentSlide((curr) => (curr + 1) % slides.length),
+    [slides.length]
+  );
+  const prevSlide = useCallback(
+    () =>
+      setCurrentSlide(
+        (curr) => (curr - 1 + slides.length) % slides.length
+      ),
+    [slides.length]
+  );
+
+  // ── Auto-advance slides
   useEffect(() => {
     if (!isAutoplay) return;
-    const timer = setInterval(() => {
-      setCurrentSlide((curr) => (curr + 1) % slides.length);
-    }, slideDuration);
+    const timer = setInterval(nextSlide, slideDuration);
     return () => clearInterval(timer);
-  }, [isAutoplay, slideDuration, slides.length]);
-
-  const nextSlide = () => setCurrentSlide((curr) => (curr + 1) % slides.length);
-  const prevSlide = () => setCurrentSlide((curr) => (curr - 1 + slides.length) % slides.length);
+  }, [isAutoplay, slideDuration, nextSlide]);
 
   // Mobile swipe gestures
   const handleTouchStart = (e: React.TouchEvent<HTMLDivElement>) => {
@@ -116,8 +142,11 @@ export default function HeroMotionSection() {
               <img
                 src={slide.image}
                 alt={slide.badge}
-                loading={index === 0 ? 'eager' : 'lazy'}
+                loading="eager"
+                decoding="async"
+                fetchPriority={index === 0 ? 'high' : 'low'}
                 className="w-full h-full object-cover object-center"
+                style={{ opacity: imagesReady[index] ? 1 : 0, transition: 'opacity 0.3s' }}
               />
             </div>
           );
