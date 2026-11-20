@@ -1,11 +1,10 @@
+/* eslint-disable react-hooks/set-state-in-effect */
 'use client';
 
 import React, { createContext, useContext, useState, useEffect } from 'react';
 import {
   Product,
   Order,
-  OrderItem,
-  Review,
   BespokeEnquiry,
   Category,
   JournalArticle,
@@ -13,7 +12,6 @@ import {
 } from '@/data/db-schema';
 import {
   SEED_PRODUCTS,
-  SEED_REVIEWS,
   SEED_CATEGORIES,
   SEED_ARTICLES,
 } from '@/data/db-seed';
@@ -178,6 +176,15 @@ interface StoreContextType {
     orderId: string,
     status: 'Packed' | 'Shipped' | 'Delivered' | 'Returned'
   ) => void;
+  updateOrderTracking: (
+    orderId: string,
+    updates: {
+      status?: 'Packed' | 'Shipped' | 'Delivered' | 'Returned';
+      riderName?: string;
+      riderPhone?: string;
+      trackingTimeline?: { title: string; time: string; completed: boolean }[];
+    }
+  ) => void;
   loginUser: (email: string, name?: string, id?: string) => void;
   logoutUser: () => void;
 
@@ -214,7 +221,7 @@ const StoreContext = createContext<StoreContextType | undefined>(undefined);
 
 export function StoreProvider({ children }: { children: React.ReactNode }) {
   const [products, setProducts] = useState<Product[]>(SEED_PRODUCTS);
-  const [categories, setCategories] = useState<Category[]>(SEED_CATEGORIES);
+  const [categories] = useState<Category[]>(SEED_CATEGORIES);
   const [articles, setArticles] = useState<JournalArticle[]>(SEED_ARTICLES);
   const [siteContent, setSiteContent] = useState<SiteContent>(DEFAULT_SITE_CONTENT);
 
@@ -767,6 +774,7 @@ export function StoreProvider({ children }: { children: React.ReactNode }) {
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(newOrder),
     }).catch(() => {});
+
     return newOrder;
   };
 
@@ -775,12 +783,43 @@ export function StoreProvider({ children }: { children: React.ReactNode }) {
     status: 'Packed' | 'Shipped' | 'Delivered' | 'Returned'
   ) => {
     setOrders((prev) =>
-      prev.map((o) => (o.id === orderId ? { ...o, status } : o))
+      prev.map((o) => {
+        if (o.id !== orderId) return o;
+        const updatedTimeline = (o.trackingTimeline || []).map((step) => {
+          if (status === 'Shipped' && step.title === 'Courier Pick-up') {
+            return { ...step, completed: true, time: 'Picked up' };
+          }
+          if (status === 'Delivered') {
+            return { ...step, completed: true, time: step.time === 'Pending' ? 'Delivered' : step.time };
+          }
+          return step;
+        });
+        return { ...o, status, trackingTimeline: updatedTimeline };
+      })
     );
     fetch('/api/orders', {
       method: 'PATCH',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ id: orderId, status }),
+    }).catch(() => {});
+  };
+
+  const updateOrderTracking = (
+    orderId: string,
+    updates: {
+      status?: 'Packed' | 'Shipped' | 'Delivered' | 'Returned';
+      riderName?: string;
+      riderPhone?: string;
+      trackingTimeline?: { title: string; time: string; completed: boolean }[];
+    }
+  ) => {
+    setOrders((prev) =>
+      prev.map((o) => (o.id === orderId ? { ...o, ...updates } : o))
+    );
+    fetch('/api/orders', {
+      method: 'PATCH',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ id: orderId, ...updates }),
     }).catch(() => {});
   };
 
@@ -873,6 +912,7 @@ export function StoreProvider({ children }: { children: React.ReactNode }) {
         submitBespokeEnquiry,
         placeOrder,
         updateOrderStatus,
+        updateOrderTracking,
         loginUser,
         logoutUser,
         addProduct,

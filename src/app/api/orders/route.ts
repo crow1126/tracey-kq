@@ -57,13 +57,18 @@ export async function POST(req: Request) {
 
 export async function PATCH(req: Request) {
   try {
-    const { id, status } = await req.json();
+    const { id, status, riderName, riderPhone, trackingTimeline } = await req.json();
     if (!process.env.DATABASE_URL) {
       return NextResponse.json({ success: true, message: 'Status updated offline' });
     }
     const order = await prisma.order.update({
       where: { id },
-      data: { status },
+      data: {
+        ...(status && { status }),
+        ...(riderName !== undefined && { riderName }),
+        ...(riderPhone !== undefined && { riderPhone }),
+        ...(trackingTimeline && { trackingTimeline }),
+      },
     });
     return NextResponse.json({ success: true, order });
   } catch (error: unknown) {

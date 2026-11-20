@@ -3,7 +3,7 @@
 
 import React, { useState } from 'react';
 import { useStore } from '@/context/StoreContext';
-import { Product, Order, BespokeEnquiry, JournalArticle, SiteContent } from '@/data/db-schema';
+import { Product, Order, JournalArticle, SiteContent } from '@/data/db-schema';
 import {
   ShieldCheck,
   Package,
@@ -14,21 +14,30 @@ import {
   Check,
   Printer,
   X,
-  ExternalLink,
-  ChevronRight,
-  Filter,
   Plus,
   Pencil,
   Trash2,
   Sliders,
-  Sparkles,
   BookOpen,
   RotateCcw,
   Eye,
   Save,
+  Truck,
+  Phone,
+  Clock,
 } from 'lucide-react';
-import Badge from '../ui/Badge';
 import ImageUploader from '../ui/ImageUploader';
+
+const GHANA_COURIERS = [
+  { id: 'atelier', name: 'Atelier Dedicated Chauffeur (Kojo Mensah)', phone: '+233 24 999 1122', tag: 'White-Glove' },
+  { id: 'fez', name: 'Fez Delivery Ghana', phone: '+233 55 123 4567', tag: 'Accra / Kumasi Same-Day' },
+  { id: 'hubtel', name: 'Hubtel Logistics', phone: '+233 30 700 0577', tag: 'On-Demand Dispatch' },
+  { id: 'speedaf', name: 'Speedaf Express Ghana', phone: '+233 30 290 8588', tag: 'Nationwide Express' },
+  { id: 'yango', name: 'Yango Delivery Ghana', phone: '+233 50 000 8899', tag: 'Motorbike Dispatch' },
+  { id: 'bolt', name: 'Bolt Send Ghana', phone: '+233 50 111 2233', tag: 'City Express' },
+  { id: 'ems', name: 'Ghana Post EMS', phone: '+233 30 266 8138', tag: 'Postal Nationwide' },
+  { id: 'dhl', name: 'DHL Express Ghana', phone: '+233 30 221 3090', tag: 'International' },
+];
 
 export default function AdminView() {
   const {
@@ -39,6 +48,7 @@ export default function AdminView() {
     orders,
     enquiries,
     updateOrderStatus,
+    updateOrderTracking,
     addProduct,
     updateProduct,
     deleteProduct,
@@ -56,6 +66,12 @@ export default function AdminView() {
 
   // Selected order for printable packing slip
   const [selectedPackingSlipOrder, setSelectedPackingSlipOrder] = useState<Order | null>(null);
+
+  // Selected order for Ghana Courier & Live Tracking Modal
+  const [trackingOrder, setTrackingOrder] = useState<Order | null>(null);
+  const [selectedCourierPartner, setSelectedCourierPartner] = useState('atelier');
+  const [riderInputName, setRiderInputName] = useState('');
+  const [riderInputPhone, setRiderInputPhone] = useState('');
 
   // Product Add / Edit Modal state
   const [isProductModalOpen, setIsProductModalOpen] = useState(false);
@@ -364,7 +380,7 @@ export default function AdminView() {
             <span className="text-xl sm:text-2xl font-bold text-[#111113]">
               GH₵ {totalRevenueGhc.toLocaleString()}
             </span>
-            <span className="text-[11px] text-[#1F8A4C] block mt-1">↑ +24.8% vs last month</span>
+            <span className="text-[11px] text-[#1F8A4C] block mt-1">↑ {totalItemsSold} pieces ordered</span>
           </div>
 
           <div className="bg-white rounded-2xl p-4 sm:p-5 border border-[#E6E6EA] shadow-sm">
@@ -419,7 +435,7 @@ export default function AdminView() {
             return (
               <button
                 key={tab.id}
-                onClick={() => setActiveTab(tab.id as any)}
+                onClick={() => setActiveTab(tab.id as 'inventory' | 'content' | 'journal' | 'orders' | 'enquiries' | 'analytics')}
                 className={`flex-shrink-0 py-2.5 sm:py-3 px-3.5 sm:px-4 rounded-xl flex items-center justify-center gap-2 transition-all cursor-pointer whitespace-nowrap ${
                   isActive
                     ? 'bg-[#111113] text-white shadow-sm'
@@ -1039,7 +1055,7 @@ export default function AdminView() {
               <div className="bg-[#F5F5F7] rounded-2xl p-5 border border-[#E6E6EA] space-y-4">
                 <div className="flex items-center justify-between">
                   <span className="text-xs font-bold uppercase tracking-wider text-[#111113]">
-                    "Just Landed" Pink-Gradient Drop Banner
+                    &quot;Just Landed&quot; Pink-Gradient Drop Banner
                   </span>
                   <label className="flex items-center gap-2 text-xs font-semibold cursor-pointer">
                     <input
@@ -1278,7 +1294,7 @@ export default function AdminView() {
                       <td className="py-3.5 px-4">
                         <select
                           value={ord.status}
-                          onChange={(e) => updateOrderStatus(ord.id, e.target.value as any)}
+                          onChange={(e) => updateOrderStatus(ord.id, e.target.value as 'Packed' | 'Shipped' | 'Delivered' | 'Returned')}
                           className="px-2.5 py-1 rounded-lg text-xs font-semibold bg-[#EDEDF0] text-[#111113] border-none outline-none cursor-pointer"
                         >
                           <option value="Packed">Packed</option>
@@ -1286,8 +1302,25 @@ export default function AdminView() {
                           <option value="Delivered">Delivered</option>
                           <option value="Returned">Returned</option>
                         </select>
+                        {ord.riderName && (
+                          <span className="block text-[10px] text-[#6B73F0] font-medium truncate max-w-[140px] mt-0.5">
+                            🚚 {ord.riderName}
+                          </span>
+                        )}
                       </td>
-                      <td className="py-3.5 px-4 text-right">
+                      <td className="py-3.5 px-4 text-right whitespace-nowrap">
+                        <button
+                          onClick={() => {
+                            setTrackingOrder(ord);
+                            setRiderInputName(ord.riderName || 'Kojo Mensah');
+                            setRiderInputPhone(ord.riderPhone || '+233 24 999 1122');
+                            setSelectedCourierPartner('atelier');
+                          }}
+                          className="p-2 rounded-lg bg-[#ECEDFD] text-[#6B73F0] hover:bg-[#DADBFA] transition-colors cursor-pointer mr-1.5"
+                          title="Manage Ghana Courier & Live Tracking"
+                        >
+                          <Truck className="w-4 h-4" />
+                        </button>
                         <button
                           onClick={() => setSelectedPackingSlipOrder(ord)}
                           className="p-2 rounded-lg bg-[#EDEDF0] text-[#111113] hover:bg-[#E6E6EA] transition-colors cursor-pointer"
@@ -1341,7 +1374,7 @@ export default function AdminView() {
                       <span className="text-[#8A8A8F] text-[11px]">Status:</span>
                       <select
                         value={ord.status}
-                        onChange={(e) => updateOrderStatus(ord.id, e.target.value as any)}
+                        onChange={(e) => updateOrderStatus(ord.id, e.target.value as 'Packed' | 'Shipped' | 'Delivered' | 'Returned')}
                         className="px-2.5 py-1.5 rounded-lg text-xs font-semibold bg-[#EDEDF0] text-[#111113] outline-none"
                       >
                         <option value="Packed">Packed</option>
@@ -1351,13 +1384,27 @@ export default function AdminView() {
                       </select>
                     </div>
 
-                    <button
-                      onClick={() => setSelectedPackingSlipOrder(ord)}
-                      className="px-3 py-1.5 rounded-lg bg-[#EDEDF0] text-[#111113] hover:bg-[#E6E6EA] text-xs font-semibold flex items-center gap-1.5 transition-colors"
-                    >
-                      <Printer className="w-3.5 h-3.5" />
-                      <span>Packing Slip</span>
-                    </button>
+                    <div className="flex items-center gap-1.5">
+                      <button
+                        onClick={() => {
+                          setTrackingOrder(ord);
+                          setRiderInputName(ord.riderName || 'Kojo Mensah');
+                          setRiderInputPhone(ord.riderPhone || '+233 24 999 1122');
+                          setSelectedCourierPartner('atelier');
+                        }}
+                        className="px-3 py-1.5 rounded-lg bg-[#ECEDFD] text-[#6B73F0] hover:bg-[#DADBFA] text-xs font-semibold flex items-center gap-1 transition-colors"
+                      >
+                        <Truck className="w-3.5 h-3.5" />
+                        <span>Courier</span>
+                      </button>
+                      <button
+                        onClick={() => setSelectedPackingSlipOrder(ord)}
+                        className="px-3 py-1.5 rounded-lg bg-[#EDEDF0] text-[#111113] hover:bg-[#E6E6EA] text-xs font-semibold flex items-center gap-1.5 transition-colors"
+                      >
+                        <Printer className="w-3.5 h-3.5" />
+                        <span>Slip</span>
+                      </button>
+                    </div>
                   </div>
                 </div>
               ))}
@@ -1393,7 +1440,7 @@ export default function AdminView() {
                   </div>
 
                   <p className="text-xs text-[#3A3A3F] bg-[#F5F5F7] p-3 rounded-xl border border-[#E6E6EA]">
-                    "{enq.message}"
+                    &ldquo;{enq.message}&rdquo;
                   </p>
 
                   <div className="flex flex-wrap items-center justify-between text-xs text-[#8A8A8F] pt-1">
@@ -1560,7 +1607,7 @@ export default function AdminView() {
                   </label>
                   <select
                     value={productForm.stockStatus}
-                    onChange={(e) => setProductForm({ ...productForm, stockStatus: e.target.value as any })}
+                    onChange={(e) => setProductForm({ ...productForm, stockStatus: e.target.value as 'in_stock' | 'low_stock' | 'out_of_stock' })}
                     className="w-full h-11 px-3 rounded-xl bg-[#F5F5F7] border border-[#E6E6EA] text-xs font-semibold outline-none cursor-pointer"
                   >
                     <option value="in_stock">In Stock</option>
@@ -1667,7 +1714,7 @@ export default function AdminView() {
             <div>
               <h3 className="font-bold text-base text-[#111113]">Delete this creation?</h3>
               <p className="text-xs text-[#8A8A8F] mt-1">
-                "{productToDelete.name}" will be removed from your store and archival catalogue.
+                &ldquo;{productToDelete.name}&rdquo; will be removed from your store and archival catalogue.
               </p>
             </div>
             <div className="flex gap-3 pt-2">
@@ -1730,7 +1777,7 @@ export default function AdminView() {
                   </label>
                   <select
                     value={articleForm.category}
-                    onChange={(e) => setArticleForm({ ...articleForm, category: e.target.value as any })}
+                    onChange={(e) => setArticleForm({ ...articleForm, category: e.target.value as 'Styling Guide' | 'Behind The Scenes' | 'Press' | 'Heritage' })}
                     className="w-full h-10 px-3 rounded-xl bg-[#F5F5F7] border border-[#E6E6EA] text-xs outline-none cursor-pointer"
                   >
                     <option value="Styling Guide">Styling Guide</option>
@@ -1829,7 +1876,7 @@ export default function AdminView() {
             <div>
               <h3 className="font-bold text-base text-[#111113]">Delete this story?</h3>
               <p className="text-xs text-[#8A8A8F] mt-1">
-                "{articleToDelete.title}" will be unpublished from the journal.
+                &ldquo;{articleToDelete.title}&rdquo; will be unpublished from the journal.
               </p>
             </div>
             <div className="flex gap-3 pt-2">
@@ -1916,6 +1963,278 @@ export default function AdminView() {
               >
                 <Printer className="w-4 h-4" />
                 <span>Print Packing Slip</span>
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* ────────── GHANA COURIER & LIVE TRACKING MANAGEMENT MODAL ────────── */}
+      {trackingOrder && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/75 backdrop-blur-sm animate-in fade-in duration-200">
+          <div className="bg-white rounded-[32px] max-w-lg w-full p-6 sm:p-7 space-y-5 shadow-2xl max-h-[90vh] overflow-y-auto">
+            {/* Header */}
+            <div className="flex items-center justify-between pb-3 border-b border-[#E6E6EA]">
+              <div className="flex items-center gap-2.5">
+                <div className="w-10 h-10 rounded-2xl bg-[#ECEDFD] text-[#6B73F0] flex items-center justify-center">
+                  <Truck className="w-5 h-5" />
+                </div>
+                <div>
+                  <h3 className="font-bold text-base text-[#111113]">Ghana Courier &amp; Dispatch</h3>
+                  <p className="text-[11px] text-[#8A8A8F]">
+                    Order <span className="font-mono font-semibold">{trackingOrder.orderNumber}</span> · {trackingOrder.customerName}
+                  </p>
+                </div>
+              </div>
+              <button
+                onClick={() => setTrackingOrder(null)}
+                className="w-8 h-8 rounded-full bg-[#F5F5F7] hover:bg-[#E6E6EA] flex items-center justify-center text-[#8A8A8F] hover:text-[#111113] transition-colors cursor-pointer"
+              >
+                <X className="w-4 h-4" />
+              </button>
+            </div>
+
+            {/* Destination & Delivery Summary */}
+            <div className="bg-[#F5F5F7] p-3.5 rounded-2xl text-xs space-y-1">
+              <div className="flex items-center justify-between">
+                <span className="text-[#8A8A8F]">Destination:</span>
+                <span className="font-semibold text-[#111113]">{trackingOrder.city} ({trackingOrder.deliveryZone})</span>
+              </div>
+              <div className="flex items-center justify-between">
+                <span className="text-[#8A8A8F]">Address:</span>
+                <span className="font-medium text-[#111113] truncate max-w-[240px]">{trackingOrder.deliveryAddress}</span>
+              </div>
+              <div className="flex items-center justify-between">
+                <span className="text-[#8A8A8F]">Client Phone:</span>
+                <span className="font-mono text-[#111113]">{trackingOrder.customerPhone}</span>
+              </div>
+              <div className="flex items-center justify-between">
+                <span className="text-[#8A8A8F]">Est. Arrival:</span>
+                <span className="font-semibold text-[#1F8A4C]">{trackingOrder.estimatedDelivery}</span>
+              </div>
+            </div>
+
+            {/* Courier Service Selection */}
+            <div className="space-y-3">
+              <label className="text-xs font-semibold text-[#8A8A8F] block">
+                Assign Ghana Courier Service
+              </label>
+              <select
+                value={selectedCourierPartner}
+                onChange={(e) => {
+                  const partnerId = e.target.value;
+                  setSelectedCourierPartner(partnerId);
+                  const p = GHANA_COURIERS.find((c) => c.id === partnerId);
+                  if (p) {
+                    setRiderInputName(p.name);
+                    setRiderInputPhone(p.phone);
+                  }
+                }}
+                className="w-full h-11 px-3 rounded-xl bg-[#F5F5F7] border border-[#E6E6EA] text-xs font-medium outline-none cursor-pointer"
+              >
+                {GHANA_COURIERS.map((c) => (
+                  <option key={c.id} value={c.id}>
+                    {c.name} ({c.tag})
+                  </option>
+                ))}
+              </select>
+
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 pt-1">
+                <div>
+                  <label className="text-[11px] font-semibold text-[#8A8A8F] block mb-1">
+                    Courier / Rider Name
+                  </label>
+                  <input
+                    type="text"
+                    value={riderInputName}
+                    onChange={(e) => setRiderInputName(e.target.value)}
+                    placeholder="e.g. Kojo Mensah / Fez Rider #12"
+                    className="w-full h-10 px-3 rounded-xl bg-[#F5F5F7] border border-[#E6E6EA] text-xs outline-none"
+                  />
+                </div>
+                <div>
+                  <label className="text-[11px] font-semibold text-[#8A8A8F] flex items-center gap-1 mb-1">
+                    <Phone className="w-3 h-3 text-[#1F8A4C]" />
+                    <span>Courier Phone (Ghana format)</span>
+                  </label>
+                  <input
+                    type="text"
+                    value={riderInputPhone}
+                    onChange={(e) => setRiderInputPhone(e.target.value)}
+                    placeholder="+233 24 999 1122"
+                    className="w-full h-10 px-3 rounded-xl bg-[#F5F5F7] border border-[#E6E6EA] text-xs font-mono outline-none"
+                  />
+                </div>
+              </div>
+            </div>
+
+            {/* Live Progress Milestones Control */}
+            <div className="space-y-3 pt-2 border-t border-[#E6E6EA]">
+              <div className="flex items-center justify-between">
+                <span className="text-xs font-bold text-[#111113] uppercase tracking-wider">
+                  Live Tracking Milestones
+                </span>
+                <span className="text-[10px] text-[#8A8A8F]">Updates customer tracking card live</span>
+              </div>
+
+              <div className="space-y-2">
+                {/* Step 1: Order Confirmed */}
+                <div className="flex items-center justify-between p-3 rounded-xl bg-[#F5F5F7] border border-[#E6E6EA] text-xs">
+                  <div className="flex items-center gap-2.5">
+                    <div className="w-5 h-5 rounded-full bg-[#1F8A4C] text-white flex items-center justify-center">
+                      <Check className="w-3 h-3 stroke-[3]" />
+                    </div>
+                    <div>
+                      <span className="font-semibold text-[#111113] block">Order Received &amp; Verified</span>
+                      <span className="text-[10px] text-[#8A8A8F]">Atelier order intake verified</span>
+                    </div>
+                  </div>
+                  <span className="text-[10px] font-semibold text-[#1F8A4C]">Completed</span>
+                </div>
+
+                {/* Step 2: Garment Scenting & Packaging */}
+                <div className="flex items-center justify-between p-3 rounded-xl bg-[#F5F5F7] border border-[#E6E6EA] text-xs">
+                  <div className="flex items-center gap-2.5">
+                    <div className="w-5 h-5 rounded-full bg-[#1F8A4C] text-white flex items-center justify-center">
+                      <Check className="w-3 h-3 stroke-[3]" />
+                    </div>
+                    <div>
+                      <span className="font-semibold text-[#111113] block">Garment Scenting &amp; Packaging</span>
+                      <span className="text-[10px] text-[#8A8A8F]">Steamed with signature oud &amp; boxed</span>
+                    </div>
+                  </div>
+                  <span className="text-[10px] font-semibold text-[#1F8A4C]">Packed</span>
+                </div>
+
+                {/* Step 3: Courier Pick-up */}
+                {(() => {
+                  const isPickedUp = trackingOrder.status === 'Shipped' || trackingOrder.status === 'Delivered';
+                  return (
+                    <div className={`flex items-center justify-between p-3 rounded-xl border text-xs transition-colors ${
+                      isPickedUp ? 'bg-[#E8F5EE] border-[#B7E4C7]' : 'bg-white border-[#E6E6EA]'
+                    }`}>
+                      <div className="flex items-center gap-2.5">
+                        <div className={`w-5 h-5 rounded-full flex items-center justify-center ${
+                          isPickedUp ? 'bg-[#1F8A4C] text-white' : 'border border-[#C7C7CC] bg-white text-[#8A8A8F]'
+                        }`}>
+                          {isPickedUp ? <Check className="w-3 h-3 stroke-[3]" /> : <Clock className="w-3 h-3" />}
+                        </div>
+                        <div>
+                          <span className="font-semibold text-[#111113] block">Courier Pick-up</span>
+                          <span className="text-[10px] text-[#8A8A8F]">
+                            {isPickedUp ? `Handed over to ${riderInputName}` : 'Awaiting courier collection at atelier'}
+                          </span>
+                        </div>
+                      </div>
+                      <button
+                        type="button"
+                        onClick={() => {
+                          const nowTime = new Date().toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' });
+                          const newTimeline = (trackingOrder.trackingTimeline || []).map((step) => {
+                            if (step.title.includes('Courier Pick-up') || step.title.includes('Dispatched')) {
+                              return { ...step, completed: true, time: `Picked Up at ${nowTime}` };
+                            }
+                            return step;
+                          });
+                          updateOrderTracking(trackingOrder.id, {
+                            status: 'Shipped',
+                            riderName: riderInputName,
+                            riderPhone: riderInputPhone,
+                            trackingTimeline: newTimeline,
+                          });
+                          setTrackingOrder({
+                            ...trackingOrder,
+                            status: 'Shipped',
+                            riderName: riderInputName,
+                            riderPhone: riderInputPhone,
+                            trackingTimeline: newTimeline,
+                          });
+                        }}
+                        className={`px-3 py-1.5 rounded-lg text-xs font-bold transition-all cursor-pointer ${
+                          isPickedUp
+                            ? 'bg-[#1F8A4C] text-white'
+                            : 'bg-[#6B73F0] text-white hover:bg-[#525BE8] active:scale-95 shadow-sm'
+                        }`}
+                      >
+                        {isPickedUp ? 'Picked Up ✓' : 'Mark Picked Up'}
+                      </button>
+                    </div>
+                  );
+                })()}
+
+                {/* Step 4: Delivered */}
+                {(() => {
+                  const isDelivered = trackingOrder.status === 'Delivered';
+                  return (
+                    <div className={`flex items-center justify-between p-3 rounded-xl border text-xs transition-colors ${
+                      isDelivered ? 'bg-[#E8F5EE] border-[#B7E4C7]' : 'bg-white border-[#E6E6EA]'
+                    }`}>
+                      <div className="flex items-center gap-2.5">
+                        <div className={`w-5 h-5 rounded-full flex items-center justify-center ${
+                          isDelivered ? 'bg-[#1F8A4C] text-white' : 'border border-[#C7C7CC] bg-white text-[#8A8A8F]'
+                        }`}>
+                          {isDelivered ? <Check className="w-3 h-3 stroke-[3]" /> : <Clock className="w-3 h-3" />}
+                        </div>
+                        <div>
+                          <span className="font-semibold text-[#111113] block">Delivered at Doorstep</span>
+                          <span className="text-[10px] text-[#8A8A8F]">
+                            {isDelivered ? 'Successfully received & signed' : 'In transit to customer address'}
+                          </span>
+                        </div>
+                      </div>
+                      <button
+                        type="button"
+                        onClick={() => {
+                          const nowTime = new Date().toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' });
+                          const newTimeline = (trackingOrder.trackingTimeline || []).map((step) => {
+                            if (step.title.includes('Courier Pick-up') || step.title.includes('Dispatched') || step.title.includes('Delivered')) {
+                              return { ...step, completed: true, time: step.time === 'Pending' ? `Delivered at ${nowTime}` : step.time };
+                            }
+                            return step;
+                          });
+                          updateOrderTracking(trackingOrder.id, {
+                            status: 'Delivered',
+                            riderName: riderInputName,
+                            riderPhone: riderInputPhone,
+                            trackingTimeline: newTimeline,
+                          });
+                          setTrackingOrder({
+                            ...trackingOrder,
+                            status: 'Delivered',
+                            riderName: riderInputName,
+                            riderPhone: riderInputPhone,
+                            trackingTimeline: newTimeline,
+                          });
+                        }}
+                        className={`px-3 py-1.5 rounded-lg text-xs font-bold transition-all cursor-pointer ${
+                          isDelivered
+                            ? 'bg-[#1F8A4C] text-white'
+                            : 'bg-[#111113] text-white hover:bg-[#3A3A3F] active:scale-95 shadow-sm'
+                        }`}
+                      >
+                        {isDelivered ? 'Delivered ✓' : 'Mark Delivered'}
+                      </button>
+                    </div>
+                  );
+                })()}
+              </div>
+            </div>
+
+            {/* Save Rider & Close */}
+            <div className="flex gap-3 pt-2">
+              <button
+                type="button"
+                onClick={() => {
+                  updateOrderTracking(trackingOrder.id, {
+                    riderName: riderInputName,
+                    riderPhone: riderInputPhone,
+                  });
+                  setTrackingOrder(null);
+                }}
+                className="flex-1 h-12 rounded-full bg-[#111113] text-white text-xs font-semibold flex items-center justify-center gap-2 hover:bg-[#3A3A3F] transition-colors cursor-pointer"
+              >
+                <Save className="w-4 h-4" />
+                <span>Save Courier Details &amp; Close</span>
               </button>
             </div>
           </div>

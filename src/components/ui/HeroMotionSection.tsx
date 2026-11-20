@@ -119,9 +119,9 @@ export default function HeroMotionSection() {
       onTouchEnd={handleTouchEnd}
       className="relative min-h-[560px] sm:min-h-[640px] lg:min-h-[720px] bg-[#111113] text-white flex items-center overflow-hidden select-none"
     >
-      {/* Background image layer — smooth crossfade, no glide/zoom */}
+      {/* Background image layer — smooth, flicker-free crossfade */}
       <div
-        className="absolute inset-0 z-0 transition-transform duration-700 ease-out"
+        className="absolute inset-0 z-0 transition-transform duration-1000 ease-out will-change-transform"
         style={{
           transform: `translate3d(${mouseOffset.x}px, ${mouseOffset.y}px, 0) scale(1.02)`,
         }}
@@ -129,25 +129,28 @@ export default function HeroMotionSection() {
         {slides.map((slide, index) => (
           <div
             key={slide.id}
-            className={`absolute inset-0 transition-opacity duration-700 ease-in-out ${
-              index === currentSlide ? 'opacity-100 z-10' : 'opacity-0 z-0 pointer-events-none'
+            className={`absolute inset-0 transition-opacity duration-1000 ease-in-out ${
+              index === currentSlide
+                ? 'opacity-100 z-[2] pointer-events-auto'
+                : 'opacity-0 z-[1] pointer-events-none'
             }`}
           >
             <img
               src={slide.image}
               alt="Tracey Kuukua Quansah Haute Couture"
-              className="w-full h-full object-cover object-top filter brightness-[0.75] contrast-105"
+              loading={index === 0 ? 'eager' : 'lazy'}
+              className="w-full h-full object-cover object-center filter brightness-[0.78] contrast-105"
             />
           </div>
         ))}
 
         {/* Ambient glow accents */}
-        <div className="absolute top-1/4 -left-20 w-80 sm:w-96 h-80 sm:h-96 rounded-full bg-[#6B73F0]/20 blur-[130px] pointer-events-none animate-ambient-glow" />
-        <div className="absolute bottom-10 right-10 w-80 sm:w-[500px] h-80 sm:h-[500px] rounded-full bg-[#FF2D8A]/12 blur-[150px] pointer-events-none animate-ambient-glow delay-700" />
+        <div className="absolute top-1/4 -left-20 w-80 sm:w-96 h-80 sm:h-96 rounded-full bg-[#6B73F0]/20 blur-[130px] pointer-events-none animate-ambient-glow z-[3]" />
+        <div className="absolute bottom-10 right-10 w-80 sm:w-[500px] h-80 sm:h-[500px] rounded-full bg-[#FF2D8A]/12 blur-[150px] pointer-events-none animate-ambient-glow delay-700 z-[3]" />
 
-        {/* Scrims optimized for mobile contrast */}
-        <div className="absolute inset-0 bg-gradient-to-r from-black/90 via-black/55 to-black/30 z-10 sm:from-black/85 sm:via-black/40 sm:to-transparent" />
-        <div className="absolute inset-0 bg-gradient-to-t from-[#111113] via-transparent to-black/40 z-10" />
+        {/* Scrims optimized for mobile & desktop contrast — sit strictly above images */}
+        <div className="absolute inset-0 bg-gradient-to-r from-black/90 via-black/55 to-black/30 z-[4] sm:from-black/85 sm:via-black/40 sm:to-transparent pointer-events-none" />
+        <div className="absolute inset-0 bg-gradient-to-t from-[#111113] via-transparent to-black/40 z-[4] pointer-events-none" />
       </div>
 
       {/* Editorial content — crossfades with the slide */}
