@@ -3,7 +3,7 @@
 
 import React from 'react';
 import { useStore } from '@/context/StoreContext';
-import { ArrowRight, Sparkles } from 'lucide-react';
+import { ArrowRight } from 'lucide-react';
 
 export default function HeroMotionSection() {
   const { siteContent, setActiveView } = useStore();
@@ -36,33 +36,18 @@ export default function HeroMotionSection() {
           decoding="async"
           className="w-full h-full object-cover object-center"
         />
-        {/* Luxury Emerald & Black Scrim Overlays */}
-        <div className="absolute inset-0 bg-[#133D27]/65 z-10 pointer-events-none" />
-        <div className="absolute inset-0 bg-gradient-to-r from-[#133D27]/95 via-[#133D27]/65 to-transparent z-10 pointer-events-none" />
-        <div className="absolute inset-0 bg-gradient-to-t from-[#133D27] via-transparent to-black/40 z-10 pointer-events-none" />
-
-        {/* Ambient emerald lights */}
-        <div className="absolute top-1/4 -left-20 w-72 sm:w-96 h-72 sm:h-96 rounded-full bg-[#16A34A]/35 blur-[90px] pointer-events-none z-10" />
-        <div className="absolute bottom-10 right-10 w-72 sm:w-[420px] h-72 sm:h-[420px] rounded-full bg-[#15803D]/30 blur-[110px] pointer-events-none z-10" />
+        {/* Directional fades only — photo stays visible */}
+        {/* Left-to-right green fade: text side is readable, right side shows photo */}
+        <div className="absolute inset-0 bg-gradient-to-r from-[#133D27]/90 via-[#133D27]/50 to-transparent z-10 pointer-events-none" />
+        {/* Bottom-up fade: grounds the image with green, photo shows in upper half */}
+        <div className="absolute inset-0 bg-gradient-to-t from-[#133D27]/80 via-transparent to-transparent z-10 pointer-events-none" />
+        {/* Subtle top darkening for contrast only */}
+        <div className="absolute inset-0 bg-gradient-to-b from-black/30 via-transparent to-transparent z-10 pointer-events-none" />
       </div>
 
       {/* ── Editorial Content ── */}
       <div className="max-w-7xl mx-auto px-4 sm:px-8 lg:px-12 w-full relative z-20 py-8 sm:py-14 lg:py-18">
         <div className="max-w-2xl space-y-3 sm:space-y-4">
-          {/* Brand badge & Slogan Pill */}
-          <div className="flex flex-wrap items-center gap-2">
-            <div className="inline-flex items-center gap-1.5 bg-black/70 backdrop-blur-md px-2.5 sm:px-3 py-1 rounded-full border border-emerald-500/40 text-[9px] sm:text-[11px] font-semibold text-white shadow-md">
-              <span className="w-1.5 h-1.5 rounded-full bg-[#22C55E] animate-ping" />
-              <span className="tracking-widest uppercase font-medium text-emerald-200">
-                {badge}
-              </span>
-            </div>
-
-            <div className="inline-flex items-center gap-1 bg-[#16A34A]/90 backdrop-blur-md px-2.5 sm:px-3 py-1 rounded-full border border-white/20 text-[9px] sm:text-[11px] font-medium text-white shadow-sm">
-              <Sparkles className="w-2.5 h-2.5 sm:w-3 sm:h-3 text-[#4ADE80]" />
-              <span>Tailored Perfection, Timeless Style.</span>
-            </div>
-          </div>
 
           {/* Headline */}
           <h1 className="text-2xl sm:text-4xl lg:text-5xl font-bold tracking-tight text-white leading-[1.12] font-serif drop-shadow-md">
