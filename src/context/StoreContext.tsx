@@ -52,21 +52,23 @@ export const DEFAULT_SITE_CONTENT: SiteContent = {
   heroHeadlineAccent: 'T.I.M.E fits',
   heroHeadlineSuffix: ' — Timeless Style.',
   heroSubtitle:
-    'Fashion is never just fabric and form. It is identity in motion, confidence made visible, connection you can feel—and sometimes, the memory we carry long after the moment has passed. Not just for the moment. For a lifetime.',
-  heroImageUrl: '/brand/photo_1_2026-11-21_13-00-31.jpg',
+    'Fashion is never just fabric and form. It is identity in motion, confidence made visible, connection you can feel—and sometimes, the memory we carry long after the moment has passed. Welcome to T.I.M.E fits, where meaningful moments become beautifully considered design.',
+  heroImageUrl:
+    'https://images.unsplash.com/photo-1509631179647-0177331693ae?auto=format&fit=crop&w=1800&q=85',
   heroPrimaryCta: 'Explore Collections',
   heroSecondaryCta: 'Our Story',
   heroPrimaryView: 'collections',
   heroSecondaryView: 'our-story',
 
   // Backwards compatibility fields
-  hero2CampaignBadge: 'T.I.M.E FITS · BONWIRE ATELIER',
+  hero2CampaignBadge: 'T.I.M.E FITS · COUTURE ATELIER',
   hero2HeadlinePrefix: 'Ancestral Craft,',
   hero2HeadlineAccent: 'Contemporary',
   hero2HeadlineSuffix: ' Soul.',
   hero2Subtitle:
     'From the looms of Bonwire to the runways of Accra — each piece carries generations of mastery, reimagined for today.',
-  hero2ImageUrl: '/brand/photo_2_2026-11-21_13-00-31.jpg',
+  hero2ImageUrl:
+    'https://images.unsplash.com/photo-1515886657613-9f3515b0c78f?auto=format&fit=crop&w=1800&q=85',
   hero2PrimaryCta: 'Explore Collections',
   hero2SecondaryCta: 'View Lookbook',
   hero2PrimaryView: 'collections',

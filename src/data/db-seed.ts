@@ -85,8 +85,8 @@ export const SEED_PRODUCTS: Product[] = [
     rating: 5.0,
     reviewCount: 38,
     images: [
-      '/brand/photo_3_2026-11-21_13-00-31.jpg',
-      '/brand/photo_4_2026-11-21_13-00-31.jpg',
+      'https://images.unsplash.com/photo-1515886657613-9f3515b0c78f?auto=format&fit=crop&w=1000&q=85',
+      'https://images.unsplash.com/photo-1539109136881-3be0616acf4b?auto=format&fit=crop&w=1000&q=85',
     ],
     colors: [
       { name: 'Royal Amber Gold', hex: '#D4AF37' },
@@ -116,7 +116,7 @@ export const SEED_PRODUCTS: Product[] = [
     rating: 4.8,
     reviewCount: 22,
     images: [
-      '/brand/photo_5_2026-11-21_13-00-31.jpg',
+      'https://images.unsplash.com/photo-1509631179647-0177331693ae?auto=format&fit=crop&w=1000&q=85',
     ],
     colors: [
       { name: 'Deep Olive', hex: '#2A4E1F' },
@@ -146,7 +146,7 @@ export const SEED_PRODUCTS: Product[] = [
     rating: 4.9,
     reviewCount: 19,
     images: [
-      '/brand/photo_6_2026-11-21_13-00-31.jpg',
+      'https://images.unsplash.com/photo-1490481651871-ab68de25d43d?auto=format&fit=crop&w=1000&q=85',
     ],
     colors: [
       { name: 'Forest Emerald', hex: '#1E3D1A' },
@@ -176,7 +176,7 @@ export const SEED_PRODUCTS: Product[] = [
     rating: 5.0,
     reviewCount: 45,
     images: [
-      '/brand/photo_7_2026-11-21_13-00-31.jpg',
+      'https://images.unsplash.com/photo-1566174053879-31528523f8ae?auto=format&fit=crop&w=1000&q=85',
     ],
     colors: [
       { name: 'Heritage Gold & Black', hex: '#D4AF37' },
@@ -204,7 +204,7 @@ export const SEED_PRODUCTS: Product[] = [
     rating: 4.7,
     reviewCount: 16,
     images: [
-      '/brand/photo_8_2026-11-21_13-00-31.jpg',
+      'https://images.unsplash.com/photo-1485230895905-ec40ba36b9bc?auto=format&fit=crop&w=1000&q=85',
     ],
     colors: [
       { name: 'Natural Sand', hex: '#E6E2D8' },

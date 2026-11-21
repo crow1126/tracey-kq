@@ -705,7 +705,7 @@ export default function AdminView() {
                     <div className="sm:col-span-8 space-y-3">
                       <ImageUploader
                         label="Hero Photograph"
-                        value={contentForm.heroImageUrl || '/brand/photo_1_2026-11-21_13-00-31.jpg'}
+                        value={contentForm.heroImageUrl || 'https://images.unsplash.com/photo-1509631179647-0177331693ae?auto=format&fit=crop&w=1800&q=85'}
                         onChange={(url) => setContentForm({ ...contentForm, heroImageUrl: url })}
                       />
 
@@ -734,7 +734,7 @@ export default function AdminView() {
                             className="w-full h-full object-cover object-center"
                             onError={(e) => {
                               (e.target as HTMLImageElement).src =
-                                '/brand/photo_1_2026-11-21_13-00-31.jpg';
+                                'https://images.unsplash.com/photo-1509631179647-0177331693ae?auto=format&fit=crop&w=1800&q=85';
                             }}
                           />
                         ) : (

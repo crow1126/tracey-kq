@@ -3,7 +3,7 @@
 
 import React from 'react';
 import { useStore } from '@/context/StoreContext';
-import { ArrowRight, Sparkles, User, Calendar, Users, Heart, SunMedium } from 'lucide-react';
+import { ArrowRight, Sparkles, User, Calendar, Users, Heart, SunMedium, Compass } from 'lucide-react';
 import Button from '../ui/Button';
 
 interface CollectionPillar {
@@ -23,7 +23,7 @@ const COLLECTION_PILLARS: CollectionPillar[] = [
     subtitle: 'Distinctive Identity & Unapologetic Confidence',
     description:
       'Distinctive pieces that honour personal identity, sharpen confidence and give every wearer the freedom to be fully themselves.',
-    image: '/brand/photo_3_2026-11-21_13-00-31.jpg',
+    image: 'https://images.unsplash.com/photo-1539109136881-3be0616acf4b?auto=format&fit=crop&w=1200&q=85',
     icon: User,
     tag: 'SIGNATURE EXPRESSION',
   },
@@ -33,7 +33,7 @@ const COLLECTION_PILLARS: CollectionPillar[] = [
     subtitle: 'Occasions That Become Part of History',
     description:
       'Considered designs for birthdays, graduations, weddings, celebrations and the defining occasions that deserve to be marked in style.',
-    image: '/brand/photo_4_2026-11-21_13-00-31.jpg',
+    image: 'https://images.unsplash.com/photo-1566174053879-31528523f8ae?auto=format&fit=crop&w=1200&q=85',
     icon: Calendar,
     tag: 'CELEBRATIONS & GALA',
   },
@@ -43,7 +43,7 @@ const COLLECTION_PILLARS: CollectionPillar[] = [
     subtitle: 'Childhood, Youth, Adulthood & Beyond',
     description:
       'Clothing that reflects the changing needs, perspectives and expressions of childhood, youth, adulthood and later life.',
-    image: '/brand/photo_5_2026-11-21_13-00-31.jpg',
+    image: 'https://images.unsplash.com/photo-1509631179647-0177331693ae?auto=format&fit=crop&w=1200&q=85',
     icon: Users,
     tag: 'ENDURING LEGACY',
   },
@@ -53,7 +53,7 @@ const COLLECTION_PILLARS: CollectionPillar[] = [
     subtitle: 'Family, Friendship, Love & Belonging',
     description:
       'Thoughtful expressions of family, friendship, love and belonging, brought together through complementary designs and meaningful details.',
-    image: '/brand/photo_6_2026-11-21_13-00-31.jpg',
+    image: 'https://images.unsplash.com/photo-1490481651871-ab68de25d43d?auto=format&fit=crop&w=1200&q=85',
     icon: Heart,
     tag: 'HARMONIOUS BONDS',
   },
@@ -63,7 +63,7 @@ const COLLECTION_PILLARS: CollectionPillar[] = [
     subtitle: 'Elevated Essentials for Real Life',
     description:
       'Elevated essentials that bring ease, confidence and considered style to the moments that make up real life.',
-    image: '/brand/photo_7_2026-11-21_13-00-31.jpg',
+    image: 'https://images.unsplash.com/photo-1485230895905-ec40ba36b9bc?auto=format&fit=crop&w=1200&q=85',
     icon: SunMedium,
     tag: 'CONSIDERED LUXURY',
   },
@@ -73,38 +73,115 @@ export default function CollectionsView() {
   const { products, setActiveView, setQuickViewProduct } = useStore();
 
   return (
-    <div className="bg-[#F8FAF8] min-h-screen pt-10 sm:pt-14 pb-32 px-5 sm:px-8 lg:px-12 space-y-16 max-w-6xl mx-auto text-[#111113]">
+    <div className="bg-[#F8FAF8] min-h-screen pt-8 sm:pt-14 pb-32 px-4 sm:px-8 lg:px-12 space-y-12 sm:space-y-16 max-w-6xl mx-auto text-[#111113]">
       {/* ── Collection Header ── */}
-      <div className="text-center space-y-4 max-w-3xl mx-auto">
-        <div className="inline-flex items-center gap-2 bg-emerald-50 border border-emerald-200 text-[#0F5132] px-3.5 py-1.5 rounded-full text-[11px] font-bold tracking-[0.2em] uppercase">
+      <div className="text-center space-y-3 max-w-3xl mx-auto">
+        <div className="inline-flex items-center gap-1.5 bg-emerald-50 border border-emerald-200 text-[#0F5132] px-3 py-1 rounded-full text-[10px] sm:text-[11px] font-bold tracking-[0.2em] uppercase">
           <Sparkles className="w-3.5 h-3.5 text-[#16A34A]" />
           <span>OUR COLLECTIONS · T.I.M.E FITS</span>
         </div>
-        <h1 className="text-3xl sm:text-5xl lg:text-6xl font-bold tracking-tight text-[#0B1910] font-serif">
+        <h1 className="text-3xl sm:text-5xl font-bold tracking-tight text-[#0B1910] font-serif">
           Every Collection Has a Story
         </h1>
-        <p className="text-sm sm:text-base text-gray-700 font-normal leading-relaxed max-w-2xl mx-auto">
+        <p className="text-xs sm:text-base text-gray-700 font-normal leading-relaxed max-w-2xl mx-auto">
           At T.I.M.E fits, a collection is never just a lineup of garments. It is a point of view, a feeling and a story brought to life through fabric, form and detail.
         </p>
       </div>
 
+      {/* ── Debut Signature Highlight: MAY 3 (KUKUA_TRACEY) COLLECTION ── */}
+      <div className="bg-[#0B1910] text-white rounded-[28px] overflow-hidden shadow-2xl border border-emerald-900/40">
+        <div className="grid grid-cols-1 lg:grid-cols-12 items-center">
+          <div className="lg:col-span-5 aspect-[4/5] sm:aspect-square lg:aspect-auto h-full relative">
+            <img
+              src="https://images.unsplash.com/photo-1515886657613-9f3515b0c78f?auto=format&fit=crop&w=1200&q=85"
+              alt="MAY 3 COLLECTION BY T.I.M.E fits"
+              className="w-full h-full object-cover object-center"
+            />
+            <div className="absolute inset-0 bg-gradient-to-t from-[#0B1910] via-transparent to-transparent lg:hidden" />
+          </div>
+
+          <div className="lg:col-span-7 p-6 sm:p-10 lg:p-12 space-y-4">
+            <div className="inline-flex items-center gap-2 bg-[#0F5132] border border-[#22C55E]/40 text-[#4ADE80] px-3 py-1 rounded-full text-[10px] font-bold tracking-widest uppercase">
+              DEBUT SIGNATURE COLLECTION
+            </div>
+            <h2 className="text-2xl sm:text-4xl font-serif font-bold text-white leading-tight">
+              MAY 3 (KUKUA_TRACEY) COLLECTION
+            </h2>
+            <p className="text-xs sm:text-sm text-emerald-300 font-medium">
+              By T.I.M.E fits · Tailored Perfection, Timeless Style
+            </p>
+            <p className="text-xs sm:text-sm text-gray-300 font-light leading-relaxed">
+              Designed for every chapter of womanhood: teenage girls finding their voice, single ladies walking in bold confidence, ambitious working-class professionals, married women, and beloved African mothers.
+            </p>
+
+            {/* Occasion Spectrum */}
+            <div className="grid grid-cols-2 sm:grid-cols-3 gap-2 pt-2">
+              {[
+                'Corporate & Boardroom',
+                'Sunday Ankara Prints',
+                'Romantic Dinner Dates',
+                'Baecations with Habibi',
+                'Milestone Anniversaries',
+                'Weekend Celebrations',
+              ].map((occ, idx) => (
+                <div
+                  key={idx}
+                  className="bg-white/10 backdrop-blur-md rounded-xl p-2.5 border border-white/10 text-center"
+                >
+                  <span className="text-[10px] sm:text-xs text-emerald-200 font-medium block">
+                    {occ}
+                  </span>
+                </div>
+              ))}
+            </div>
+
+            <p className="text-xs sm:text-sm text-gray-200 italic font-serif border-l-2 border-[#22C55E] pl-3 py-1">
+              &ldquo;Tell us about your occasion and T.I.M.E fits gets you covered.&rdquo;
+            </p>
+
+            <div className="pt-2 flex flex-wrap gap-2.5">
+              <Button
+                variant="get-started"
+                onClick={() => {
+                  setActiveView('shop');
+                  window.scrollTo({ top: 0, behavior: 'smooth' });
+                }}
+                className="h-10 px-5 rounded-full text-xs"
+              >
+                <span>Shop the Collection</span>
+                <ArrowRight className="w-3.5 h-3.5 ml-1.5" />
+              </Button>
+              <button
+                onClick={() => {
+                  setActiveView('bespoke');
+                  window.scrollTo({ top: 0, behavior: 'smooth' });
+                }}
+                className="h-10 px-4 rounded-full bg-white/10 text-white border border-white/20 hover:bg-white/20 text-xs font-semibold transition-all shadow cursor-pointer"
+              >
+                Custom Occasion Order
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+
       {/* ── Brand Philosophy Banner ── */}
-      <div className="bg-[#0B1910] text-white rounded-[28px] p-6 sm:p-10 shadow-xl border border-emerald-900/40">
-        <div className="grid grid-cols-1 md:grid-cols-12 gap-6 items-center">
-          <div className="md:col-span-8 space-y-3">
+      <div className="bg-[#0B1910] text-white rounded-[24px] p-6 sm:p-8 shadow-xl border border-emerald-900/40">
+        <div className="grid grid-cols-1 md:grid-cols-12 gap-5 items-center">
+          <div className="md:col-span-8 space-y-2">
             <span className="text-[10px] font-bold tracking-widest text-[#4ADE80] uppercase">
               DESIGN WITH DISCIPLINE & IMAGINATION
             </span>
-            <h2 className="text-xl sm:text-3xl font-serif font-bold text-white leading-snug">
+            <h2 className="text-lg sm:text-2xl font-serif font-bold text-white leading-snug">
               &ldquo;We do not create to fill a trend cycle. We create to give form to a clear idea.&rdquo;
             </h2>
             <p className="text-xs sm:text-sm text-gray-300 font-light leading-relaxed">
               Every textile, silhouette, proportion and finishing touch is selected to create something distinctive, meaningful and beautifully resolved. Because every collection deserves a story, and every story deserves to be remembered.
             </p>
           </div>
-          <div className="md:col-span-4 flex justify-end">
-            <div className="text-right">
-              <span className="text-xs font-mono text-emerald-300 block">Kukua-Tracey</span>
+          <div className="md:col-span-4 flex md:justify-end">
+            <div>
+              <span className="text-xs font-mono text-emerald-300 block font-semibold">Kukua-Tracey</span>
               <span className="text-[11px] text-gray-400">Founder & Creative Director</span>
             </div>
           </div>
@@ -112,7 +189,7 @@ export default function CollectionsView() {
       </div>
 
       {/* ── 5 Core Collection Pillars ── */}
-      <div className="space-y-16">
+      <div className="space-y-10 sm:space-y-12">
         <div className="text-center space-y-2">
           <span className="text-[11px] font-bold tracking-[0.2em] text-[#0F5132] uppercase">
             WHAT WE ARE INSPIRED BY
@@ -122,38 +199,38 @@ export default function CollectionsView() {
           </h2>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
           {COLLECTION_PILLARS.map((pillar) => {
             const Icon = pillar.icon;
             return (
               <div
                 key={pillar.id}
-                className="bg-white rounded-[28px] overflow-hidden border border-emerald-900/10 shadow-sm hover:shadow-lg transition-all group flex flex-col justify-between"
+                className="bg-white rounded-[24px] overflow-hidden border border-emerald-900/10 shadow-sm hover:shadow-md transition-all group flex flex-col justify-between"
               >
                 <div className="aspect-[4/5] overflow-hidden bg-gray-100 relative">
                   <img
                     src={pillar.image}
                     alt={pillar.title}
-                    className="w-full h-full object-cover object-top group-hover:scale-105 transition-transform duration-700"
+                    className="w-full h-full object-cover object-center group-hover:scale-105 transition-transform duration-700"
                   />
                   <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent" />
-                  <div className="absolute top-4 left-4">
-                    <span className="bg-black/60 backdrop-blur-md text-[#4ADE80] text-[9px] font-bold tracking-widest px-3 py-1 rounded-full uppercase border border-white/20">
+                  <div className="absolute top-3 left-3">
+                    <span className="bg-black/60 backdrop-blur-md text-[#4ADE80] text-[9px] font-bold tracking-widest px-2.5 py-1 rounded-full uppercase border border-white/20">
                       {pillar.tag}
                     </span>
                   </div>
-                  <div className="absolute bottom-4 left-4 right-4 text-white">
-                    <div className="flex items-center gap-2 mb-1">
-                      <div className="w-7 h-7 rounded-full bg-[#0F5132] flex items-center justify-center text-white">
-                        <Icon className="w-3.5 h-3.5" />
+                  <div className="absolute bottom-3 left-3 right-3 text-white">
+                    <div className="flex items-center gap-2 mb-0.5">
+                      <div className="w-6 h-6 rounded-full bg-[#0F5132] flex items-center justify-center text-white">
+                        <Icon className="w-3 h-3" />
                       </div>
-                      <h3 className="text-xl font-bold font-serif">{pillar.title}</h3>
+                      <h3 className="text-lg font-bold font-serif">{pillar.title}</h3>
                     </div>
-                    <p className="text-xs text-gray-200 font-light">{pillar.subtitle}</p>
+                    <p className="text-[11px] text-gray-200 font-light">{pillar.subtitle}</p>
                   </div>
                 </div>
 
-                <div className="p-6 space-y-4 flex-1 flex flex-col justify-between">
+                <div className="p-5 space-y-3 flex-1 flex flex-col justify-between">
                   <p className="text-xs sm:text-sm text-gray-700 leading-relaxed font-light">
                     {pillar.description}
                   </p>
@@ -162,10 +239,10 @@ export default function CollectionsView() {
                       setActiveView('shop');
                       window.scrollTo({ top: 0, behavior: 'smooth' });
                     }}
-                    className="w-full h-10 rounded-full bg-emerald-50 text-[#0F5132] hover:bg-[#0F5132] hover:text-white text-xs font-semibold flex items-center justify-center gap-2 transition-colors cursor-pointer border border-emerald-200"
+                    className="w-full h-9 rounded-full bg-emerald-50 text-[#0F5132] hover:bg-[#0F5132] hover:text-white text-xs font-semibold flex items-center justify-center gap-1.5 transition-colors cursor-pointer border border-emerald-200"
                   >
                     <span>View Garments</span>
-                    <ArrowRight className="w-3.5 h-3.5" />
+                    <ArrowRight className="w-3 h-3" />
                   </button>
                 </div>
               </div>
@@ -174,14 +251,44 @@ export default function CollectionsView() {
         </div>
       </div>
 
+      {/* ── Flagship Narrative: Threads of a Lifetime ── */}
+      <div className="bg-white rounded-[24px] p-6 sm:p-10 border border-emerald-900/10 shadow-sm">
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 items-center">
+          <div className="lg:col-span-8 space-y-3">
+            <div className="inline-flex items-center gap-1.5 bg-emerald-50 text-[#0F5132] px-2.5 py-0.5 rounded-full text-[10px] font-bold tracking-wider uppercase">
+              <Compass className="w-3 h-3 text-[#16A34A]" />
+              <span>FLAGSHIP NARRATIVE</span>
+            </div>
+            <h3 className="text-xl sm:text-3xl font-serif font-bold text-[#0B1910]">
+              Threads of a Lifetime
+            </h3>
+            <p className="text-xs sm:text-sm text-gray-700 leading-relaxed font-light">
+              The journey of growing up, discovering oneself, creating memories. Clothing designed to accompany every chapter—from quiet mornings of self-expression to momentous celebrations where family history is made.
+            </p>
+          </div>
+          <div className="lg:col-span-4 flex justify-start lg:justify-end">
+            <button
+              onClick={() => {
+                setActiveView('our-story');
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+              }}
+              className="h-10 px-5 rounded-full bg-[#0F5132] text-white text-xs font-bold hover:bg-[#166534] transition-colors shadow flex items-center gap-2"
+            >
+              <span>Read The Story</span>
+              <ArrowRight className="w-3.5 h-3.5" />
+            </button>
+          </div>
+        </div>
+      </div>
+
       {/* ── Studio Lookbook Gallery ── */}
-      <div className="space-y-6 pt-8 border-t border-emerald-900/10">
+      <div className="space-y-5 pt-6 border-t border-emerald-900/10">
         <div className="flex items-end justify-between">
           <div>
-            <span className="text-[11px] font-bold tracking-[0.2em] text-[#0F5132] uppercase">
+            <span className="text-[10px] font-bold tracking-[0.2em] text-[#0F5132] uppercase">
               STUDIO ATELIER SELECTIONS
             </span>
-            <h3 className="text-2xl sm:text-3xl font-serif font-bold text-[#0B1910]">
+            <h3 className="text-xl sm:text-2xl font-serif font-bold text-[#0B1910]">
               Pieces in Rotation
             </h3>
           </div>
@@ -193,14 +300,14 @@ export default function CollectionsView() {
           </button>
         </div>
 
-        <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
+        <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 sm:gap-4">
           {products.slice(0, 4).map((product) => (
             <div
               key={product.id}
               onClick={() => setQuickViewProduct(product)}
-              className="bg-white rounded-[24px] p-3 border border-emerald-900/10 hover:shadow-md transition-all cursor-pointer group"
+              className="bg-white rounded-[20px] p-2.5 sm:p-3 border border-emerald-900/10 hover:shadow-md transition-all cursor-pointer group"
             >
-              <div className="aspect-[3/4] rounded-[18px] overflow-hidden bg-gray-100 mb-2.5">
+              <div className="aspect-[3/4] rounded-[16px] overflow-hidden bg-gray-100 mb-2">
                 <img
                   src={product.images[0]}
                   alt={product.name}
@@ -219,28 +326,28 @@ export default function CollectionsView() {
       </div>
 
       {/* ── Shoppable End Callout ── */}
-      <div className="bg-[#0B1910] text-white rounded-[28px] p-8 sm:p-12 text-center space-y-4 shadow-xl">
+      <div className="bg-[#0B1910] text-white rounded-[24px] p-6 sm:p-10 text-center space-y-3 shadow-xl">
         <span className="text-[10px] font-bold tracking-widest text-[#4ADE80] uppercase">
           NOT JUST FOR THE MOMENT · FOR A LIFETIME
         </span>
-        <h2 className="text-2xl sm:text-4xl font-serif font-bold text-white">
+        <h2 className="text-xl sm:text-3xl font-serif font-bold text-white">
           Begin Your Chapter With T.I.M.E fits
         </h2>
         <p className="text-xs sm:text-sm text-gray-300 font-light max-w-md mx-auto leading-relaxed">
           Explore ready-to-wear pieces or book an appointment for made-to-measure tailoring.
         </p>
-        <div className="flex flex-wrap justify-center gap-3 pt-2">
+        <div className="flex flex-wrap justify-center gap-2.5 pt-2">
           <Button
             variant="get-started"
             onClick={() => setActiveView('shop')}
-            className="h-11 px-6 rounded-full shadow-lg"
+            className="h-10 px-5 rounded-full text-xs shadow-lg"
           >
             <span>Browse Ready-to-Wear</span>
-            <ArrowRight className="w-4 h-4 ml-2" />
+            <ArrowRight className="w-3.5 h-3.5 ml-1.5" />
           </Button>
           <button
             onClick={() => setActiveView('bespoke')}
-            className="h-11 px-6 rounded-full bg-[#0F5132] text-white border border-white/20 hover:bg-[#166534] text-xs font-semibold transition-all shadow cursor-pointer"
+            className="h-10 px-5 rounded-full bg-[#0F5132] text-white border border-white/20 hover:bg-[#166534] text-xs font-semibold transition-all shadow cursor-pointer"
           >
             Book Bespoke Fitting
           </button>
