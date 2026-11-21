@@ -19,8 +19,7 @@ export default function DesktopTopNav() {
   const navLinks = [
     { id: 'shop', label: 'Shop' },
     { id: 'collections', label: 'Collections' },
-    { id: 'spotlight', label: 'Spotlight' },
-    { id: 'our-story', label: 'Our Story' },
+    { id: 'our-story', label: 'About & Story' },
     { id: 'stores', label: 'Our Stores' },
     { id: 'bespoke', label: 'Custom & Bespoke' },
   ];
@@ -53,10 +52,10 @@ export default function DesktopTopNav() {
           />
           <div className="flex flex-col">
             <div className="flex items-center gap-2">
-              <span className="text-[17px] font-bold tracking-[0.25em] text-[#16A34A] uppercase font-serif">
+              <span className="text-[17px] font-bold tracking-[0.25em] text-[#0F5132] uppercase font-serif">
                 T.I.M.E fits
               </span>
-              <span className="text-[9px] font-bold text-[#16A34A] bg-emerald-50 border border-emerald-200 px-2 py-0.5 rounded-full">
+              <span className="text-[9px] font-bold text-[#0F5132] bg-emerald-50 border border-emerald-200 px-2 py-0.5 rounded-full">
                 ACCRA
               </span>
             </div>

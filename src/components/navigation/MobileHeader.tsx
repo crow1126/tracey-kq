@@ -10,14 +10,14 @@ export default function MobileHeader() {
   const { setActiveView, setIsBrandMenuOpen, setIsSearchOpen, cartCount } = useStore();
 
   return (
-    <div className="md:hidden sticky top-0 z-30 bg-white/95 backdrop-blur-md border-b border-[#E6E6EA] px-3.5 h-16 flex items-center justify-between">
+    <div className="md:hidden sticky top-0 z-30 bg-white/95 backdrop-blur-md border-b border-[#E6E6EA] px-3 h-16 flex items-center justify-between gap-2 shadow-xs">
       {/* Brand Menu Sheet Trigger */}
       <IconButton
         variant="header"
         onClick={() => setIsBrandMenuOpen(true)}
         aria-label="Open Brand Menu"
       >
-        <Menu className="w-5 h-5 text-[#16A34A]" />
+        <Menu className="w-5 h-5 text-[#0F5132]" />
       </IconButton>
 
       {/* Brand Wordmark & Logo */}
@@ -26,25 +26,25 @@ export default function MobileHeader() {
           setActiveView('home');
           window.scrollTo({ top: 0, behavior: 'smooth' });
         }}
-        className="flex items-center gap-2 cursor-pointer outline-none"
+        className="flex items-center gap-2 cursor-pointer outline-none flex-1 justify-center min-w-0"
       >
         <img
           src="/brand/logo.jpg"
           alt="T.I.M.E fits"
-          className="h-9 w-auto object-contain rounded"
+          className="h-8.5 w-auto object-contain rounded"
         />
         <div className="flex flex-col text-left">
-          <span className="font-serif font-bold text-[13px] tracking-[0.2em] text-[#16A34A] uppercase leading-tight">
+          <span className="font-serif font-bold text-[13px] tracking-[0.16em] text-[#0F5132] uppercase leading-tight whitespace-nowrap">
             T.I.M.E fits
           </span>
-          <span className="text-[8px] text-gray-500 font-normal italic tracking-wider">
+          <span className="text-[8px] text-gray-500 font-normal italic tracking-wider whitespace-nowrap">
             Tailored Perfection
           </span>
         </div>
       </button>
 
       {/* Header Actions */}
-      <div className="flex items-center gap-1.5">
+      <div className="flex items-center gap-1 flex-shrink-0">
         <IconButton
           variant="header"
           onClick={() => setIsSearchOpen(true)}
@@ -59,7 +59,7 @@ export default function MobileHeader() {
             window.scrollTo({ top: 0, behavior: 'smooth' });
           }}
           aria-label="Shopping Bag"
-          className="relative w-10 h-10 rounded-full bg-[#16A34A] text-white flex items-center justify-center hover:bg-[#0A4D25] active:scale-95 transition-all shadow-sm"
+          className="relative w-9 h-9 rounded-full bg-[#0F5132] text-white flex items-center justify-center hover:bg-[#0A3D24] active:scale-95 transition-all shadow-sm"
         >
           <ShoppingBag className="w-4 h-4 text-white" />
           {cartCount > 0 && (
