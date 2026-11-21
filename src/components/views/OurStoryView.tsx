@@ -23,11 +23,11 @@ export default function OurStoryView() {
     <div className="bg-[#F8FAF8] min-h-screen pt-8 sm:pt-14 pb-32 px-4 sm:px-8 lg:px-12 space-y-12 sm:space-y-16 max-w-5xl mx-auto text-[#111113]">
       {/* ── Brand Header ── */}
       <div className="text-center space-y-3 max-w-2xl mx-auto">
-        <div className="inline-flex items-center gap-2 bg-emerald-50 border border-emerald-200 text-[#0F5132] px-3.5 py-1 rounded-full text-[10px] sm:text-[11px] font-bold tracking-[0.2em] uppercase">
+        <div className="inline-flex items-center gap-2 bg-emerald-50 border border-emerald-200 text-[#16A34A] px-3.5 py-1 rounded-full text-[10px] sm:text-[11px] font-bold tracking-[0.2em] uppercase">
           <span className="w-1.5 h-1.5 rounded-full bg-[#16A34A] animate-pulse" />
           <span>OUR STORY · T.I.M.E FITS</span>
         </div>
-        <h1 className="text-3xl sm:text-5xl font-bold tracking-tight text-[#0B1910] font-serif">
+        <h1 className="text-3xl sm:text-5xl font-bold tracking-tight text-[#133D27] font-serif">
           A Story Woven Through Time
         </h1>
         <p className="text-xs sm:text-base text-gray-700 font-normal leading-relaxed">
@@ -40,7 +40,7 @@ export default function OurStoryView() {
         <p className="text-xs sm:text-base text-gray-800">
           We see life as a series of chapters, each with its own rhythm, beauty and significance. Childhood opens the world with wonder. Adolescence brings discovery, change and self-expression. Adulthood carries ambition, love, responsibility and milestones. Later years reveal the richness of experience and the quiet power of a life fully lived.
         </p>
-        <p className="text-sm sm:text-lg font-serif font-bold text-[#0F5132] border-l-4 border-[#16A34A] pl-3.5 py-1 italic">
+        <p className="text-sm sm:text-lg font-serif font-bold text-[#16A34A] border-l-4 border-[#16A34A] pl-3.5 py-1 italic">
           &ldquo;Every chapter deserves to be honoured.&rdquo;
         </p>
         <p className="text-xs sm:text-base text-gray-800">
@@ -49,7 +49,7 @@ export default function OurStoryView() {
         <p className="text-xs sm:text-base text-gray-800">
           Our vision is to create pieces that accompany the experiences people hold close: the achievements they celebrate, the relationships they cherish and the stories they pass forward.
         </p>
-        <div className="bg-emerald-50/70 p-4 rounded-xl border border-emerald-200 text-xs sm:text-sm text-[#0F5132] font-medium">
+        <div className="bg-emerald-50/70 p-4 rounded-xl border border-emerald-200 text-xs sm:text-sm text-[#16A34A] font-medium">
           This vision is for everyone. Every age, body, identity, personality and personal style belongs in the conversation. As we grow, our promise remains clear: create with purpose, design with conviction and stay true to the reason we began.
         </div>
         <p className="text-xs sm:text-sm text-gray-600 font-serif italic text-right">
@@ -58,7 +58,7 @@ export default function OurStoryView() {
       </div>
 
       {/* ── Section 2: MEET THE DESIGNER (Kukua-Tracey) ── */}
-      <div className="relative rounded-[28px] overflow-hidden bg-[#0B1910] text-white shadow-xl">
+      <div className="relative rounded-[28px] overflow-hidden bg-[#133D27] text-white shadow-xl">
         <div className="grid grid-cols-1 lg:grid-cols-12 items-center">
           <div className="lg:col-span-5 aspect-[4/5] sm:aspect-square lg:aspect-auto h-full relative min-h-[320px]">
             <img
@@ -66,11 +66,11 @@ export default function OurStoryView() {
               alt="Kukua-Tracey | Founder & Creative Director, T.I.M.E fits"
               className="w-full h-full object-cover object-top"
             />
-            <div className="absolute inset-0 bg-gradient-to-t from-[#0B1910] via-transparent to-transparent lg:hidden" />
+            <div className="absolute inset-0 bg-gradient-to-t from-[#133D27] via-transparent to-transparent lg:hidden" />
           </div>
 
           <div className="lg:col-span-7 p-6 sm:p-10 space-y-4">
-            <div className="inline-flex items-center gap-2 bg-[#0F5132]/80 border border-[#22C55E]/40 text-[#4ADE80] px-3 py-1 rounded-full text-[10px] font-bold tracking-widest uppercase">
+            <div className="inline-flex items-center gap-2 bg-[#16A34A]/80 border border-[#22C55E]/40 text-[#4ADE80] px-3 py-1 rounded-full text-[10px] font-bold tracking-widest uppercase">
               MEET THE DESIGNER
             </div>
             <h2 className="text-2xl sm:text-4xl font-bold font-serif tracking-tight text-white">
@@ -98,7 +98,7 @@ export default function OurStoryView() {
       </div>
 
       {/* ── Section 3: The T.I.M.E fits Memory Tag Feature ── */}
-      <div className="bg-gradient-to-br from-[#0F5132] to-[#0B1910] text-white rounded-[24px] p-6 sm:p-10 shadow-lg border border-emerald-500/30">
+      <div className="bg-gradient-to-br from-[#16A34A] to-[#133D27] text-white rounded-[24px] p-6 sm:p-10 shadow-lg border border-emerald-500/30">
         <div className="grid grid-cols-1 md:grid-cols-12 gap-6 items-center">
           <div className="md:col-span-7 space-y-3">
             <div className="inline-flex items-center gap-1.5 bg-black/40 text-[#4ADE80] px-2.5 py-0.5 rounded-full text-[10px] font-bold tracking-wider uppercase">
@@ -114,9 +114,9 @@ export default function OurStoryView() {
           </div>
 
           <div className="md:col-span-5">
-            <div className="bg-white text-[#0B1910] p-5 rounded-2xl shadow-xl border-2 border-emerald-600/30 font-serif space-y-3">
+            <div className="bg-white text-[#133D27] p-5 rounded-2xl shadow-xl border-2 border-emerald-600/30 font-serif space-y-3">
               <div className="flex items-center justify-between border-b border-gray-200 pb-2">
-                <span className="text-[10px] tracking-widest uppercase font-bold text-[#0F5132]">
+                <span className="text-[10px] tracking-widest uppercase font-bold text-[#16A34A]">
                   T.I.M.E fits · Atelier
                 </span>
                 <span className="text-[9px] text-gray-500 font-sans">ACCRA</span>
@@ -142,10 +142,10 @@ export default function OurStoryView() {
       {/* ── Section 4: OUR PHILOSOPHY (The 5 Values) ── */}
       <div className="space-y-6">
         <div className="text-center space-y-2">
-          <span className="text-[10px] font-bold tracking-[0.2em] text-[#0F5132] uppercase">
+          <span className="text-[10px] font-bold tracking-[0.2em] text-[#16A34A] uppercase">
             OUR PHILOSOPHY
           </span>
-          <h2 className="text-2xl sm:text-4xl font-bold text-[#0B1910] font-serif">
+          <h2 className="text-2xl sm:text-4xl font-bold text-[#133D27] font-serif">
             We Don’t Design for Seasons; We Design for Lifetimes.
           </h2>
           <p className="text-xs sm:text-sm text-gray-600 max-w-xl mx-auto">
@@ -156,10 +156,10 @@ export default function OurStoryView() {
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
           {/* Value 1 */}
           <div className="bg-white p-6 rounded-[20px] border border-emerald-900/10 shadow-sm space-y-2.5">
-            <div className="w-9 h-9 rounded-xl bg-emerald-50 text-[#0F5132] flex items-center justify-center font-bold">
-              <Clock className="w-4 h-4 text-[#0F5132]" />
+            <div className="w-9 h-9 rounded-xl bg-emerald-50 text-[#16A34A] flex items-center justify-center font-bold">
+              <Clock className="w-4 h-4 text-[#16A34A]" />
             </div>
-            <h3 className="font-bold text-sm text-[#0B1910] uppercase tracking-wide">1. TIMELESSNESS</h3>
+            <h3 className="font-bold text-sm text-[#133D27] uppercase tracking-wide">1. TIMELESSNESS</h3>
             <p className="text-xs text-gray-600 font-light leading-relaxed">
               We create with an eye beyond the present. Our designs are made to remain beautiful, relevant and compelling long after the trend has moved on.
             </p>
@@ -167,10 +167,10 @@ export default function OurStoryView() {
 
           {/* Value 2 */}
           <div className="bg-white p-6 rounded-[20px] border border-emerald-900/10 shadow-sm space-y-2.5">
-            <div className="w-9 h-9 rounded-xl bg-emerald-50 text-[#0F5132] flex items-center justify-center font-bold">
-              <Scissors className="w-4 h-4 text-[#0F5132]" />
+            <div className="w-9 h-9 rounded-xl bg-emerald-50 text-[#16A34A] flex items-center justify-center font-bold">
+              <Scissors className="w-4 h-4 text-[#16A34A]" />
             </div>
-            <h3 className="font-bold text-sm text-[#0B1910] uppercase tracking-wide">2. CRAFTSMANSHIP</h3>
+            <h3 className="font-bold text-sm text-[#133D27] uppercase tracking-wide">2. CRAFTSMANSHIP</h3>
             <p className="text-xs text-gray-600 font-light leading-relaxed">
               Every garment is an act of care. From illustration and fabric selection to cutting, construction, stitching, creative detailing and final finish, we honour precision and patience.
             </p>
@@ -178,10 +178,10 @@ export default function OurStoryView() {
 
           {/* Value 3 */}
           <div className="bg-white p-6 rounded-[20px] border border-emerald-900/10 shadow-sm space-y-2.5">
-            <div className="w-9 h-9 rounded-xl bg-emerald-50 text-[#0F5132] flex items-center justify-center font-bold">
-              <Users className="w-4 h-4 text-[#0F5132]" />
+            <div className="w-9 h-9 rounded-xl bg-emerald-50 text-[#16A34A] flex items-center justify-center font-bold">
+              <Users className="w-4 h-4 text-[#16A34A]" />
             </div>
-            <h3 className="font-bold text-sm text-[#0B1910] uppercase tracking-wide">3. INCLUSIVITY</h3>
+            <h3 className="font-bold text-sm text-[#133D27] uppercase tracking-wide">3. INCLUSIVITY</h3>
             <p className="text-xs text-gray-600 font-light leading-relaxed">
               Style belongs to everyone. We design with respect for different ages, bodies, identities and personal expressions, creating space for every wearer to feel welcomed and confident.
             </p>
@@ -189,10 +189,10 @@ export default function OurStoryView() {
 
           {/* Value 4 */}
           <div className="bg-white p-6 rounded-[20px] border border-emerald-900/10 shadow-sm space-y-2.5">
-            <div className="w-9 h-9 rounded-xl bg-emerald-50 text-[#0F5132] flex items-center justify-center font-bold">
-              <Heart className="w-4 h-4 text-[#0F5132]" />
+            <div className="w-9 h-9 rounded-xl bg-emerald-50 text-[#16A34A] flex items-center justify-center font-bold">
+              <Heart className="w-4 h-4 text-[#16A34A]" />
             </div>
-            <h3 className="font-bold text-sm text-[#0B1910] uppercase tracking-wide">4. CONNECTION</h3>
+            <h3 className="font-bold text-sm text-[#133D27] uppercase tracking-wide">4. CONNECTION</h3>
             <p className="text-xs text-gray-600 font-light leading-relaxed">
               Clothing can bring people closer to the moments and relationships that matter most. Family, friendship, love, community and belonging remain central to our creative world.
             </p>
@@ -200,17 +200,17 @@ export default function OurStoryView() {
 
           {/* Value 5 */}
           <div className="bg-white p-6 rounded-[20px] border border-emerald-900/10 shadow-sm space-y-2.5">
-            <div className="w-9 h-9 rounded-xl bg-emerald-50 text-[#0F5132] flex items-center justify-center font-bold">
-              <Sparkles className="w-4 h-4 text-[#0F5132]" />
+            <div className="w-9 h-9 rounded-xl bg-emerald-50 text-[#16A34A] flex items-center justify-center font-bold">
+              <Sparkles className="w-4 h-4 text-[#16A34A]" />
             </div>
-            <h3 className="font-bold text-sm text-[#0B1910] uppercase tracking-wide">5. PURPOSE</h3>
+            <h3 className="font-bold text-sm text-[#133D27] uppercase tracking-wide">5. PURPOSE</h3>
             <p className="text-xs text-gray-600 font-light leading-relaxed">
               Nothing is designed without intention. Every piece should express an idea, honour an occasion, celebrate a person or serve a meaningful place in the wearer’s life.
             </p>
           </div>
 
           {/* Guiding Principle Card */}
-          <div className="bg-[#0F5132] text-white p-6 rounded-[20px] shadow-sm flex flex-col justify-center">
+          <div className="bg-[#16A34A] text-white p-6 rounded-[20px] shadow-sm flex flex-col justify-center">
             <span className="text-[10px] tracking-widest uppercase font-bold text-emerald-200">
               GUIDING PRINCIPLE
             </span>
@@ -227,10 +227,10 @@ export default function OurStoryView() {
       {/* ── Section 5: The 6-Stage Design Process ── */}
       <div className="bg-white rounded-[24px] p-6 sm:p-10 border border-emerald-900/10 shadow-sm space-y-6">
         <div className="text-center space-y-1">
-          <span className="text-[10px] font-bold tracking-[0.2em] text-[#0F5132] uppercase">
+          <span className="text-[10px] font-bold tracking-[0.2em] text-[#16A34A] uppercase">
             HOW WE CREATE
           </span>
-          <h2 className="text-xl sm:text-3xl font-serif font-bold text-[#0B1910]">
+          <h2 className="text-xl sm:text-3xl font-serif font-bold text-[#133D27]">
             The 6-Stage Design Process
           </h2>
         </div>
@@ -272,8 +272,8 @@ export default function OurStoryView() {
               key={item.step}
               className="p-4 rounded-xl bg-gray-50 border border-gray-100 space-y-1.5 hover:bg-emerald-50/50 transition-colors"
             >
-              <span className="text-xs font-mono font-bold text-[#0F5132]">{item.step}</span>
-              <h4 className="font-bold text-sm text-[#0B1910]">{item.title}</h4>
+              <span className="text-xs font-mono font-bold text-[#16A34A]">{item.step}</span>
+              <h4 className="font-bold text-sm text-[#133D27]">{item.title}</h4>
               <p className="text-xs text-gray-600 font-light leading-relaxed">{item.desc}</p>
             </div>
           ))}
@@ -283,10 +283,10 @@ export default function OurStoryView() {
       {/* ── Section 6: Our Commitment to You (7 Customer Promises) ── */}
       <div className="bg-white rounded-[24px] p-6 sm:p-10 border border-emerald-900/10 shadow-sm space-y-5">
         <div className="text-center space-y-1">
-          <span className="text-[10px] font-bold tracking-[0.2em] text-[#0F5132] uppercase">
+          <span className="text-[10px] font-bold tracking-[0.2em] text-[#16A34A] uppercase">
             OUR PROMISE
           </span>
-          <h2 className="text-xl sm:text-3xl font-serif font-bold text-[#0B1910]">
+          <h2 className="text-xl sm:text-3xl font-serif font-bold text-[#133D27]">
             Our Commitment to You
           </h2>
           <p className="text-xs text-gray-600 max-w-lg mx-auto">
@@ -313,7 +313,7 @@ export default function OurStoryView() {
       </div>
 
       {/* ── Shoppable End Banner ── */}
-      <div className="bg-[#0B1910] text-white rounded-[24px] p-6 sm:p-10 text-center space-y-4 shadow-xl">
+      <div className="bg-[#133D27] text-white rounded-[24px] p-6 sm:p-10 text-center space-y-4 shadow-xl">
         <span className="text-[10px] font-bold tracking-widest text-[#4ADE80] uppercase">
           EXPERIENCE T.I.M.E FITS
         </span>
@@ -335,7 +335,7 @@ export default function OurStoryView() {
 
           <button
             onClick={() => setActiveView('bespoke')}
-            className="h-10 px-5 rounded-full bg-[#0F5132] text-white border border-white/20 hover:bg-[#166534] text-xs font-semibold transition-all shadow cursor-pointer"
+            className="h-10 px-5 rounded-full bg-[#16A34A] text-white border border-white/20 hover:bg-[#15803D] text-xs font-semibold transition-all shadow cursor-pointer"
           >
             Book Bespoke Fitting
           </button>

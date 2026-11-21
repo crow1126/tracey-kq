@@ -34,10 +34,10 @@ export default function HomeView() {
     <div className="space-y-10 sm:space-y-12 pb-32 md:pb-16">
       {/* Logged in personalized greeting banner */}
       {user.isLoggedIn && (
-        <div className="bg-emerald-50 border-b border-emerald-200 py-2 px-6 text-center text-xs text-[#0F5132]">
+        <div className="bg-emerald-50 border-b border-emerald-200 py-2 px-6 text-center text-xs text-[#16A34A]">
           <span>
             {getGreeting()},{' '}
-            <strong className="text-[#0B1910]">{user.name}</strong> · Member · Accra ·{' '}
+            <strong className="text-[#133D27]">{user.name}</strong> · Member · Accra ·{' '}
             <strong className="text-[#16A34A]">{user.loyaltyPoints} Style Points</strong> available
           </span>
         </div>
@@ -52,7 +52,7 @@ export default function HomeView() {
       {/* 3. T.I.M.E fits Signature Green Feature Banner */}
       {siteContent.bannerVisible && (
         <section className="max-w-7xl mx-auto px-4 sm:px-8">
-          <div className="relative rounded-[24px] sm:rounded-[28px] overflow-hidden bg-gradient-to-r from-[#0B1910] via-[#0F5132] to-[#145A32] p-6 sm:p-10 lg:p-12 text-white shadow-xl border border-emerald-500/20">
+          <div className="relative rounded-[24px] sm:rounded-[28px] overflow-hidden bg-gradient-to-r from-[#133D27] via-[#16A34A] to-[#15803D] p-6 sm:p-10 lg:p-12 text-white shadow-xl border border-emerald-500/20">
             <div className="grid grid-cols-1 md:grid-cols-12 gap-6 items-center">
               <div className="md:col-span-8 space-y-3">
                 <span className="inline-block bg-white/15 backdrop-blur-md px-3 py-1 rounded-full text-[10px] font-bold tracking-widest uppercase border border-white/20 text-[#4ADE80]">
@@ -106,16 +106,16 @@ export default function HomeView() {
       <section className="max-w-7xl mx-auto px-4 sm:px-8 space-y-4 sm:space-y-6">
         <div className="flex items-end justify-between">
           <div>
-            <span className="text-[10px] sm:text-[11px] font-bold tracking-[0.2em] text-[#0F5132] uppercase block">
+            <span className="text-[10px] sm:text-[11px] font-bold tracking-[0.2em] text-[#16A34A] uppercase block">
               DISCOVER
             </span>
-            <h2 className="text-xl sm:text-3xl font-bold text-[#0B1910] tracking-tight font-serif">
+            <h2 className="text-xl sm:text-3xl font-bold text-[#133D27] tracking-tight font-serif">
               Trending Silhouettes
             </h2>
           </div>
           <button
             onClick={() => setActiveView('shop')}
-            className="text-xs sm:text-[13px] font-bold text-[#0F5132] hover:underline cursor-pointer"
+            className="text-xs sm:text-[13px] font-bold text-[#16A34A] hover:underline cursor-pointer"
           >
             See all ({products.length}) →
           </button>
@@ -148,7 +148,7 @@ export default function HomeView() {
                     className="absolute top-2 right-2 z-10"
                   >
                     <IconButton variant="card-heart" isActive={hasHeart} aria-label="Save to wishlist">
-                      <Heart className={`w-4 h-4 ${hasHeart ? 'fill-current text-[#0F5132]' : ''}`} />
+                      <Heart className={`w-4 h-4 ${hasHeart ? 'fill-current text-[#16A34A]' : ''}`} />
                     </IconButton>
                   </div>
 
@@ -163,13 +163,13 @@ export default function HomeView() {
                   <span className="text-[9px] sm:text-[10px] font-semibold tracking-wider uppercase text-gray-500 block">
                     {product.category}
                   </span>
-                  <h3 className="font-semibold text-xs sm:text-sm text-[#0B1910] line-clamp-1 group-hover:text-[#0F5132] transition-colors">
+                  <h3 className="font-semibold text-xs sm:text-sm text-[#133D27] line-clamp-1 group-hover:text-[#16A34A] transition-colors">
                     {product.name}
                   </h3>
                   <p className="text-[10px] sm:text-[11px] text-gray-500 line-clamp-1">
                     {product.fabric}
                   </p>
-                  <div className="pt-1.5 flex items-center justify-between text-[11px] sm:text-xs font-bold text-[#0F5132] transition-colors">
+                  <div className="pt-1.5 flex items-center justify-between text-[11px] sm:text-xs font-bold text-[#16A34A] transition-colors">
                     <span>GH₵ {product.priceGhc.toLocaleString()}</span>
                     <span className="text-xs">→</span>
                   </div>
@@ -182,10 +182,10 @@ export default function HomeView() {
 
       {/* 5. Signature Interactive Feature: The T.I.M.E fits Memory Tag */}
       <section className="max-w-7xl mx-auto px-4 sm:px-8">
-        <div className="bg-[#0B1910] rounded-[24px] sm:rounded-[28px] overflow-hidden text-white p-6 sm:p-10 border border-emerald-900/40 shadow-xl">
+        <div className="bg-[#133D27] rounded-[24px] sm:rounded-[28px] overflow-hidden text-white p-6 sm:p-10 border border-emerald-900/40 shadow-xl">
           <div className="grid grid-cols-1 md:grid-cols-12 gap-6 items-center">
             <div className="md:col-span-7 space-y-3">
-              <div className="inline-flex items-center gap-1.5 bg-[#0F5132] text-[#4ADE80] px-2.5 py-0.5 rounded-full text-[10px] font-bold tracking-widest uppercase">
+              <div className="inline-flex items-center gap-1.5 bg-[#16A34A] text-[#4ADE80] px-2.5 py-0.5 rounded-full text-[10px] font-bold tracking-widest uppercase">
                 <BookmarkCheck className="w-3.5 h-3.5" />
                 <span>SIGNATURE BRAND DETAIL</span>
               </div>
@@ -198,7 +198,7 @@ export default function HomeView() {
               <div className="pt-2">
                 <button
                   onClick={() => setActiveView('our-story')}
-                  className="h-9 px-4 rounded-full bg-white text-[#0B1910] text-xs font-bold hover:bg-emerald-50 transition-colors shadow flex items-center gap-1.5"
+                  className="h-9 px-4 rounded-full bg-white text-[#133D27] text-xs font-bold hover:bg-emerald-50 transition-colors shadow flex items-center gap-1.5"
                 >
                   <span>Learn The Philosophy</span>
                   <ArrowRight className="w-3 h-3" />
@@ -207,9 +207,9 @@ export default function HomeView() {
             </div>
 
             <div className="md:col-span-5 flex justify-center">
-              <div className="w-full max-w-sm bg-white text-[#0B1910] p-5 rounded-2xl shadow-2xl border-2 border-emerald-500/40 font-serif space-y-2.5">
+              <div className="w-full max-w-sm bg-white text-[#133D27] p-5 rounded-2xl shadow-2xl border-2 border-emerald-500/40 font-serif space-y-2.5">
                 <div className="flex items-center justify-between border-b border-gray-200 pb-2">
-                  <span className="text-[10px] tracking-widest uppercase font-bold text-[#0F5132]">
+                  <span className="text-[10px] tracking-widest uppercase font-bold text-[#16A34A]">
                     T.I.M.E fits · Tag
                   </span>
                   <span className="text-[9px] text-gray-400 font-sans">ACCRA ATELIER</span>
@@ -235,7 +235,7 @@ export default function HomeView() {
 
       {/* 6. Spotlight / The Edit */}
       <section className="max-w-7xl mx-auto px-4 sm:px-8">
-        <div className="bg-[#0B1910] rounded-[24px] sm:rounded-[28px] overflow-hidden text-white p-6 sm:p-10 relative shadow-xl border border-emerald-900/40">
+        <div className="bg-[#133D27] rounded-[24px] sm:rounded-[28px] overflow-hidden text-white p-6 sm:p-10 relative shadow-xl border border-emerald-900/40">
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 sm:gap-8 items-center">
             {/* Visual with Shoppable Tag Card */}
             <div className="lg:col-span-6 relative">
@@ -250,10 +250,10 @@ export default function HomeView() {
               {/* Shoppable Floating Tag Card */}
               <div
                 onClick={() => setQuickViewProduct(products[0])}
-                className="absolute bottom-3 inset-x-3 bg-white/95 backdrop-blur-md text-[#0B1910] p-3 sm:p-4 rounded-[16px] sm:rounded-[20px] shadow-2xl flex items-center justify-between border border-emerald-200 cursor-pointer hover:bg-white transition-colors"
+                className="absolute bottom-3 inset-x-3 bg-white/95 backdrop-blur-md text-[#133D27] p-3 sm:p-4 rounded-[16px] sm:rounded-[20px] shadow-2xl flex items-center justify-between border border-emerald-200 cursor-pointer hover:bg-white transition-colors"
               >
                 <div className="min-w-0 pr-2">
-                  <span className="text-[9px] sm:text-[10px] font-bold uppercase tracking-wider text-[#0F5132] block">
+                  <span className="text-[9px] sm:text-[10px] font-bold uppercase tracking-wider text-[#16A34A] block">
                     FEATURED CREATION
                   </span>
                   <p className="font-bold text-xs sm:text-sm truncate">
@@ -263,7 +263,7 @@ export default function HomeView() {
                     GH₵ {products[0]?.priceGhc.toLocaleString() || '18,500'}
                   </p>
                 </div>
-                <div className="w-8 h-8 rounded-full bg-[#0F5132] text-white flex items-center justify-center shadow-md">
+                <div className="w-8 h-8 rounded-full bg-[#16A34A] text-white flex items-center justify-center shadow-md">
                   <Plus className="w-3.5 h-3.5 text-white" />
                 </div>
               </div>
@@ -306,16 +306,16 @@ export default function HomeView() {
       <section className="max-w-7xl mx-auto px-4 sm:px-8 space-y-4 sm:space-y-6">
         <div className="flex items-end justify-between">
           <div>
-            <span className="text-[10px] sm:text-[11px] font-bold tracking-[0.2em] text-[#0F5132] uppercase block">
+            <span className="text-[10px] sm:text-[11px] font-bold tracking-[0.2em] text-[#16A34A] uppercase block">
               FIND US
             </span>
-            <h2 className="text-xl sm:text-3xl font-bold text-[#0B1910] tracking-tight font-serif">
+            <h2 className="text-xl sm:text-3xl font-bold text-[#133D27] tracking-tight font-serif">
               Our Flagship Showrooms & Ateliers
             </h2>
           </div>
           <button
             onClick={() => setActiveView('stores')}
-            className="text-xs sm:text-[13px] font-bold text-[#0F5132] hover:underline cursor-pointer"
+            className="text-xs sm:text-[13px] font-bold text-[#16A34A] hover:underline cursor-pointer"
           >
             All Locations →
           </button>
@@ -356,11 +356,11 @@ export default function HomeView() {
                   className="w-full h-full object-cover group-hover:scale-105 transition-transform"
                 />
               </div>
-              <h3 className="font-bold text-xs sm:text-sm text-[#0B1910] group-hover:text-[#0F5132] transition-colors">
+              <h3 className="font-bold text-xs sm:text-sm text-[#133D27] group-hover:text-[#16A34A] transition-colors">
                 {st.name}
               </h3>
               <p className="text-[11px] text-gray-500 flex items-center gap-1 mt-1 font-light">
-                <MapPin className="w-3.5 h-3.5 text-[#0F5132]" />
+                <MapPin className="w-3.5 h-3.5 text-[#16A34A]" />
                 <span>{st.area}</span>
               </p>
             </div>

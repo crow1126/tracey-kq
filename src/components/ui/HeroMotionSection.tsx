@@ -26,7 +26,7 @@ export default function HeroMotionSection() {
   const secondaryView = siteContent.heroSecondaryView || 'our-story';
 
   return (
-    <section className="relative min-h-[440px] sm:min-h-[540px] lg:min-h-[620px] bg-[#0B1910] text-white flex items-center overflow-hidden select-none">
+    <section className="relative min-h-[440px] sm:min-h-[540px] lg:min-h-[620px] bg-[#133D27] text-white flex items-center overflow-hidden select-none">
       {/* ── Single High-Resolution Fashion Photograph (No Slideshow) ── */}
       <div className="absolute inset-0 z-0">
         <img
@@ -37,13 +37,13 @@ export default function HeroMotionSection() {
           className="w-full h-full object-cover object-center"
         />
         {/* Luxury Emerald & Black Scrim Overlays */}
-        <div className="absolute inset-0 bg-[#0B1910]/65 z-10 pointer-events-none" />
-        <div className="absolute inset-0 bg-gradient-to-r from-[#0B1910]/95 via-[#0B1910]/65 to-transparent z-10 pointer-events-none" />
-        <div className="absolute inset-0 bg-gradient-to-t from-[#0B1910] via-transparent to-black/40 z-10 pointer-events-none" />
+        <div className="absolute inset-0 bg-[#133D27]/65 z-10 pointer-events-none" />
+        <div className="absolute inset-0 bg-gradient-to-r from-[#133D27]/95 via-[#133D27]/65 to-transparent z-10 pointer-events-none" />
+        <div className="absolute inset-0 bg-gradient-to-t from-[#133D27] via-transparent to-black/40 z-10 pointer-events-none" />
 
         {/* Ambient emerald lights */}
-        <div className="absolute top-1/4 -left-20 w-72 sm:w-96 h-72 sm:h-96 rounded-full bg-[#0F5132]/35 blur-[90px] pointer-events-none z-10" />
-        <div className="absolute bottom-10 right-10 w-72 sm:w-[420px] h-72 sm:h-[420px] rounded-full bg-[#166534]/30 blur-[110px] pointer-events-none z-10" />
+        <div className="absolute top-1/4 -left-20 w-72 sm:w-96 h-72 sm:h-96 rounded-full bg-[#16A34A]/35 blur-[90px] pointer-events-none z-10" />
+        <div className="absolute bottom-10 right-10 w-72 sm:w-[420px] h-72 sm:h-[420px] rounded-full bg-[#15803D]/30 blur-[110px] pointer-events-none z-10" />
       </div>
 
       {/* ── Editorial Content ── */}
@@ -58,7 +58,7 @@ export default function HeroMotionSection() {
               </span>
             </div>
 
-            <div className="inline-flex items-center gap-1 bg-[#0F5132]/90 backdrop-blur-md px-2.5 sm:px-3 py-1 rounded-full border border-white/20 text-[9px] sm:text-[11px] font-medium text-white shadow-sm">
+            <div className="inline-flex items-center gap-1 bg-[#16A34A]/90 backdrop-blur-md px-2.5 sm:px-3 py-1 rounded-full border border-white/20 text-[9px] sm:text-[11px] font-medium text-white shadow-sm">
               <Sparkles className="w-2.5 h-2.5 sm:w-3 sm:h-3 text-[#4ADE80]" />
               <span>Tailored Perfection, Timeless Style.</span>
             </div>
@@ -89,10 +89,10 @@ export default function HeroMotionSection() {
                 setActiveView(primaryView as never);
                 window.scrollTo({ top: 0, behavior: 'smooth' });
               }}
-              className="h-9 sm:h-10 px-4 sm:px-5 rounded-full bg-white text-[#0B1910] text-[11px] sm:text-xs font-bold hover:bg-emerald-50 active:scale-95 transition-all shadow-md flex items-center gap-1.5 cursor-pointer"
+              className="h-9 sm:h-10 px-4 sm:px-5 rounded-full bg-white text-[#133D27] text-[11px] sm:text-xs font-bold hover:bg-emerald-50 active:scale-95 transition-all shadow-md flex items-center gap-1.5 cursor-pointer"
             >
               <span>{primaryCta}</span>
-              <ArrowRight className="w-3.5 h-3.5 text-[#0B1910]" />
+              <ArrowRight className="w-3.5 h-3.5 text-[#133D27]" />
             </button>
 
             <button
@@ -101,7 +101,7 @@ export default function HeroMotionSection() {
                 setActiveView(secondaryView as never);
                 window.scrollTo({ top: 0, behavior: 'smooth' });
               }}
-              className="h-9 sm:h-10 px-3.5 sm:px-4 rounded-full bg-[#0F5132]/80 backdrop-blur-md text-white border border-white/30 hover:bg-[#0F5132] hover:border-white/50 active:scale-95 transition-all shadow-sm text-[11px] sm:text-xs font-semibold flex items-center justify-center cursor-pointer"
+              className="h-9 sm:h-10 px-3.5 sm:px-4 rounded-full bg-[#16A34A]/80 backdrop-blur-md text-white border border-white/30 hover:bg-[#16A34A] hover:border-white/50 active:scale-95 transition-all shadow-sm text-[11px] sm:text-xs font-semibold flex items-center justify-center cursor-pointer"
             >
               <span>{secondaryCta}</span>
             </button>

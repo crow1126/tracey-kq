@@ -695,7 +695,7 @@ export default function AdminView() {
                       Manage the single hero image, campaign badge, headline typography, and narrative write-up.
                     </p>
                   </div>
-                  <span className="text-[10px] font-bold tracking-widest text-[#0F5132] bg-emerald-100/70 border border-emerald-300 px-2.5 py-1 rounded-full uppercase">
+                  <span className="text-[10px] font-bold tracking-widest text-[#16A34A] bg-emerald-100/70 border border-emerald-300 px-2.5 py-1 rounded-full uppercase">
                     Single Image Mode
                   </span>
                 </div>
@@ -774,7 +774,7 @@ export default function AdminView() {
                         onChange={(e) =>
                           setContentForm({ ...contentForm, heroHeadlineAccent: e.target.value })
                         }
-                        className="w-full h-10 px-3 rounded-xl bg-white border border-[#E6E6EA] text-xs font-bold text-[#0F5132] outline-none"
+                        className="w-full h-10 px-3 rounded-xl bg-white border border-[#E6E6EA] text-xs font-bold text-[#16A34A] outline-none"
                       />
                     </div>
 

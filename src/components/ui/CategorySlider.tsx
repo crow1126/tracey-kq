@@ -43,11 +43,11 @@ export default function CategorySlider() {
       {/* Header with Title and Modern Controls */}
       <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-4">
         <div>
-          <span className="text-[11px] font-bold tracking-[0.25em] text-[#0F5132] uppercase flex items-center gap-1.5 mb-1.5">
+          <span className="text-[11px] font-bold tracking-[0.25em] text-[#16A34A] uppercase flex items-center gap-1.5 mb-1.5">
             <Sparkles className="w-3.5 h-3.5 text-[#16A34A]" />
             <span>CURATED ARCHIVES · T.I.M.E FITS</span>
           </span>
-          <h2 className="text-2xl sm:text-3xl lg:text-4xl font-bold text-[#0B1910] tracking-tight font-serif">
+          <h2 className="text-2xl sm:text-3xl lg:text-4xl font-bold text-[#133D27] tracking-tight font-serif">
             Explore by Category
           </h2>
           <p className="text-xs sm:text-sm text-gray-600 mt-1 font-light max-w-xl">
@@ -59,7 +59,7 @@ export default function CategorySlider() {
         <div className="flex items-center gap-3 self-end sm:self-auto">
           <button
             onClick={() => navigateToCategory('all')}
-            className="text-xs font-bold text-[#0F5132] hover:text-[#0B1910] transition-colors mr-2 cursor-pointer"
+            className="text-xs font-bold text-[#16A34A] hover:text-[#133D27] transition-colors mr-2 cursor-pointer"
           >
             All Categories ({categories.length}) →
           </button>
@@ -113,7 +113,7 @@ export default function CategorySlider() {
               <span className="text-[10px] font-mono font-bold tracking-widest text-white/90 bg-black/40 backdrop-blur-md px-2.5 py-1 rounded-full border border-white/15">
                 0{idx + 1} / 0{categories.length}
               </span>
-              <span className="text-[11px] font-semibold text-white/95 bg-[#0F5132]/90 backdrop-blur-md px-2.5 py-1 rounded-full border border-emerald-400/30">
+              <span className="text-[11px] font-semibold text-white/95 bg-[#16A34A]/90 backdrop-blur-md px-2.5 py-1 rounded-full border border-emerald-400/30">
                 {cat.itemCount} pieces
               </span>
             </div>
@@ -134,7 +134,7 @@ export default function CategorySlider() {
                   <span>Shop Collection</span>
                   <span>→</span>
                 </span>
-                <div className="w-8 h-8 rounded-full bg-white/20 backdrop-blur-md flex items-center justify-center text-white group-hover:bg-[#0F5132] group-hover:text-white transition-colors shadow-md">
+                <div className="w-8 h-8 rounded-full bg-white/20 backdrop-blur-md flex items-center justify-center text-white group-hover:bg-[#16A34A] group-hover:text-white transition-colors shadow-md">
                   <ArrowUpRight className="w-4 h-4" />
                 </div>
               </div>
@@ -149,7 +149,7 @@ export default function CategorySlider() {
           <span
             key={i}
             className={`h-1.5 rounded-full transition-all duration-300 ${
-              activeIndex === i ? 'w-6 bg-[#0F5132]' : 'w-1.5 bg-[#D4D4DA]'
+              activeIndex === i ? 'w-6 bg-[#16A34A]' : 'w-1.5 bg-[#D4D4DA]'
             }`}
           />
         ))}

@@ -28,7 +28,7 @@ export default function DesktopTopNav() {
   return (
     <header className="hidden md:block sticky top-0 z-40 bg-white/95 backdrop-blur-md border-b border-[#E6E6EA] transition-all">
       {/* Top Banner - Emerald Green Theme */}
-      <div className="bg-[#0B1910] text-white py-1.5 px-6 text-center text-xs tracking-widest font-medium flex items-center justify-center gap-3">
+      <div className="bg-[#133D27] text-white py-1.5 px-6 text-center text-xs tracking-widest font-medium flex items-center justify-center gap-3">
         <span className="w-1.5 h-1.5 rounded-full bg-[#22C55E] animate-pulse"></span>
         <span className="font-light tracking-wide text-emerald-100">
           {siteContent?.announcementBarText ||
@@ -53,10 +53,10 @@ export default function DesktopTopNav() {
           />
           <div className="flex flex-col">
             <div className="flex items-center gap-2">
-              <span className="text-[17px] font-bold tracking-[0.25em] text-[#0F5132] uppercase font-serif">
+              <span className="text-[17px] font-bold tracking-[0.25em] text-[#16A34A] uppercase font-serif">
                 T.I.M.E fits
               </span>
-              <span className="text-[9px] font-bold text-[#0F5132] bg-emerald-50 border border-emerald-200 px-2 py-0.5 rounded-full">
+              <span className="text-[9px] font-bold text-[#16A34A] bg-emerald-50 border border-emerald-200 px-2 py-0.5 rounded-full">
                 ACCRA
               </span>
             </div>
@@ -79,13 +79,13 @@ export default function DesktopTopNav() {
                 }}
                 className={`py-2 relative transition-colors cursor-pointer ${
                   isActive
-                    ? 'text-[#0F5132] font-bold'
-                    : 'hover:text-[#0F5132]'
+                    ? 'text-[#16A34A] font-bold'
+                    : 'hover:text-[#16A34A]'
                 }`}
               >
                 {link.label}
                 {isActive && (
-                  <span className="absolute bottom-0 inset-x-0 h-0.5 bg-[#0F5132] rounded-full" />
+                  <span className="absolute bottom-0 inset-x-0 h-0.5 bg-[#16A34A] rounded-full" />
                 )}
               </button>
             );
@@ -99,8 +99,8 @@ export default function DesktopTopNav() {
             onClick={() => setActiveView('admin')}
             className={`text-xs font-semibold px-3 py-1.5 rounded-full flex items-center gap-1.5 transition-colors cursor-pointer ${
               activeView === 'admin'
-                ? 'bg-[#0F5132] text-white'
-                : 'bg-emerald-50 text-[#0F5132] hover:bg-emerald-100 border border-emerald-200'
+                ? 'bg-[#16A34A] text-white'
+                : 'bg-emerald-50 text-[#16A34A] hover:bg-emerald-100 border border-emerald-200'
             }`}
           >
             <ShieldCheck className="w-3.5 h-3.5 text-[#22C55E]" />
@@ -126,7 +126,7 @@ export default function DesktopTopNav() {
           >
             <Heart className="w-5 h-5 text-[#111113]" />
             {wishlist.length > 0 && (
-              <span className="absolute -top-1 -right-1 bg-[#0F5132] text-white text-[9px] font-bold w-4 h-4 rounded-full flex items-center justify-center">
+              <span className="absolute -top-1 -right-1 bg-[#16A34A] text-white text-[9px] font-bold w-4 h-4 rounded-full flex items-center justify-center">
                 {wishlist.length}
               </span>
             )}
@@ -143,7 +143,7 @@ export default function DesktopTopNav() {
           >
             <ShoppingBag className="w-5 h-5 text-[#111113]" />
             {cartCount > 0 && (
-              <span className="absolute -top-1 -right-1 bg-[#0F5132] text-white text-[9px] font-bold w-4 h-4 rounded-full flex items-center justify-center">
+              <span className="absolute -top-1 -right-1 bg-[#16A34A] text-white text-[9px] font-bold w-4 h-4 rounded-full flex items-center justify-center">
                 {cartCount}
               </span>
             )}

@@ -22,10 +22,10 @@ export default function BrandFooter() {
   };
 
   return (
-    <footer className="bg-[#0B1910] text-white pt-16 pb-36 md:pb-16 px-6 sm:px-8 lg:px-12 border-t border-emerald-900/40">
+    <footer className="bg-[#133D27] text-white pt-16 pb-36 md:pb-16 px-6 sm:px-8 lg:px-12 border-t border-emerald-900/40">
       <div className="max-w-7xl mx-auto space-y-16">
         {/* Newsletter / Private Circle Section */}
-        <div className="bg-[#0F291B] border border-emerald-800/40 rounded-[28px] p-8 sm:p-12 grid grid-cols-1 lg:grid-cols-12 gap-8 items-center shadow-xl">
+        <div className="bg-[#1A5C37] border border-emerald-800/40 rounded-[28px] p-8 sm:p-12 grid grid-cols-1 lg:grid-cols-12 gap-8 items-center shadow-xl">
           <div className="lg:col-span-7 space-y-3">
             <span className="text-[11px] font-bold tracking-[0.2em] text-[#4ADE80] uppercase block">
               ACCREDITED ATELIER PRIVILEGES
@@ -51,7 +51,7 @@ export default function BrandFooter() {
                 />
                 <button
                   type="submit"
-                  className="absolute right-1.5 h-[42px] px-6 rounded-full bg-white text-[#0B1910] text-xs font-bold uppercase tracking-wider hover:bg-emerald-50 transition-colors cursor-pointer shadow"
+                  className="absolute right-1.5 h-[42px] px-6 rounded-full bg-white text-[#133D27] text-xs font-bold uppercase tracking-wider hover:bg-emerald-50 transition-colors cursor-pointer shadow"
                 >
                   {isSubscribed ? <Check className="w-4 h-4 text-[#16A34A]" /> : <span>Subscribe</span>}
                 </button>

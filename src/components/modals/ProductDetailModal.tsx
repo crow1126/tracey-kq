@@ -218,17 +218,17 @@ export default function ProductDetailModal() {
                     </p>
                     <div className="pt-2 border-t border-[#E6E6EA] flex flex-wrap items-center justify-between text-[11px] text-[#8A8A8F] gap-2">
                       <span>Fabric: <strong className="text-[#111113]">{product.fabric}</strong></span>
-                      <span className="text-[#0F5132] font-semibold">T.I.M.E fits · Accra Atelier</span>
+                      <span className="text-[#16A34A] font-semibold">T.I.M.E fits · Accra Atelier</span>
                     </div>
                   </div>
 
                   {/* T.I.M.E fits Memory Tag Included */}
                   <div className="bg-emerald-50/70 border border-emerald-200/80 rounded-2xl p-3 flex items-center gap-3">
-                    <span className="w-8 h-8 rounded-xl bg-[#0F5132] text-white flex items-center justify-center text-xs font-serif font-bold shrink-0">
+                    <span className="w-8 h-8 rounded-xl bg-[#16A34A] text-white flex items-center justify-center text-xs font-serif font-bold shrink-0">
                       TAG
                     </span>
                     <div className="text-[11px] leading-tight">
-                      <span className="font-bold text-[#0F5132] block">T.I.M.E fits Memory Tag Included</span>
+                      <span className="font-bold text-[#16A34A] block">T.I.M.E fits Memory Tag Included</span>
                       <span className="text-gray-600 font-light italic">&ldquo;This piece was created to be part of your story.&rdquo; (Date & Occasion card)</span>
                     </div>
                   </div>

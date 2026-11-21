@@ -76,11 +76,11 @@ export default function CollectionsView() {
     <div className="bg-[#F8FAF8] min-h-screen pt-8 sm:pt-14 pb-32 px-4 sm:px-8 lg:px-12 space-y-12 sm:space-y-16 max-w-6xl mx-auto text-[#111113]">
       {/* ── Collection Header ── */}
       <div className="text-center space-y-3 max-w-3xl mx-auto">
-        <div className="inline-flex items-center gap-1.5 bg-emerald-50 border border-emerald-200 text-[#0F5132] px-3 py-1 rounded-full text-[10px] sm:text-[11px] font-bold tracking-[0.2em] uppercase">
+        <div className="inline-flex items-center gap-1.5 bg-emerald-50 border border-emerald-200 text-[#16A34A] px-3 py-1 rounded-full text-[10px] sm:text-[11px] font-bold tracking-[0.2em] uppercase">
           <Sparkles className="w-3.5 h-3.5 text-[#16A34A]" />
           <span>OUR COLLECTIONS · T.I.M.E FITS</span>
         </div>
-        <h1 className="text-3xl sm:text-5xl font-bold tracking-tight text-[#0B1910] font-serif">
+        <h1 className="text-3xl sm:text-5xl font-bold tracking-tight text-[#133D27] font-serif">
           Every Collection Has a Story
         </h1>
         <p className="text-xs sm:text-base text-gray-700 font-normal leading-relaxed max-w-2xl mx-auto">
@@ -89,7 +89,7 @@ export default function CollectionsView() {
       </div>
 
       {/* ── Debut Signature Highlight: MAY 3 (KUKUA_TRACEY) COLLECTION ── */}
-      <div className="bg-[#0B1910] text-white rounded-[28px] overflow-hidden shadow-2xl border border-emerald-900/40">
+      <div className="bg-[#133D27] text-white rounded-[28px] overflow-hidden shadow-2xl border border-emerald-900/40">
         <div className="grid grid-cols-1 lg:grid-cols-12 items-center">
           <div className="lg:col-span-5 aspect-[4/5] sm:aspect-square lg:aspect-auto h-full relative">
             <img
@@ -97,11 +97,11 @@ export default function CollectionsView() {
               alt="MAY 3 COLLECTION BY T.I.M.E fits"
               className="w-full h-full object-cover object-center"
             />
-            <div className="absolute inset-0 bg-gradient-to-t from-[#0B1910] via-transparent to-transparent lg:hidden" />
+            <div className="absolute inset-0 bg-gradient-to-t from-[#133D27] via-transparent to-transparent lg:hidden" />
           </div>
 
           <div className="lg:col-span-7 p-6 sm:p-10 lg:p-12 space-y-4">
-            <div className="inline-flex items-center gap-2 bg-[#0F5132] border border-[#22C55E]/40 text-[#4ADE80] px-3 py-1 rounded-full text-[10px] font-bold tracking-widest uppercase">
+            <div className="inline-flex items-center gap-2 bg-[#16A34A] border border-[#22C55E]/40 text-[#4ADE80] px-3 py-1 rounded-full text-[10px] font-bold tracking-widest uppercase">
               DEBUT SIGNATURE COLLECTION
             </div>
             <h2 className="text-2xl sm:text-4xl font-serif font-bold text-white leading-tight">
@@ -166,7 +166,7 @@ export default function CollectionsView() {
       </div>
 
       {/* ── Brand Philosophy Banner ── */}
-      <div className="bg-[#0B1910] text-white rounded-[24px] p-6 sm:p-8 shadow-xl border border-emerald-900/40">
+      <div className="bg-[#133D27] text-white rounded-[24px] p-6 sm:p-8 shadow-xl border border-emerald-900/40">
         <div className="grid grid-cols-1 md:grid-cols-12 gap-5 items-center">
           <div className="md:col-span-8 space-y-2">
             <span className="text-[10px] font-bold tracking-widest text-[#4ADE80] uppercase">
@@ -191,10 +191,10 @@ export default function CollectionsView() {
       {/* ── 5 Core Collection Pillars ── */}
       <div className="space-y-10 sm:space-y-12">
         <div className="text-center space-y-2">
-          <span className="text-[11px] font-bold tracking-[0.2em] text-[#0F5132] uppercase">
+          <span className="text-[11px] font-bold tracking-[0.2em] text-[#16A34A] uppercase">
             WHAT WE ARE INSPIRED BY
           </span>
-          <h2 className="text-2xl sm:text-4xl font-serif font-bold text-[#0B1910]">
+          <h2 className="text-2xl sm:text-4xl font-serif font-bold text-[#133D27]">
             The Five Chapters of Design
           </h2>
         </div>
@@ -221,7 +221,7 @@ export default function CollectionsView() {
                   </div>
                   <div className="absolute bottom-3 left-3 right-3 text-white">
                     <div className="flex items-center gap-2 mb-0.5">
-                      <div className="w-6 h-6 rounded-full bg-[#0F5132] flex items-center justify-center text-white">
+                      <div className="w-6 h-6 rounded-full bg-[#16A34A] flex items-center justify-center text-white">
                         <Icon className="w-3 h-3" />
                       </div>
                       <h3 className="text-lg font-bold font-serif">{pillar.title}</h3>
@@ -239,7 +239,7 @@ export default function CollectionsView() {
                       setActiveView('shop');
                       window.scrollTo({ top: 0, behavior: 'smooth' });
                     }}
-                    className="w-full h-9 rounded-full bg-emerald-50 text-[#0F5132] hover:bg-[#0F5132] hover:text-white text-xs font-semibold flex items-center justify-center gap-1.5 transition-colors cursor-pointer border border-emerald-200"
+                    className="w-full h-9 rounded-full bg-emerald-50 text-[#16A34A] hover:bg-[#16A34A] hover:text-white text-xs font-semibold flex items-center justify-center gap-1.5 transition-colors cursor-pointer border border-emerald-200"
                   >
                     <span>View Garments</span>
                     <ArrowRight className="w-3 h-3" />
@@ -255,11 +255,11 @@ export default function CollectionsView() {
       <div className="bg-white rounded-[24px] p-6 sm:p-10 border border-emerald-900/10 shadow-sm">
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 items-center">
           <div className="lg:col-span-8 space-y-3">
-            <div className="inline-flex items-center gap-1.5 bg-emerald-50 text-[#0F5132] px-2.5 py-0.5 rounded-full text-[10px] font-bold tracking-wider uppercase">
+            <div className="inline-flex items-center gap-1.5 bg-emerald-50 text-[#16A34A] px-2.5 py-0.5 rounded-full text-[10px] font-bold tracking-wider uppercase">
               <Compass className="w-3 h-3 text-[#16A34A]" />
               <span>FLAGSHIP NARRATIVE</span>
             </div>
-            <h3 className="text-xl sm:text-3xl font-serif font-bold text-[#0B1910]">
+            <h3 className="text-xl sm:text-3xl font-serif font-bold text-[#133D27]">
               Threads of a Lifetime
             </h3>
             <p className="text-xs sm:text-sm text-gray-700 leading-relaxed font-light">
@@ -272,7 +272,7 @@ export default function CollectionsView() {
                 setActiveView('our-story');
                 window.scrollTo({ top: 0, behavior: 'smooth' });
               }}
-              className="h-10 px-5 rounded-full bg-[#0F5132] text-white text-xs font-bold hover:bg-[#166534] transition-colors shadow flex items-center gap-2"
+              className="h-10 px-5 rounded-full bg-[#16A34A] text-white text-xs font-bold hover:bg-[#15803D] transition-colors shadow flex items-center gap-2"
             >
               <span>Read The Story</span>
               <ArrowRight className="w-3.5 h-3.5" />
@@ -285,16 +285,16 @@ export default function CollectionsView() {
       <div className="space-y-5 pt-6 border-t border-emerald-900/10">
         <div className="flex items-end justify-between">
           <div>
-            <span className="text-[10px] font-bold tracking-[0.2em] text-[#0F5132] uppercase">
+            <span className="text-[10px] font-bold tracking-[0.2em] text-[#16A34A] uppercase">
               STUDIO ATELIER SELECTIONS
             </span>
-            <h3 className="text-xl sm:text-2xl font-serif font-bold text-[#0B1910]">
+            <h3 className="text-xl sm:text-2xl font-serif font-bold text-[#133D27]">
               Pieces in Rotation
             </h3>
           </div>
           <button
             onClick={() => setActiveView('shop')}
-            className="text-xs font-bold text-[#0F5132] hover:underline"
+            className="text-xs font-bold text-[#16A34A] hover:underline"
           >
             See all pieces ({products.length}) →
           </button>
@@ -314,10 +314,10 @@ export default function CollectionsView() {
                   className="w-full h-full object-cover group-hover:scale-105 transition-transform"
                 />
               </div>
-              <h4 className="font-semibold text-xs text-[#0B1910] truncate">
+              <h4 className="font-semibold text-xs text-[#133D27] truncate">
                 {product.name}
               </h4>
-              <p className="text-xs font-bold text-[#0F5132] mt-0.5">
+              <p className="text-xs font-bold text-[#16A34A] mt-0.5">
                 GH₵ {product.priceGhc.toLocaleString()}
               </p>
             </div>
@@ -326,7 +326,7 @@ export default function CollectionsView() {
       </div>
 
       {/* ── Shoppable End Callout ── */}
-      <div className="bg-[#0B1910] text-white rounded-[24px] p-6 sm:p-10 text-center space-y-3 shadow-xl">
+      <div className="bg-[#133D27] text-white rounded-[24px] p-6 sm:p-10 text-center space-y-3 shadow-xl">
         <span className="text-[10px] font-bold tracking-widest text-[#4ADE80] uppercase">
           NOT JUST FOR THE MOMENT · FOR A LIFETIME
         </span>
@@ -347,7 +347,7 @@ export default function CollectionsView() {
           </Button>
           <button
             onClick={() => setActiveView('bespoke')}
-            className="h-10 px-5 rounded-full bg-[#0F5132] text-white border border-white/20 hover:bg-[#166534] text-xs font-semibold transition-all shadow cursor-pointer"
+            className="h-10 px-5 rounded-full bg-[#16A34A] text-white border border-white/20 hover:bg-[#15803D] text-xs font-semibold transition-all shadow cursor-pointer"
           >
             Book Bespoke Fitting
           </button>

@@ -17,7 +17,7 @@ export default function MobileHeader() {
         onClick={() => setIsBrandMenuOpen(true)}
         aria-label="Open Brand Menu"
       >
-        <Menu className="w-5 h-5 text-[#0F5132]" />
+        <Menu className="w-5 h-5 text-[#16A34A]" />
       </IconButton>
 
       {/* Brand Wordmark & Logo */}
@@ -34,7 +34,7 @@ export default function MobileHeader() {
           className="h-9 w-auto object-contain rounded"
         />
         <div className="flex flex-col text-left">
-          <span className="font-serif font-bold text-[13px] tracking-[0.2em] text-[#0F5132] uppercase leading-tight">
+          <span className="font-serif font-bold text-[13px] tracking-[0.2em] text-[#16A34A] uppercase leading-tight">
             T.I.M.E fits
           </span>
           <span className="text-[8px] text-gray-500 font-normal italic tracking-wider">
@@ -59,11 +59,11 @@ export default function MobileHeader() {
             window.scrollTo({ top: 0, behavior: 'smooth' });
           }}
           aria-label="Shopping Bag"
-          className="relative w-10 h-10 rounded-full bg-[#0F5132] text-white flex items-center justify-center hover:bg-[#0A4D25] active:scale-95 transition-all shadow-sm"
+          className="relative w-10 h-10 rounded-full bg-[#16A34A] text-white flex items-center justify-center hover:bg-[#0A4D25] active:scale-95 transition-all shadow-sm"
         >
           <ShoppingBag className="w-4 h-4 text-white" />
           {cartCount > 0 && (
-            <span className="absolute -top-1 -right-1 bg-[#22C55E] text-[#0B1910] text-[9px] font-black w-4 h-4 rounded-full flex items-center justify-center shadow">
+            <span className="absolute -top-1 -right-1 bg-[#22C55E] text-[#133D27] text-[9px] font-black w-4 h-4 rounded-full flex items-center justify-center shadow">
               {cartCount}
             </span>
           )}

@@ -20,7 +20,7 @@ export default function MobileFloatingNav() {
   return (
     <nav
       aria-label="Mobile Navigation"
-      className="md:hidden fixed bottom-0 left-0 right-0 z-40 bg-[#0B1910]/95 backdrop-blur-xl border-t border-emerald-900/40 px-3 pt-2 pb-[max(12px,env(safe-area-inset-bottom))] shadow-2xl"
+      className="md:hidden fixed bottom-0 left-3 right-3 z-40 bg-[#133D27]/95 backdrop-blur-xl border border-emerald-600/30 rounded-t-[28px] px-3 pt-2 pb-[max(12px,env(safe-area-inset-bottom))] shadow-2xl"
       style={{
         transform: 'translateZ(0)',
         WebkitTransform: 'translateZ(0)',
@@ -45,7 +45,7 @@ export default function MobileFloatingNav() {
             >
               {/* Active item: emerald green circular pill */}
               {isActive && (
-                <span className="absolute inset-0 bg-[#0F5132] border border-[#22C55E]/40 rounded-full shadow-md animate-in fade-in zoom-in-95 duration-200" />
+                <span className="absolute inset-0 bg-[#16A34A] border border-[#22C55E]/40 rounded-full shadow-md animate-in fade-in zoom-in-95 duration-200" />
               )}
 
               <div className="relative z-10 flex flex-col items-center justify-center">
@@ -59,7 +59,7 @@ export default function MobileFloatingNav() {
                 {item.badgeCount !== undefined && item.badgeCount > 0 && (
                   <span
                     className={`absolute -top-1.5 -right-2 text-[9px] font-bold w-4 h-4 rounded-full flex items-center justify-center shadow-md ${
-                      isActive ? 'bg-white text-[#0B1910]' : 'bg-[#22C55E] text-[#0B1910]'
+                      isActive ? 'bg-white text-[#133D27]' : 'bg-[#22C55E] text-[#133D27]'
                     }`}
                   >
                     {item.badgeCount}

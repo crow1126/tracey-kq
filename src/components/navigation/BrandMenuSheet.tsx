@@ -36,7 +36,7 @@ export default function BrandMenuSheet() {
                 className="h-9 w-auto object-contain rounded"
               />
               <div>
-                <span className="font-serif font-bold text-xs tracking-[0.2em] text-[#0F5132] uppercase block">
+                <span className="font-serif font-bold text-xs tracking-[0.2em] text-[#16A34A] uppercase block">
                   T.I.M.E fits
                 </span>
                 <span className="text-[9px] text-gray-500 tracking-wider">
@@ -55,7 +55,7 @@ export default function BrandMenuSheet() {
           {/* Navigation Links */}
           <div className="flex-1 overflow-y-auto p-4 space-y-5">
             <div className="space-y-1">
-              <span className="text-[11px] font-bold tracking-[0.2em] text-[#0F5132] uppercase block px-3 py-1">
+              <span className="text-[11px] font-bold tracking-[0.2em] text-[#16A34A] uppercase block px-3 py-1">
                 Store
               </span>
               <button
@@ -63,7 +63,7 @@ export default function BrandMenuSheet() {
                 className="w-full flex items-center justify-between px-3 py-2.5 rounded-xl text-[14px] font-medium text-[#111113] hover:bg-emerald-50 transition-colors"
               >
                 <div className="flex items-center gap-3">
-                  <Compass className="w-4 h-4 text-[#0F5132]" />
+                  <Compass className="w-4 h-4 text-[#16A34A]" />
                   <span>Browse & Shop Pieces</span>
                 </div>
                 <ChevronRight className="w-4 h-4 text-gray-400" />
@@ -74,7 +74,7 @@ export default function BrandMenuSheet() {
                 className="w-full flex items-center justify-between px-3 py-2.5 rounded-xl text-[14px] font-medium text-[#111113] hover:bg-emerald-50 transition-colors"
               >
                 <div className="flex items-center gap-3">
-                  <ShoppingBag className="w-4 h-4 text-[#0F5132]" />
+                  <ShoppingBag className="w-4 h-4 text-[#16A34A]" />
                   <span>Shopping Bag</span>
                 </div>
                 <ChevronRight className="w-4 h-4 text-gray-400" />
@@ -85,7 +85,7 @@ export default function BrandMenuSheet() {
                 className="w-full flex items-center justify-between px-3 py-2.5 rounded-xl text-[14px] font-medium text-[#111113] hover:bg-emerald-50 transition-colors"
               >
                 <div className="flex items-center gap-3">
-                  <Heart className="w-4 h-4 text-[#0F5132]" />
+                  <Heart className="w-4 h-4 text-[#16A34A]" />
                   <span>Saved Wishlist</span>
                 </div>
                 <ChevronRight className="w-4 h-4 text-gray-400" />
@@ -104,7 +104,7 @@ export default function BrandMenuSheet() {
             </div>
 
             <div className="space-y-1">
-              <span className="text-[11px] font-bold tracking-[0.2em] text-[#0F5132] uppercase block px-3 py-1">
+              <span className="text-[11px] font-bold tracking-[0.2em] text-[#16A34A] uppercase block px-3 py-1">
                 The Maison
               </span>
               <button
@@ -112,7 +112,7 @@ export default function BrandMenuSheet() {
                 className="w-full flex items-center justify-between px-3 py-2.5 rounded-xl text-[14px] font-medium text-[#111113] hover:bg-emerald-50 transition-colors"
               >
                 <div className="flex items-center gap-3">
-                  <Scissors className="w-4 h-4 text-[#0F5132]" />
+                  <Scissors className="w-4 h-4 text-[#16A34A]" />
                   <span>Our Story & Philosophy</span>
                 </div>
                 <ChevronRight className="w-4 h-4 text-gray-400" />
@@ -123,7 +123,7 @@ export default function BrandMenuSheet() {
                 className="w-full flex items-center justify-between px-3 py-2.5 rounded-xl text-[14px] font-medium text-[#111113] hover:bg-emerald-50 transition-colors"
               >
                 <div className="flex items-center gap-3">
-                  <Sparkles className="w-4 h-4 text-[#0F5132]" />
+                  <Sparkles className="w-4 h-4 text-[#16A34A]" />
                   <span>Our Collections</span>
                 </div>
                 <ChevronRight className="w-4 h-4 text-gray-400" />
@@ -134,7 +134,7 @@ export default function BrandMenuSheet() {
                 className="w-full flex items-center justify-between px-3 py-2.5 rounded-xl text-[14px] font-medium text-[#111113] hover:bg-emerald-50 transition-colors"
               >
                 <div className="flex items-center gap-3">
-                  <Scissors className="w-4 h-4 text-[#0F5132]" />
+                  <Scissors className="w-4 h-4 text-[#16A34A]" />
                   <span>Bespoke Tailoring</span>
                 </div>
                 <ChevronRight className="w-4 h-4 text-gray-400" />
@@ -145,7 +145,7 @@ export default function BrandMenuSheet() {
                 className="w-full flex items-center justify-between px-3 py-2.5 rounded-xl text-[14px] font-medium text-[#111113] hover:bg-emerald-50 transition-colors"
               >
                 <div className="flex items-center gap-3">
-                  <MapPin className="w-4 h-4 text-[#0F5132]" />
+                  <MapPin className="w-4 h-4 text-[#16A34A]" />
                   <span>Our Showrooms</span>
                 </div>
                 <ChevronRight className="w-4 h-4 text-gray-400" />
@@ -153,24 +153,24 @@ export default function BrandMenuSheet() {
             </div>
 
             <div className="space-y-1">
-              <span className="text-[11px] font-bold tracking-[0.2em] text-[#0F5132] uppercase block px-3 py-1">
+              <span className="text-[11px] font-bold tracking-[0.2em] text-[#16A34A] uppercase block px-3 py-1">
                 Management
               </span>
               <button
                 onClick={() => navigateTo('admin')}
-                className="w-full flex items-center justify-between px-3 py-2.5 rounded-xl text-[14px] font-medium bg-emerald-50 text-[#0F5132] hover:bg-emerald-100 transition-colors border border-emerald-200"
+                className="w-full flex items-center justify-between px-3 py-2.5 rounded-xl text-[14px] font-medium bg-emerald-50 text-[#16A34A] hover:bg-emerald-100 transition-colors border border-emerald-200"
               >
                 <div className="flex items-center gap-3">
                   <ShieldCheck className="w-4 h-4 text-[#16A34A]" />
                   <span>Admin CMS</span>
                 </div>
-                <ChevronRight className="w-4 h-4 text-[#0F5132]" />
+                <ChevronRight className="w-4 h-4 text-[#16A34A]" />
               </button>
             </div>
           </div>
 
           {/* Footer Contact */}
-          <div className="p-4 border-t border-[#E6E6EA] bg-[#0B1910] text-white space-y-2 rounded-b-none">
+          <div className="p-4 border-t border-[#E6E6EA] bg-[#133D27] text-white space-y-2 rounded-b-none">
             <p className="text-xs text-gray-300">
               Founder & Director: <strong>Kukua-Tracey</strong>
             </p>
