@@ -45,47 +45,44 @@ export interface UserAccount {
 
 export const DEFAULT_SITE_CONTENT: SiteContent = {
   announcementBarText:
-    'ACCRA ATELIER TO WORLDWIDE DOORSTEP · EXPRESS SAME-DAY DELIVERY IN ACCRA METRO · USE CODE WELCOME10',
-  // Slide 1
-  heroCampaignBadge: 'ACCRA HAUTE COUTURE 2026',
-  heroHeadlinePrefix: 'Where African Heritage',
-  heroHeadlineAccent: 'Redefines',
-  heroHeadlineSuffix: ' Luxury.',
+    'T.I.M.E FITS · TAILORED PERFECTION, TIMELESS STYLE · ACCRA ATELIER · EXPRESS SAME-DAY DELIVERY IN ACCRA METRO',
+  // Hero single photo & narrative
+  heroCampaignBadge: 'T.I.M.E FITS · TAILORED PERFECTION',
+  heroHeadlinePrefix: 'Welcome to ',
+  heroHeadlineAccent: 'T.I.M.E fits',
+  heroHeadlineSuffix: ' — Timeless Style.',
   heroSubtitle:
-    'Hand-woven Kente, brass-cast details, and architectural silhouettes — crafted for the modern African icon.',
-  heroImageUrl:
-    'https://images.unsplash.com/photo-1539109136881-3be0616acf4b?auto=format&fit=crop&w=1800&q=85',
-  heroPrimaryCta: 'Shop Now',
+    'Fashion is never just fabric and form. It is identity in motion, confidence made visible, connection you can feel—and sometimes, the memory we carry long after the moment has passed. Not just for the moment. For a lifetime.',
+  heroImageUrl: '/brand/photo_1_2026-11-21_13-00-31.jpg',
+  heroPrimaryCta: 'Explore Collections',
   heroSecondaryCta: 'Our Story',
-  heroPrimaryView: 'shop',
+  heroPrimaryView: 'collections',
   heroSecondaryView: 'our-story',
 
-  // Slide 2
-  hero2CampaignBadge: 'RUNWAY SS26 · BONWIRE ATELIER',
+  // Backwards compatibility fields
+  hero2CampaignBadge: 'T.I.M.E FITS · BONWIRE ATELIER',
   hero2HeadlinePrefix: 'Ancestral Craft,',
   hero2HeadlineAccent: 'Contemporary',
   hero2HeadlineSuffix: ' Soul.',
   hero2Subtitle:
     'From the looms of Bonwire to the runways of Accra — each piece carries generations of mastery, reimagined for today.',
-  hero2ImageUrl:
-    'https://images.unsplash.com/photo-1515886657613-9f3515b0c78f?auto=format&fit=crop&w=1800&q=85',
+  hero2ImageUrl: '/brand/photo_2_2026-11-21_13-00-31.jpg',
   hero2PrimaryCta: 'Explore Collections',
   hero2SecondaryCta: 'View Lookbook',
   hero2PrimaryView: 'collections',
   hero2SecondaryView: 'collections',
 
-  // Hero Display & Transition Settings
   heroSlideDuration: 5,
-  heroAutoplay: true,
-  heroTransitionEffect: 'crossfade',
+  heroAutoplay: false,
+  heroTransitionEffect: 'instant',
 
   // Just Landed Banner
   bannerVisible: true,
-  bannerBadge: 'JUST LANDED · 2026 DROP',
-  bannerHeadline: 'Accra Haute Couture Gala Drop',
+  bannerBadge: 'TAILORED PERFECTION · TIMELESS STYLE',
+  bannerHeadline: 'Meaning Woven Into Every Thread',
   bannerSubtitle:
     'Enjoy complimentary express delivery across Greater Accra with bespoke garment packaging and fitting consultation.',
-  bannerDiscountText: 'Up to 15% off select archive pieces with code VIPGHANA',
+  bannerDiscountText: 'We don’t design for seasons; we design for lifetimes.',
 };
 
 interface StoreContextType {
@@ -858,7 +855,7 @@ export function StoreProvider({ children }: { children: React.ReactNode }) {
     const s = size || product.sizes[0] || 'M';
     const c = color || product.colors[0]?.name || 'Standard';
     const message = encodeURIComponent(
-      `Hello Tracey Kuukua Quansah Atelier! I would like to order: ${product.name} (GH₵ ${product.priceGhc.toLocaleString()}) in Size ${s}, Color ${c}. Please guide me on delivery to my address.`
+      `Hello T.I.M.E fits Atelier! I would like to order: ${product.name} (GH₵ ${product.priceGhc.toLocaleString()}) in Size ${s}, Color ${c}. Please guide me on delivery to my address.`
     );
     return `https://wa.me/233208912340?text=${message}`;
   };

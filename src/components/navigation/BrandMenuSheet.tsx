@@ -1,8 +1,9 @@
+/* eslint-disable @next/next/no-img-element */
 'use client';
 
 import React from 'react';
 import { useStore } from '@/context/StoreContext';
-import { X, Sparkles, Scissors, MapPin, BookOpen, MessageCircle, ShieldCheck, ChevronRight, Compass, ShoppingBag } from 'lucide-react';
+import { X, Sparkles, Scissors, MapPin, MessageCircle, ShieldCheck, ChevronRight, Compass, ShoppingBag, Heart } from 'lucide-react';
 
 export default function BrandMenuSheet() {
   const { isBrandMenuOpen, setIsBrandMenuOpen, setActiveView } = useStore();
@@ -27,161 +28,164 @@ export default function BrandMenuSheet() {
       <div className="fixed inset-y-0 left-0 max-w-full flex pr-10">
         <div className="w-screen max-w-xs bg-white text-[#111113] shadow-2xl flex flex-col justify-between">
           {/* Header */}
-          <div className="p-5 border-b border-[#E6E6EA] flex items-center justify-between">
-            <div>
-              <span className="font-semibold text-xs tracking-[0.25em] text-[#111113] uppercase block">
-                TRACEY KUUKUA QUANSAH
-              </span>
-              <span className="text-[10px] text-[#8A8A8F] tracking-wider uppercase">
-                HAUTE COUTURE · ACCRA
-              </span>
+          <div className="p-4 border-b border-[#E6E6EA] flex items-center justify-between bg-emerald-50/50">
+            <div className="flex items-center gap-2.5">
+              <img
+                src="/brand/logo.jpg"
+                alt="T.I.M.E fits"
+                className="h-9 w-auto object-contain rounded"
+              />
+              <div>
+                <span className="font-serif font-bold text-xs tracking-[0.2em] text-[#0F5132] uppercase block">
+                  T.I.M.E fits
+                </span>
+                <span className="text-[9px] text-gray-500 tracking-wider">
+                  Tailored Perfection · Accra
+                </span>
+              </div>
             </div>
             <button
               onClick={() => setIsBrandMenuOpen(false)}
-              className="p-2 rounded-full bg-[#EDEDF0] text-[#111113] hover:bg-[#E6E6EA]"
+              className="p-2 rounded-full bg-white text-[#111113] hover:bg-[#EDEDF0] shadow-sm border border-[#E6E6EA]"
             >
               <X className="w-4 h-4" />
             </button>
           </div>
 
           {/* Navigation Links */}
-          <div className="flex-1 overflow-y-auto p-5 space-y-6">
+          <div className="flex-1 overflow-y-auto p-4 space-y-5">
             <div className="space-y-1">
-              <span className="text-[11px] font-semibold tracking-[0.2em] text-[#8A8A8F] uppercase block px-3 py-1">
-                Store Layer
+              <span className="text-[11px] font-bold tracking-[0.2em] text-[#0F5132] uppercase block px-3 py-1">
+                Store
               </span>
               <button
                 onClick={() => navigateTo('shop')}
-                className="w-full flex items-center justify-between px-3 py-2.5 rounded-xl text-[15px] font-medium text-[#111113] hover:bg-[#EDEDF0] transition-colors"
+                className="w-full flex items-center justify-between px-3 py-2.5 rounded-xl text-[14px] font-medium text-[#111113] hover:bg-emerald-50 transition-colors"
               >
                 <div className="flex items-center gap-3">
-                  <Compass className="w-4 h-4 text-[#6B73F0]" />
+                  <Compass className="w-4 h-4 text-[#0F5132]" />
                   <span>Browse & Shop Pieces</span>
                 </div>
-                <ChevronRight className="w-4 h-4 text-[#8A8A8F]" />
+                <ChevronRight className="w-4 h-4 text-gray-400" />
               </button>
 
               <button
                 onClick={() => navigateTo('bag')}
-                className="w-full flex items-center justify-between px-3 py-2.5 rounded-xl text-[15px] font-medium text-[#111113] hover:bg-[#EDEDF0] transition-colors"
+                className="w-full flex items-center justify-between px-3 py-2.5 rounded-xl text-[14px] font-medium text-[#111113] hover:bg-emerald-50 transition-colors"
               >
                 <div className="flex items-center gap-3">
-                  <ShoppingBag className="w-4 h-4 text-[#111113]" />
+                  <ShoppingBag className="w-4 h-4 text-[#0F5132]" />
                   <span>Shopping Bag</span>
                 </div>
-                <ChevronRight className="w-4 h-4 text-[#8A8A8F]" />
+                <ChevronRight className="w-4 h-4 text-gray-400" />
+              </button>
+
+              <button
+                onClick={() => navigateTo('saved')}
+                className="w-full flex items-center justify-between px-3 py-2.5 rounded-xl text-[14px] font-medium text-[#111113] hover:bg-emerald-50 transition-colors"
+              >
+                <div className="flex items-center gap-3">
+                  <Heart className="w-4 h-4 text-[#0F5132]" />
+                  <span>Saved Wishlist</span>
+                </div>
+                <ChevronRight className="w-4 h-4 text-gray-400" />
               </button>
 
               <button
                 onClick={() => navigateTo('explore')}
-                className="w-full flex items-center justify-between px-3 py-2.5 rounded-xl text-[15px] font-medium text-[#111113] hover:bg-[#EDEDF0] transition-colors"
+                className="w-full flex items-center justify-between px-3 py-2.5 rounded-xl text-[14px] font-medium text-[#111113] hover:bg-emerald-50 transition-colors"
               >
                 <div className="flex items-center gap-3">
-                  <Sparkles className="w-4 h-4 text-[#FF2D8A]" />
-                  <span>Explore & Masonry</span>
+                  <Sparkles className="w-4 h-4 text-[#16A34A]" />
+                  <span>Editorial Lookbook</span>
                 </div>
-                <ChevronRight className="w-4 h-4 text-[#8A8A8F]" />
+                <ChevronRight className="w-4 h-4 text-gray-400" />
               </button>
             </div>
 
             <div className="space-y-1">
-              <span className="text-[11px] font-semibold tracking-[0.2em] text-[#8A8A8F] uppercase block px-3 py-1">
-                Brand Layer
+              <span className="text-[11px] font-bold tracking-[0.2em] text-[#0F5132] uppercase block px-3 py-1">
+                The Maison
               </span>
               <button
-                onClick={() => navigateTo('collections')}
-                className="w-full flex items-center justify-between px-3 py-2.5 rounded-xl text-[15px] font-medium text-[#111113] hover:bg-[#EDEDF0] transition-colors"
-              >
-                <div className="flex items-center gap-3">
-                  <BookOpen className="w-4 h-4 text-[#111113]" />
-                  <span>Collections & Lookbook</span>
-                </div>
-                <ChevronRight className="w-4 h-4 text-[#8A8A8F]" />
-              </button>
-
-              <button
-                onClick={() => navigateTo('spotlight')}
-                className="w-full flex items-center justify-between px-3 py-2.5 rounded-xl text-[15px] font-medium text-[#111113] hover:bg-[#EDEDF0] transition-colors"
-              >
-                <div className="flex items-center gap-3">
-                  <Sparkles className="w-4 h-4 text-[#111113]" />
-                  <span>Spotlight & Journal</span>
-                </div>
-                <ChevronRight className="w-4 h-4 text-[#8A8A8F]" />
-              </button>
-
-              <button
                 onClick={() => navigateTo('our-story')}
-                className="w-full flex items-center justify-between px-3 py-2.5 rounded-xl text-[15px] font-medium text-[#111113] hover:bg-[#EDEDF0] transition-colors"
+                className="w-full flex items-center justify-between px-3 py-2.5 rounded-xl text-[14px] font-medium text-[#111113] hover:bg-emerald-50 transition-colors"
               >
-                <span>Our Story & Mission</span>
-                <ChevronRight className="w-4 h-4 text-[#8A8A8F]" />
+                <div className="flex items-center gap-3">
+                  <Scissors className="w-4 h-4 text-[#0F5132]" />
+                  <span>Our Story & Philosophy</span>
+                </div>
+                <ChevronRight className="w-4 h-4 text-gray-400" />
               </button>
 
               <button
-                onClick={() => navigateTo('stores')}
-                className="w-full flex items-center justify-between px-3 py-2.5 rounded-xl text-[15px] font-medium text-[#111113] hover:bg-[#EDEDF0] transition-colors"
+                onClick={() => navigateTo('collections')}
+                className="w-full flex items-center justify-between px-3 py-2.5 rounded-xl text-[14px] font-medium text-[#111113] hover:bg-emerald-50 transition-colors"
               >
                 <div className="flex items-center gap-3">
-                  <MapPin className="w-4 h-4 text-[#111113]" />
-                  <span>Our Stores</span>
+                  <Sparkles className="w-4 h-4 text-[#0F5132]" />
+                  <span>Our Collections</span>
                 </div>
-                <ChevronRight className="w-4 h-4 text-[#8A8A8F]" />
+                <ChevronRight className="w-4 h-4 text-gray-400" />
               </button>
 
               <button
                 onClick={() => navigateTo('bespoke')}
-                className="w-full flex items-center justify-between px-3 py-2.5 rounded-xl text-[15px] font-medium text-[#111113] hover:bg-[#EDEDF0] transition-colors"
+                className="w-full flex items-center justify-between px-3 py-2.5 rounded-xl text-[14px] font-medium text-[#111113] hover:bg-emerald-50 transition-colors"
               >
                 <div className="flex items-center gap-3">
-                  <Scissors className="w-4 h-4 text-[#6B73F0]" />
-                  <span>Custom & Bespoke</span>
+                  <Scissors className="w-4 h-4 text-[#0F5132]" />
+                  <span>Bespoke Tailoring</span>
                 </div>
-                <ChevronRight className="w-4 h-4 text-[#8A8A8F]" />
+                <ChevronRight className="w-4 h-4 text-gray-400" />
+              </button>
+
+              <button
+                onClick={() => navigateTo('stores')}
+                className="w-full flex items-center justify-between px-3 py-2.5 rounded-xl text-[14px] font-medium text-[#111113] hover:bg-emerald-50 transition-colors"
+              >
+                <div className="flex items-center gap-3">
+                  <MapPin className="w-4 h-4 text-[#0F5132]" />
+                  <span>Our Showrooms</span>
+                </div>
+                <ChevronRight className="w-4 h-4 text-gray-400" />
               </button>
             </div>
 
             <div className="space-y-1">
-              <span className="text-[11px] font-semibold tracking-[0.2em] text-[#8A8A8F] uppercase block px-3 py-1">
-                Atelier Administration
+              <span className="text-[11px] font-bold tracking-[0.2em] text-[#0F5132] uppercase block px-3 py-1">
+                Management
               </span>
               <button
                 onClick={() => navigateTo('admin')}
-                className="w-full flex items-center justify-between px-3 py-2.5 rounded-xl text-[15px] font-semibold text-[#111113] bg-[#EDEDF0] hover:bg-[#E6E6EA] transition-colors"
+                className="w-full flex items-center justify-between px-3 py-2.5 rounded-xl text-[14px] font-medium bg-emerald-50 text-[#0F5132] hover:bg-emerald-100 transition-colors border border-emerald-200"
               >
                 <div className="flex items-center gap-3">
-                  <ShieldCheck className="w-4 h-4 text-[#6B73F0]" />
-                  <span>Admin Dashboard</span>
+                  <ShieldCheck className="w-4 h-4 text-[#16A34A]" />
+                  <span>Admin CMS</span>
                 </div>
-                <ChevronRight className="w-4 h-4 text-[#8A8A8F]" />
+                <ChevronRight className="w-4 h-4 text-[#0F5132]" />
               </button>
-            </div>
-
-            {/* Quick WhatsApp Concierge Button */}
-            <div className="pt-2">
-              <a
-                href="https://wa.me/233208912340?text=Hello%20Tracey%20KQ%20Concierge%2C%20I%20have%20an%20enquiry%20regarding%20your%20couture%20collection."
-                target="_blank"
-                rel="noopener noreferrer"
-                className="w-full py-3 px-4 rounded-full bg-[#1F8A4C] text-white text-xs font-semibold uppercase tracking-wider flex items-center justify-center gap-2 shadow-sm"
-              >
-                <MessageCircle className="w-4 h-4" />
-                <span>Chat on WhatsApp</span>
-              </a>
             </div>
           </div>
 
-          {/* Footer of Sheet */}
-          <div className="p-5 border-t border-[#E6E6EA] bg-[#F5F5F7] space-y-2">
-            <div className="flex items-center justify-between text-xs text-[#8A8A8F]">
-              <span>Currency</span>
-              <span className="font-semibold text-[#111113] bg-white px-2 py-1 rounded-md border border-[#E6E6EA]">
-                GH₵ (Ghana Cedi)
-              </span>
-            </div>
-            <p className="text-[11px] text-[#8A8A8F] text-center pt-2">
-              Handcrafted in Accra, Ghana
+          {/* Footer Contact */}
+          <div className="p-4 border-t border-[#E6E6EA] bg-[#0B1910] text-white space-y-2 rounded-b-none">
+            <p className="text-xs text-gray-300">
+              Founder & Director: <strong>Kukua-Tracey</strong>
             </p>
+            <p className="text-[11px] text-emerald-300 italic">
+              &ldquo;We don’t design for seasons; we design for lifetimes.&rdquo;
+            </p>
+            <a
+              href="https://wa.me/233208912340"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="w-full h-10 rounded-full bg-[#16A34A] text-white text-xs font-semibold flex items-center justify-center gap-2 hover:bg-[#15803D] transition-colors"
+            >
+              <MessageCircle className="w-4 h-4" />
+              <span>WhatsApp Atelier Concierge</span>
+            </a>
           </div>
         </div>
       </div>

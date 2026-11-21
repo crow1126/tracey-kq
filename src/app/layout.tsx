@@ -3,14 +3,15 @@ import './globals.css';
 import { StoreProvider } from '@/context/StoreContext';
 
 export const metadata: Metadata = {
-  title: 'Tracey Kuukua Quansah | Luxury Ghanaian Fashion & Atelier',
+  title: 'T.I.M.E fits | Tailored Perfection, Timeless Style',
   description:
-    'Luxury fashion house by Ghanaian designer Tracey Kuukua Quansah. Contemporary minimalism, tailored organic silks, hand-woven Bonwire Kente, and bespoke made-to-measure couture — crafted in Accra.',
-  keywords: ['Ghanaian fashion', 'Tracey Kuukua Quansah', 'Accra couture', 'Kente', 'African luxury'],
+    'T.I.M.E fits by Kukua-Tracey. We don’t design for seasons; we design for lifetimes. Capturing meaningful moments and telling life’s stories through garments. Accra, Ghana.',
+  keywords: ['T.I.M.E fits', 'TIME fits', 'Kukua-Tracey', 'Tailored Perfection', 'Timeless Style', 'Ghanaian fashion', 'African luxury couture', 'Accra'],
   openGraph: {
-    title: 'Tracey Kuukua Quansah | Luxury Ghanaian Fashion',
-    description: 'Hand-crafted couture from Accra, Ghana.',
+    title: 'T.I.M.E fits | Tailored Perfection, Timeless Style',
+    description: 'We don’t design for seasons; we design for lifetimes.',
     type: 'website',
+    images: ['/brand/logo.jpg'],
   },
 };
 
@@ -21,7 +22,7 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en" className="h-full antialiased">
-      <body className="min-h-full flex flex-col bg-[#F5F5F7] text-[#111113] selection:bg-[#6B73F0] selection:text-white">
+      <body className="min-h-full flex flex-col bg-[#F5F5F7] text-[#111113] selection:bg-[#0F5132] selection:text-white">
         <StoreProvider>{children}</StoreProvider>
       </body>
     </html>

@@ -101,7 +101,6 @@ export default function AdminView() {
   // Site Content Editor state
   const [contentForm, setContentForm] = useState<SiteContent>(siteContent);
   const [contentSaved, setContentSaved] = useState(false);
-  const [heroSlideTab, setHeroSlideTab] = useState<1 | 2>(1);
 
   // Journal Add / Edit Modal state
   const [isArticleModalOpen, setIsArticleModalOpen] = useState(false);
@@ -109,7 +108,7 @@ export default function AdminView() {
   const [articleForm, setArticleForm] = useState({
     title: '',
     category: 'Styling Guide' as 'Styling Guide' | 'Behind The Scenes' | 'Press' | 'Heritage',
-    author: 'Tracey Kuukua Quansah',
+    author: 'Kukua-Tracey',
     readTime: '4 min read',
     date: '18 February 2026',
     heroImage: 'https://images.unsplash.com/photo-1509631179647-0177331693ae?auto=format&fit=crop&w=1000&q=85',
@@ -685,370 +684,158 @@ export default function AdminView() {
                 />
               </div>
 
-              {/* Hero Slideshow & Motion Controls (CMS) */}
+              {/* Hero Single Photograph & Narrative Editor (CMS) */}
               <div className="bg-[#F5F5F7] rounded-2xl p-5 border border-[#E6E6EA] space-y-5">
                 <div className="flex flex-wrap items-center justify-between gap-3 pb-3 border-b border-[#E6E6EA]">
                   <div>
                     <span className="text-xs font-bold uppercase tracking-wider text-[#111113] block">
-                      Hero Campaign Slideshow (2-Slide Showcase)
+                      Hero Section (Single Photograph & Story)
                     </span>
                     <p className="text-[11px] text-[#8A8A8F]">
-                      Configure individual slide imagery, bespoke typography, and transition speed.
+                      Manage the single hero image, campaign badge, headline typography, and narrative write-up.
                     </p>
                   </div>
-
-                  {/* Slideshow Global Settings */}
-                  <div className="flex flex-wrap items-center justify-between sm:justify-start gap-3 bg-white px-3.5 py-2 rounded-xl border border-[#E6E6EA] shadow-xs w-full sm:w-auto">
-                    <label className="flex items-center gap-2 text-xs font-semibold cursor-pointer text-[#111113]">
-                      <input
-                        type="checkbox"
-                        checked={contentForm.heroAutoplay !== false}
-                        onChange={(e) =>
-                          setContentForm({ ...contentForm, heroAutoplay: e.target.checked })
-                        }
-                        className="rounded text-[#6B73F0]"
-                      />
-                      <span>Auto-Play</span>
-                    </label>
-
-                    <div className="flex items-center gap-1.5 text-xs text-[#8A8A8F]">
-                      <span>Duration:</span>
-                      <select
-                        value={contentForm.heroSlideDuration || 5}
-                        onChange={(e) =>
-                          setContentForm({
-                            ...contentForm,
-                            heroSlideDuration: Number(e.target.value),
-                          })
-                        }
-                        className="bg-[#F5F5F7] border border-[#E6E6EA] rounded-lg px-2 py-1 text-xs text-[#111113] font-medium outline-none cursor-pointer"
-                      >
-                        <option value={3}>3 seconds</option>
-                        <option value={5}>5 seconds</option>
-                        <option value={7}>7 seconds</option>
-                        <option value={10}>10 seconds</option>
-                      </select>
-                    </div>
-                  </div>
+                  <span className="text-[10px] font-bold tracking-widest text-[#0F5132] bg-emerald-100/70 border border-emerald-300 px-2.5 py-1 rounded-full uppercase">
+                    Single Image Mode
+                  </span>
                 </div>
 
-                {/* Slide Switcher Tabs */}
-                <div className="grid grid-cols-2 gap-2 w-full">
-                  <button
-                    type="button"
-                    onClick={() => setHeroSlideTab(1)}
-                    className={`py-2.5 px-3 rounded-xl text-xs font-bold transition-all text-center ${
-                      heroSlideTab === 1
-                        ? 'bg-[#111113] text-white shadow-md'
-                        : 'bg-white text-[#8A8A8F] hover:text-[#111113] border border-[#E6E6EA]'
-                    }`}
-                  >
-                    Slide 1 · Haute Couture
-                  </button>
-                  <button
-                    type="button"
-                    onClick={() => setHeroSlideTab(2)}
-                    className={`py-2.5 px-3 rounded-xl text-xs font-bold transition-all text-center ${
-                      heroSlideTab === 2
-                        ? 'bg-[#111113] text-white shadow-md'
-                        : 'bg-white text-[#8A8A8F] hover:text-[#111113] border border-[#E6E6EA]'
-                    }`}
-                  >
-                    Slide 2 · Runway Atelier
-                  </button>
-                </div>
-
-                {/* Tab 1: Slide 1 Editor */}
-                {heroSlideTab === 1 && (
-                  <div className="space-y-4 pt-1 animate-in fade-in duration-300">
-                    <div className="grid grid-cols-1 sm:grid-cols-12 gap-4 items-center">
-                      <div className="sm:col-span-8 space-y-3">
-                        <ImageUploader
-                          label="Slide 1 Image"
-                          value={contentForm.heroImageUrl}
-                          onChange={(url) => setContentForm({ ...contentForm, heroImageUrl: url })}
-                        />
-
-                        <div>
-                          <label className="text-[11px] font-medium text-[#8A8A8F] block mb-1">
-                            Campaign Badge
-                          </label>
-                          <input
-                            type="text"
-                            value={contentForm.heroCampaignBadge}
-                            onChange={(e) =>
-                              setContentForm({ ...contentForm, heroCampaignBadge: e.target.value })
-                            }
-                            className="w-full h-10 px-3 rounded-xl bg-white border border-[#E6E6EA] text-xs outline-none"
-                          />
-                        </div>
-                      </div>
-
-                      {/* Live Image Thumbnail Preview */}
-                      <div className="sm:col-span-4 flex flex-col items-center justify-center">
-                        <div className="w-full h-28 rounded-xl overflow-hidden bg-[#EDEDF0] border border-[#E6E6EA] relative shadow-inner">
-                          {contentForm.heroImageUrl ? (
-                            <img
-                              src={contentForm.heroImageUrl}
-                              alt="Slide 1 Preview"
-                              className="w-full h-full object-cover object-top"
-                              onError={(e) => {
-                                (e.target as HTMLImageElement).src =
-                                  'https://images.unsplash.com/photo-1539109136881-3be0616acf4b?auto=format&fit=crop&w=600&q=80';
-                              }}
-                            />
-                          ) : (
-                            <div className="w-full h-full flex items-center justify-center text-[10px] text-[#8A8A8F]">
-                              No image URL
-                            </div>
-                          )}
-                          <span className="absolute bottom-1 right-1 bg-black/60 text-white text-[9px] px-1.5 py-0.5 rounded">
-                            Slide 1
-                          </span>
-                        </div>
-                      </div>
-                    </div>
-
-                    <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
-                      <div>
-                        <label className="text-[11px] font-medium text-[#8A8A8F] block mb-1">
-                          Headline Prefix
-                        </label>
-                        <input
-                          type="text"
-                          value={contentForm.heroHeadlinePrefix}
-                          onChange={(e) =>
-                            setContentForm({ ...contentForm, heroHeadlinePrefix: e.target.value })
-                          }
-                          className="w-full h-10 px-3 rounded-xl bg-white border border-[#E6E6EA] text-xs outline-none"
-                        />
-                      </div>
-
-                      <div>
-                        <label className="text-[11px] font-medium text-[#8A8A8F] block mb-1">
-                          Accent Highlight Word (Purple)
-                        </label>
-                        <input
-                          type="text"
-                          value={contentForm.heroHeadlineAccent}
-                          onChange={(e) =>
-                            setContentForm({ ...contentForm, heroHeadlineAccent: e.target.value })
-                          }
-                          className="w-full h-10 px-3 rounded-xl bg-white border border-[#E6E6EA] text-xs font-bold text-[#6B73F0] outline-none"
-                        />
-                      </div>
-
-                      <div>
-                        <label className="text-[11px] font-medium text-[#8A8A8F] block mb-1">
-                          Headline Suffix
-                        </label>
-                        <input
-                          type="text"
-                          value={contentForm.heroHeadlineSuffix}
-                          onChange={(e) =>
-                            setContentForm({ ...contentForm, heroHeadlineSuffix: e.target.value })
-                          }
-                          className="w-full h-10 px-3 rounded-xl bg-white border border-[#E6E6EA] text-xs outline-none"
-                        />
-                      </div>
-                    </div>
-
-                    <div>
-                      <label className="text-[11px] font-medium text-[#8A8A8F] block mb-1">
-                        Hero Subtitle
-                      </label>
-                      <textarea
-                        rows={2}
-                        value={contentForm.heroSubtitle}
-                        onChange={(e) =>
-                          setContentForm({ ...contentForm, heroSubtitle: e.target.value })
-                        }
-                        className="w-full p-3 rounded-xl bg-white border border-[#E6E6EA] text-xs outline-none"
+                <div className="space-y-4 pt-1">
+                  <div className="grid grid-cols-1 sm:grid-cols-12 gap-4 items-center">
+                    <div className="sm:col-span-8 space-y-3">
+                      <ImageUploader
+                        label="Hero Photograph"
+                        value={contentForm.heroImageUrl || '/brand/photo_1_2026-11-21_13-00-31.jpg'}
+                        onChange={(url) => setContentForm({ ...contentForm, heroImageUrl: url })}
                       />
-                    </div>
 
-                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 pt-1">
                       <div>
                         <label className="text-[11px] font-medium text-[#8A8A8F] block mb-1">
-                          Primary Button Text
+                          Campaign Badge
                         </label>
                         <input
                           type="text"
-                          value={contentForm.heroPrimaryCta || 'Shop Now'}
+                          value={contentForm.heroCampaignBadge || 'T.I.M.E FITS · TAILORED PERFECTION'}
                           onChange={(e) =>
-                            setContentForm({ ...contentForm, heroPrimaryCta: e.target.value })
-                          }
-                          className="w-full h-10 px-3 rounded-xl bg-white border border-[#E6E6EA] text-xs outline-none"
-                        />
-                      </div>
-                      <div>
-                        <label className="text-[11px] font-medium text-[#8A8A8F] block mb-1">
-                          Secondary Button Text
-                        </label>
-                        <input
-                          type="text"
-                          value={contentForm.heroSecondaryCta || 'Our Story'}
-                          onChange={(e) =>
-                            setContentForm({ ...contentForm, heroSecondaryCta: e.target.value })
+                            setContentForm({ ...contentForm, heroCampaignBadge: e.target.value })
                           }
                           className="w-full h-10 px-3 rounded-xl bg-white border border-[#E6E6EA] text-xs outline-none"
                         />
                       </div>
                     </div>
-                  </div>
-                )}
 
-                {/* Tab 2: Slide 2 Editor */}
-                {heroSlideTab === 2 && (
-                  <div className="space-y-4 pt-1 animate-in fade-in duration-300">
-                    <div className="grid grid-cols-1 sm:grid-cols-12 gap-4 items-center">
-                      <div className="sm:col-span-8 space-y-3">
-                        <ImageUploader
-                          label="Slide 2 Image (Distinct Picture)"
-                          value={
-                            contentForm.hero2ImageUrl ||
-                            'https://images.unsplash.com/photo-1515886657613-9f3515b0c78f?auto=format&fit=crop&w=1800&q=85'
-                          }
-                          onChange={(url) => setContentForm({ ...contentForm, hero2ImageUrl: url })}
-                        />
-
-                        <div>
-                          <label className="text-[11px] font-medium text-[#8A8A8F] block mb-1">
-                            Slide 2 Campaign Badge
-                          </label>
-                          <input
-                            type="text"
-                            value={contentForm.hero2CampaignBadge || 'RUNWAY SS26 · BONWIRE ATELIER'}
-                            onChange={(e) =>
-                              setContentForm({ ...contentForm, hero2CampaignBadge: e.target.value })
-                            }
-                            className="w-full h-10 px-3 rounded-xl bg-white border border-[#E6E6EA] text-xs outline-none"
-                          />
-                        </div>
-                      </div>
-
-                      {/* Live Image Thumbnail Preview */}
-                      <div className="sm:col-span-4 flex flex-col items-center justify-center">
-                        <div className="w-full h-28 rounded-xl overflow-hidden bg-[#EDEDF0] border border-[#E6E6EA] relative shadow-inner">
+                    {/* Live Image Thumbnail Preview */}
+                    <div className="sm:col-span-4 flex flex-col items-center justify-center">
+                      <div className="w-full h-32 rounded-xl overflow-hidden bg-[#EDEDF0] border border-[#E6E6EA] relative shadow-inner">
+                        {contentForm.heroImageUrl ? (
                           <img
-                            src={
-                              contentForm.hero2ImageUrl ||
-                              'https://images.unsplash.com/photo-1515886657613-9f3515b0c78f?auto=format&fit=crop&w=1800&q=85'
-                            }
-                            alt="Slide 2 Preview"
-                            className="w-full h-full object-cover object-top"
+                            src={contentForm.heroImageUrl}
+                            alt="Hero Preview"
+                            className="w-full h-full object-cover object-center"
                             onError={(e) => {
                               (e.target as HTMLImageElement).src =
-                                'https://images.unsplash.com/photo-1515886657613-9f3515b0c78f?auto=format&fit=crop&w=600&q=80';
+                                '/brand/photo_1_2026-11-21_13-00-31.jpg';
                             }}
                           />
-                          <span className="absolute bottom-1 right-1 bg-black/60 text-white text-[9px] px-1.5 py-0.5 rounded">
-                            Slide 2
-                          </span>
-                        </div>
+                        ) : (
+                          <div className="w-full h-full flex items-center justify-center text-[10px] text-[#8A8A8F]">
+                            No image selected
+                          </div>
+                        )}
+                        <span className="absolute bottom-1 right-1 bg-black/60 text-white text-[9px] px-1.5 py-0.5 rounded">
+                          Hero Image
+                        </span>
                       </div>
                     </div>
+                  </div>
 
-                    <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
-                      <div>
-                        <label className="text-[11px] font-medium text-[#8A8A8F] block mb-1">
-                          Headline Prefix
-                        </label>
-                        <input
-                          type="text"
-                          value={contentForm.hero2HeadlinePrefix || 'Ancestral Craft,'}
-                          onChange={(e) =>
-                            setContentForm({
-                              ...contentForm,
-                              hero2HeadlinePrefix: e.target.value,
-                            })
-                          }
-                          className="w-full h-10 px-3 rounded-xl bg-white border border-[#E6E6EA] text-xs outline-none"
-                        />
-                      </div>
-
-                      <div>
-                        <label className="text-[11px] font-medium text-[#8A8A8F] block mb-1">
-                          Accent Highlight Word (Purple)
-                        </label>
-                        <input
-                          type="text"
-                          value={contentForm.hero2HeadlineAccent || 'Contemporary'}
-                          onChange={(e) =>
-                            setContentForm({
-                              ...contentForm,
-                              hero2HeadlineAccent: e.target.value,
-                            })
-                          }
-                          className="w-full h-10 px-3 rounded-xl bg-white border border-[#E6E6EA] text-xs font-bold text-[#6B73F0] outline-none"
-                        />
-                      </div>
-
-                      <div>
-                        <label className="text-[11px] font-medium text-[#8A8A8F] block mb-1">
-                          Headline Suffix
-                        </label>
-                        <input
-                          type="text"
-                          value={contentForm.hero2HeadlineSuffix || ' Soul.'}
-                          onChange={(e) =>
-                            setContentForm({
-                              ...contentForm,
-                              hero2HeadlineSuffix: e.target.value,
-                            })
-                          }
-                          className="w-full h-10 px-3 rounded-xl bg-white border border-[#E6E6EA] text-xs outline-none"
-                        />
-                      </div>
+                  <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
+                    <div>
+                      <label className="text-[11px] font-medium text-[#8A8A8F] block mb-1">
+                        Headline Prefix
+                      </label>
+                      <input
+                        type="text"
+                        value={contentForm.heroHeadlinePrefix || 'Welcome to '}
+                        onChange={(e) =>
+                          setContentForm({ ...contentForm, heroHeadlinePrefix: e.target.value })
+                        }
+                        className="w-full h-10 px-3 rounded-xl bg-white border border-[#E6E6EA] text-xs outline-none"
+                      />
                     </div>
 
                     <div>
                       <label className="text-[11px] font-medium text-[#8A8A8F] block mb-1">
-                        Hero Subtitle
+                        Accent Highlight Word (Green)
                       </label>
-                      <textarea
-                        rows={2}
-                        value={
-                          contentForm.hero2Subtitle ||
-                          'From the looms of Bonwire to the runways of Accra — each piece carries generations of mastery, reimagined for today.'
-                        }
+                      <input
+                        type="text"
+                        value={contentForm.heroHeadlineAccent || 'T.I.M.E fits'}
                         onChange={(e) =>
-                          setContentForm({ ...contentForm, hero2Subtitle: e.target.value })
+                          setContentForm({ ...contentForm, heroHeadlineAccent: e.target.value })
                         }
-                        className="w-full p-3 rounded-xl bg-white border border-[#E6E6EA] text-xs outline-none"
+                        className="w-full h-10 px-3 rounded-xl bg-white border border-[#E6E6EA] text-xs font-bold text-[#0F5132] outline-none"
                       />
                     </div>
 
-                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 pt-1">
-                      <div>
-                        <label className="text-[11px] font-medium text-[#8A8A8F] block mb-1">
-                          Primary Button Text
-                        </label>
-                        <input
-                          type="text"
-                          value={contentForm.hero2PrimaryCta || 'Explore Collections'}
-                          onChange={(e) =>
-                            setContentForm({ ...contentForm, hero2PrimaryCta: e.target.value })
-                          }
-                          className="w-full h-10 px-3 rounded-xl bg-white border border-[#E6E6EA] text-xs outline-none"
-                        />
-                      </div>
-                      <div>
-                        <label className="text-[11px] font-medium text-[#8A8A8F] block mb-1">
-                          Secondary Button Text
-                        </label>
-                        <input
-                          type="text"
-                          value={contentForm.hero2SecondaryCta || 'View Lookbook'}
-                          onChange={(e) =>
-                            setContentForm({ ...contentForm, hero2SecondaryCta: e.target.value })
-                          }
-                          className="w-full h-10 px-3 rounded-xl bg-white border border-[#E6E6EA] text-xs outline-none"
-                        />
-                      </div>
+                    <div>
+                      <label className="text-[11px] font-medium text-[#8A8A8F] block mb-1">
+                        Headline Suffix
+                      </label>
+                      <input
+                        type="text"
+                        value={contentForm.heroHeadlineSuffix || ' — Timeless Style.'}
+                        onChange={(e) =>
+                          setContentForm({ ...contentForm, heroHeadlineSuffix: e.target.value })
+                        }
+                        className="w-full h-10 px-3 rounded-xl bg-white border border-[#E6E6EA] text-xs outline-none"
+                      />
                     </div>
                   </div>
-                )}
+
+                  <div>
+                    <label className="text-[11px] font-medium text-[#8A8A8F] block mb-1">
+                      Hero Narrative / Story
+                    </label>
+                    <textarea
+                      rows={3}
+                      value={contentForm.heroSubtitle || ''}
+                      onChange={(e) =>
+                        setContentForm({ ...contentForm, heroSubtitle: e.target.value })
+                      }
+                      className="w-full p-3 rounded-xl bg-white border border-[#E6E6EA] text-xs outline-none"
+                    />
+                  </div>
+
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 pt-1">
+                    <div>
+                      <label className="text-[11px] font-medium text-[#8A8A8F] block mb-1">
+                        Primary Button Text
+                      </label>
+                      <input
+                        type="text"
+                        value={contentForm.heroPrimaryCta || 'Explore Collections'}
+                        onChange={(e) =>
+                          setContentForm({ ...contentForm, heroPrimaryCta: e.target.value })
+                        }
+                        className="w-full h-10 px-3 rounded-xl bg-white border border-[#E6E6EA] text-xs outline-none"
+                      />
+                    </div>
+                    <div>
+                      <label className="text-[11px] font-medium text-[#8A8A8F] block mb-1">
+                        Secondary Button Text
+                      </label>
+                      <input
+                        type="text"
+                        value={contentForm.heroSecondaryCta || 'Our Story'}
+                        onChange={(e) =>
+                          setContentForm({ ...contentForm, heroSecondaryCta: e.target.value })
+                        }
+                        className="w-full h-10 px-3 rounded-xl bg-white border border-[#E6E6EA] text-xs outline-none"
+                      />
+                    </div>
+                  </div>
+                </div>
               </div>
 
               {/* Just Landed Pink Banner */}

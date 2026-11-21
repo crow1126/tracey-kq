@@ -85,8 +85,8 @@ export const SEED_PRODUCTS: Product[] = [
     rating: 5.0,
     reviewCount: 38,
     images: [
-      'https://images.unsplash.com/photo-1515886657613-9f3515b0c78f?auto=format&fit=crop&w=1000&q=85',
-      'https://images.unsplash.com/photo-1509631179647-0177331693ae?auto=format&fit=crop&w=1000&q=85',
+      '/brand/photo_3_2026-11-21_13-00-31.jpg',
+      '/brand/photo_4_2026-11-21_13-00-31.jpg',
     ],
     colors: [
       { name: 'Royal Amber Gold', hex: '#D4AF37' },
@@ -96,7 +96,7 @@ export const SEED_PRODUCTS: Product[] = [
     sizes: ['XS', 'S', 'M', 'L', 'Bespoke'],
     variants: [],
     fabric: '100% Hand-dyed Mulberry Silk; Silk habotai interior lining.',
-    craftsmanship: 'Designed by Tracey Kuukua Quansah in Accra. Hand-stitched for 48 hours by master Asante embroiderers.',
+    craftsmanship: 'Designed by Kukua-Tracey at T.I.M.E fits in Accra. Hand-stitched for 48 hours by master Asante embroiderers.',
     description: 'A majestic floor-length gown featuring an architectural shoulder cape and intricate hand-embroidered metallic threadwork inspired by royal Ashanti regalia.',
     careInstructions: 'Specialist dry clean only. Store in breathable canvas garment bag provided.',
     stockStatus: 'in_stock',
@@ -116,7 +116,7 @@ export const SEED_PRODUCTS: Product[] = [
     rating: 4.8,
     reviewCount: 22,
     images: [
-      'https://images.unsplash.com/photo-1539109136881-3be0616acf4b?auto=format&fit=crop&w=1000&q=85',
+      '/brand/photo_5_2026-11-21_13-00-31.jpg',
     ],
     colors: [
       { name: 'Deep Olive', hex: '#2A4E1F' },
@@ -146,7 +146,7 @@ export const SEED_PRODUCTS: Product[] = [
     rating: 4.9,
     reviewCount: 19,
     images: [
-      'https://images.unsplash.com/photo-1566174053879-31528523f8ae?auto=format&fit=crop&w=1000&q=85',
+      '/brand/photo_6_2026-11-21_13-00-31.jpg',
     ],
     colors: [
       { name: 'Forest Emerald', hex: '#1E3D1A' },
@@ -176,7 +176,7 @@ export const SEED_PRODUCTS: Product[] = [
     rating: 5.0,
     reviewCount: 45,
     images: [
-      'https://images.unsplash.com/photo-1509631179647-0177331693ae?auto=format&fit=crop&w=1000&q=85',
+      '/brand/photo_7_2026-11-21_13-00-31.jpg',
     ],
     colors: [
       { name: 'Heritage Gold & Black', hex: '#D4AF37' },
@@ -186,7 +186,7 @@ export const SEED_PRODUCTS: Product[] = [
     variants: [],
     fabric: 'Genuine hand-loomed Bonwire Kente cloth; cupro lining.',
     craftsmanship: 'Woven on heritage wooden looms in Ashanti Region, then tailored in Accra.',
-    description: 'A signature Tracey KQ power garment combining timeless ancestral weave patterns with a razor-sharp modern silhouette.',
+    description: 'A signature T.I.M.E fits power garment combining timeless ancestral weave patterns with a razor-sharp modern silhouette.',
     careInstructions: 'Dry clean only. Do not iron directly on metallic threads.',
     stockStatus: 'in_stock',
   },
@@ -204,7 +204,7 @@ export const SEED_PRODUCTS: Product[] = [
     rating: 4.7,
     reviewCount: 16,
     images: [
-      'https://images.unsplash.com/photo-1490481651871-ab68de25d43d?auto=format&fit=crop&w=1000&q=85',
+      '/brand/photo_8_2026-11-21_13-00-31.jpg',
     ],
     colors: [
       { name: 'Natural Sand', hex: '#E6E2D8' },

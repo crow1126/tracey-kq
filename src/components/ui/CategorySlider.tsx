@@ -43,15 +43,15 @@ export default function CategorySlider() {
       {/* Header with Title and Modern Controls */}
       <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-4">
         <div>
-          <span className="text-[11px] font-semibold tracking-[0.25em] text-[#6B73F0] uppercase flex items-center gap-1.5 mb-1.5">
-            <Sparkles className="w-3.5 h-3.5" />
-            <span>CURATED ARCHIVES · ACCRA ATELIER</span>
+          <span className="text-[11px] font-bold tracking-[0.25em] text-[#0F5132] uppercase flex items-center gap-1.5 mb-1.5">
+            <Sparkles className="w-3.5 h-3.5 text-[#16A34A]" />
+            <span>CURATED ARCHIVES · T.I.M.E FITS</span>
           </span>
-          <h2 className="text-2xl sm:text-3xl lg:text-4xl font-bold text-[#111113] tracking-tight font-display">
+          <h2 className="text-2xl sm:text-3xl lg:text-4xl font-bold text-[#0B1910] tracking-tight font-serif">
             Explore by Category
           </h2>
-          <p className="text-xs sm:text-sm text-[#8A8A8F] mt-1 font-light max-w-xl">
-            Swipe through our signature Ghanaian silhouettes, from hand-loomed Bonwire Kente to tailored cosmopolitan streetwear.
+          <p className="text-xs sm:text-sm text-gray-600 mt-1 font-light max-w-xl">
+            Swipe through our signature Ghanaian silhouettes, tailored perfection and timeless style designed to endure.
           </p>
         </div>
 
@@ -59,7 +59,7 @@ export default function CategorySlider() {
         <div className="flex items-center gap-3 self-end sm:self-auto">
           <button
             onClick={() => navigateToCategory('all')}
-            className="text-xs font-semibold text-[#6B73F0] hover:text-[#111113] transition-colors mr-2 cursor-pointer"
+            className="text-xs font-bold text-[#0F5132] hover:text-[#0B1910] transition-colors mr-2 cursor-pointer"
           >
             All Categories ({categories.length}) →
           </button>
@@ -113,14 +113,14 @@ export default function CategorySlider() {
               <span className="text-[10px] font-mono font-bold tracking-widest text-white/90 bg-black/40 backdrop-blur-md px-2.5 py-1 rounded-full border border-white/15">
                 0{idx + 1} / 0{categories.length}
               </span>
-              <span className="text-[11px] font-semibold text-white/95 bg-[#6B73F0]/80 backdrop-blur-md px-2.5 py-1 rounded-full">
+              <span className="text-[11px] font-semibold text-white/95 bg-[#0F5132]/90 backdrop-blur-md px-2.5 py-1 rounded-full border border-emerald-400/30">
                 {cat.itemCount} pieces
               </span>
             </div>
 
             {/* Bottom Content Card */}
             <div className="absolute bottom-4 inset-x-4 z-10 space-y-2">
-              <h3 className="text-xl sm:text-2xl font-bold text-white tracking-tight leading-tight group-hover:text-[#C9CCF5] transition-colors">
+              <h3 className="text-xl sm:text-2xl font-bold text-white tracking-tight leading-tight group-hover:text-emerald-200 transition-colors">
                 {cat.name}
               </h3>
 
@@ -134,7 +134,7 @@ export default function CategorySlider() {
                   <span>Shop Collection</span>
                   <span>→</span>
                 </span>
-                <div className="w-8 h-8 rounded-full bg-white/20 backdrop-blur-md flex items-center justify-center text-white group-hover:bg-white group-hover:text-[#111113] transition-colors shadow-md">
+                <div className="w-8 h-8 rounded-full bg-white/20 backdrop-blur-md flex items-center justify-center text-white group-hover:bg-[#0F5132] group-hover:text-white transition-colors shadow-md">
                   <ArrowUpRight className="w-4 h-4" />
                 </div>
               </div>
@@ -149,7 +149,7 @@ export default function CategorySlider() {
           <span
             key={i}
             className={`h-1.5 rounded-full transition-all duration-300 ${
-              activeIndex === i ? 'w-6 bg-[#6B73F0]' : 'w-1.5 bg-[#D4D4DA]'
+              activeIndex === i ? 'w-6 bg-[#0F5132]' : 'w-1.5 bg-[#D4D4DA]'
             }`}
           />
         ))}
