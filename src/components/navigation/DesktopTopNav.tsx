@@ -3,7 +3,7 @@
 
 import React from 'react';
 import { useStore } from '@/context/StoreContext';
-import { Search, Heart, ShoppingBag, ShieldCheck, Truck, User } from 'lucide-react';
+import { Search, Heart, ShoppingBag, Truck, User } from 'lucide-react';
 import IconButton from '../ui/IconButton';
 
 export default function DesktopTopNav() {
@@ -18,17 +18,14 @@ export default function DesktopTopNav() {
     user,
     logoutUser,
     openAuthModal,
-    navigateToCategory,
-    selectedCategory,
   } = useStore();
 
   const navLinks = [
-    { id: 'shop', label: 'Shop', isCategory: false },
-    { id: 'cat-kids', label: 'Kids & Mini Royalty', isCategory: true },
-    { id: 'collections', label: 'Collections', isCategory: false },
-    { id: 'our-story', label: 'About & Story', isCategory: false },
-    { id: 'stores', label: 'Our Stores', isCategory: false },
-    { id: 'bespoke', label: 'Custom & Bespoke', isCategory: false },
+    { id: 'shop', label: 'Shop' },
+    { id: 'collections', label: 'Collections' },
+    { id: 'bespoke', label: 'Bespoke' },
+    { id: 'our-story', label: 'Our Story' },
+    { id: 'stores', label: 'Showrooms' },
   ];
 
   return (
@@ -73,21 +70,15 @@ export default function DesktopTopNav() {
         </div>
 
         {/* Desktop Links */}
-        <nav className="flex items-center space-x-7 text-[14px] font-medium tracking-wide text-[#3D4337]">
+        <nav className="flex items-center space-x-8 text-[14px] font-medium tracking-wide text-[#3D4337]">
           {navLinks.map((link) => {
-            const isActive = link.isCategory
-              ? activeView === 'shop' && selectedCategory === link.id
-              : activeView === link.id && (activeView !== 'shop' || selectedCategory === 'all');
+            const isActive = activeView === link.id;
             return (
               <button
                 key={link.id}
                 onClick={() => {
-                  if (link.isCategory) {
-                    navigateToCategory(link.id);
-                  } else {
-                    setActiveView(link.id);
-                    window.scrollTo({ top: 0, behavior: 'smooth' });
-                  }
+                  setActiveView(link.id);
+                  window.scrollTo({ top: 0, behavior: 'smooth' });
                 }}
                 className={`py-2 relative transition-colors cursor-pointer ${
                   isActive
@@ -105,40 +96,25 @@ export default function DesktopTopNav() {
         </nav>
 
         {/* Action Icons */}
-        <div className="flex items-center space-x-3">
-          {/* Track Orders shortcut button */}
-          <button
+        <div className="flex items-center space-x-2">
+          {/* Sleek Track Orders Icon Button */}
+          <IconButton
+            variant="header"
             onClick={() => {
               setActiveView('orders');
               window.scrollTo({ top: 0, behavior: 'smooth' });
             }}
-            className={`text-xs font-semibold px-3 py-1.5 rounded-full flex items-center gap-1.5 transition-colors cursor-pointer ${
-              activeView === 'orders'
-                ? 'bg-[#1E3A2E] text-[#C7CBB8]'
-                : 'bg-[#F4F1EA] text-[#1E3A2E] hover:bg-[#EAE6DD] border border-[#C7CBB8]/60'
-            }`}
+            aria-label="Track Orders"
+            className="relative"
+            title="Track Orders"
           >
-            <Truck className="w-3.5 h-3.5 text-[#1E3A2E]" />
-            <span>Track Orders</span>
+            <Truck className="w-5 h-5 text-[#111113]" />
             {orders.length > 0 && (
-              <span className="text-[9px] font-bold bg-[#1E3A2E] text-[#C7CBB8] px-1.5 py-0.5 rounded-full">
+              <span className="absolute -top-1 -right-1 bg-[#1E3A2E] text-white text-[9px] font-bold w-4 h-4 rounded-full flex items-center justify-center">
                 {orders.length}
               </span>
             )}
-          </button>
-
-          {/* Admin shortcut button */}
-          <button
-            onClick={() => setActiveView('admin')}
-            className={`text-xs font-semibold px-3 py-1.5 rounded-full flex items-center gap-1.5 transition-colors cursor-pointer ${
-              activeView === 'admin'
-                ? 'bg-[#1E3A2E] text-white'
-                : 'bg-emerald-50 text-[#1E3A2E] hover:bg-emerald-100 border border-emerald-200'
-            }`}
-          >
-            <ShieldCheck className="w-3.5 h-3.5 text-[#C7CBB8]" />
-            <span>Admin CMS</span>
-          </button>
+          </IconButton>
 
           <IconButton
             variant="header"

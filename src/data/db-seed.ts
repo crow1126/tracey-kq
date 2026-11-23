@@ -18,12 +18,12 @@ export const SEED_CATEGORIES: Category[] = [
     description: 'Authentic hand-woven Bonwire Kente fused with avant-garde tailoring.',
   },
   {
-    id: 'cat-streetwear',
-    name: 'Streetwear',
-    slug: 'streetwear',
-    itemCount: 28,
-    image: 'https://images.unsplash.com/photo-1552374196-1ab2a1c593e8?auto=format&fit=crop&w=1000&q=85',
-    description: 'Accra cosmopolitan essentials, oversized knit cardigans, and drop-shoulder tees.',
+    id: 'cat-kids',
+    name: 'Kids & Mini Royalty',
+    slug: 'kids',
+    itemCount: 24,
+    image: 'https://images.unsplash.com/photo-1622290291468-a28f7a7dc6a8?auto=format&fit=crop&w=1000&q=85',
+    description: 'Heirloom Kente mini-robes, bespoke embroidered agbadas, festive party dresses, and organic cotton tailoring for children.',
   },
   {
     id: 'cat-suits',
@@ -32,6 +32,14 @@ export const SEED_CATEGORIES: Category[] = [
     itemCount: 22,
     image: 'https://images.unsplash.com/photo-1594938298603-c8148c4dae35?auto=format&fit=crop&w=1000&q=85',
     description: 'Double-breasted velvet blazers, Adinkra symbol cuffs, and tapered trousers.',
+  },
+  {
+    id: 'cat-streetwear',
+    name: 'Streetwear',
+    slug: 'streetwear',
+    itemCount: 28,
+    image: 'https://images.unsplash.com/photo-1552374196-1ab2a1c593e8?auto=format&fit=crop&w=1000&q=85',
+    description: 'Accra cosmopolitan essentials, oversized knit cardigans, and drop-shoulder tees.',
   },
   {
     id: 'cat-footwear',
@@ -64,14 +72,6 @@ export const SEED_CATEGORIES: Category[] = [
     itemCount: 45,
     image: 'https://images.unsplash.com/photo-1511499767150-a48a237f0083?auto=format&fit=crop&w=1000&q=85',
     description: 'Silk pocket squares, embroidered headwraps, belts, and bespoke sunglasses.',
-  },
-  {
-    id: 'cat-kids',
-    name: 'Kids & Mini Royalty',
-    slug: 'kids',
-    itemCount: 24,
-    image: 'https://images.unsplash.com/photo-1622290291468-a28f7a7dc6a8?auto=format&fit=crop&w=1000&q=85',
-    description: 'Heirloom Kente mini-robes, bespoke embroidered agbadas, festive party dresses, and organic cotton tailoring for children.',
   },
 ];
 
