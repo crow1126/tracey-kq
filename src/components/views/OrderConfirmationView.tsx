@@ -231,7 +231,22 @@ export default function OrderConfirmationView() {
         <div className="flex flex-col sm:flex-row items-center gap-3 pt-2">
           <Button
             variant="primary"
-            onClick={() => setActiveView('shop')}
+            onClick={() => {
+              setActiveView('orders');
+              window.scrollTo({ top: 0, behavior: 'smooth' });
+            }}
+            className="flex-1 flex items-center justify-center gap-2"
+          >
+            <Truck className="w-4 h-4" />
+            <span>Track Order Live</span>
+          </Button>
+
+          <Button
+            variant="outline"
+            onClick={() => {
+              setActiveView('shop');
+              window.scrollTo({ top: 0, behavior: 'smooth' });
+            }}
             className="flex-1 flex items-center justify-center gap-2"
           >
             <span>Continue Shopping</span>
@@ -239,13 +254,13 @@ export default function OrderConfirmationView() {
           </Button>
 
           <a
-            href={`https://wa.me/233208912340?text=Hello%20Tracey%20KQ%20Concierge%2C%20I%20am%20inquiring%20about%20my%20Order%20${latestOrder.orderNumber}`}
+            href={`https://wa.me/233208912340?text=Hello%20TIME%20fits%20Concierge%2C%20I%20am%20inquiring%20about%20my%20Order%20${latestOrder.orderNumber}`}
             target="_blank"
             rel="noopener noreferrer"
-            className="h-14 px-6 rounded-full bg-white border border-[#E6E6EA] text-xs font-semibold text-[#1F8A4C] flex items-center justify-center gap-2 hover:bg-[#F5F5F7] transition-colors"
+            className="h-14 px-6 rounded-full bg-white border border-[#E6E6EA] text-xs font-semibold text-[#1E3A2E] flex items-center justify-center gap-2 hover:bg-[#F5F5F7] transition-colors"
           >
             <MessageCircle className="w-4 h-4" />
-            <span>Track via WhatsApp</span>
+            <span>WhatsApp Concierge</span>
           </a>
         </div>
       </div>

@@ -161,7 +161,19 @@ export default function AccountView() {
         {/* Orders Tab */}
         {activeTab === 'orders' && (
           <div className="space-y-4">
-            <h2 className="text-base font-bold text-[#111113]">Order History ({orders.length})</h2>
+            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+              <h2 className="text-base font-bold text-[#111113]">Order History ({orders.length})</h2>
+              <button
+                onClick={() => {
+                  setActiveView('orders');
+                  window.scrollTo({ top: 0, behavior: 'smooth' });
+                }}
+                className="h-9 px-4 rounded-full bg-[#1E3A2E] text-[#C7CBB8] text-xs font-semibold flex items-center gap-2 hover:bg-[#0F1F17] transition-all cursor-pointer shadow-sm self-start sm:self-auto"
+              >
+                <Truck className="w-3.5 h-3.5" />
+                <span>Launch Live Order Tracker &rarr;</span>
+              </button>
+            </div>
 
             {orders.length === 0 ? (
               <div className="bg-white rounded-3xl p-10 text-center border border-[#E6E6EA]">
@@ -230,20 +242,33 @@ export default function AccountView() {
                       ))}
                     </div>
 
-                    {/* Courier rider status */}
-                    {ord.riderName && (
-                      <div className="pt-2 flex items-center justify-between text-xs text-[#3A3A3F] bg-[#F5F5F7] p-3 rounded-2xl">
-                        <div className="flex items-center gap-2">
-                          <Truck className="w-4 h-4 text-[#6B73F0]" />
-                          <span>
-                            Courier: <strong>{ord.riderName}</strong> ({ord.riderPhone})
-                          </span>
-                        </div>
-                        <span className="text-[11px] text-[#1F8A4C] font-semibold">
-                          {ord.estimatedDelivery}
+                    {/* Courier rider status & track live button */}
+                    <div className="pt-2 flex flex-col sm:flex-row sm:items-center justify-between gap-3 text-xs bg-[#F5F5F7] p-3 rounded-2xl">
+                      <div className="flex items-center gap-2 text-[#3A3A3F]">
+                        <Truck className="w-4 h-4 text-[#1E3A2E]" />
+                        <span>
+                          {ord.riderName ? (
+                            <>Courier: <strong>{ord.riderName}</strong> ({ord.riderPhone})</>
+                          ) : (
+                            <>Status: <strong>{ord.status}</strong></>
+                          )}
                         </span>
                       </div>
-                    )}
+                      <div className="flex items-center gap-3">
+                        <span className="text-[11px] text-[#1E3A2E] font-semibold">
+                          {ord.estimatedDelivery}
+                        </span>
+                        <button
+                          onClick={() => {
+                            setActiveView('orders');
+                            window.scrollTo({ top: 0, behavior: 'smooth' });
+                          }}
+                          className="px-3 py-1 rounded-full bg-[#1E3A2E] text-[#C7CBB8] text-[10px] font-bold uppercase tracking-wider hover:bg-[#0F1F17] transition-all cursor-pointer"
+                        >
+                          Track Live &rarr;
+                        </button>
+                      </div>
+                    </div>
                   </div>
                 ))}
               </div>

@@ -3,7 +3,7 @@
 
 import React from 'react';
 import { useStore } from '@/context/StoreContext';
-import { Search, Heart, ShoppingBag, ShieldCheck } from 'lucide-react';
+import { Search, Heart, ShoppingBag, ShieldCheck, Truck } from 'lucide-react';
 import IconButton from '../ui/IconButton';
 
 export default function DesktopTopNav() {
@@ -12,6 +12,7 @@ export default function DesktopTopNav() {
     setActiveView,
     cartCount,
     wishlist,
+    orders,
     setIsSearchOpen,
     siteContent,
   } = useStore();
@@ -93,6 +94,27 @@ export default function DesktopTopNav() {
 
         {/* Action Icons */}
         <div className="flex items-center space-x-3">
+          {/* Track Orders shortcut button */}
+          <button
+            onClick={() => {
+              setActiveView('orders');
+              window.scrollTo({ top: 0, behavior: 'smooth' });
+            }}
+            className={`text-xs font-semibold px-3 py-1.5 rounded-full flex items-center gap-1.5 transition-colors cursor-pointer ${
+              activeView === 'orders'
+                ? 'bg-[#1E3A2E] text-[#C7CBB8]'
+                : 'bg-[#F4F1EA] text-[#1E3A2E] hover:bg-[#EAE6DD] border border-[#C7CBB8]/60'
+            }`}
+          >
+            <Truck className="w-3.5 h-3.5 text-[#1E3A2E]" />
+            <span>Track Orders</span>
+            {orders.length > 0 && (
+              <span className="text-[9px] font-bold bg-[#1E3A2E] text-[#C7CBB8] px-1.5 py-0.5 rounded-full">
+                {orders.length}
+              </span>
+            )}
+          </button>
+
           {/* Admin shortcut button */}
           <button
             onClick={() => setActiveView('admin')}

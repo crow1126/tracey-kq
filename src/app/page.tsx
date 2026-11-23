@@ -27,6 +27,7 @@ import BagView from '@/components/views/BagView';
 import CheckoutView from '@/components/views/CheckoutView';
 import OrderConfirmationView from '@/components/views/OrderConfirmationView';
 import AccountView from '@/components/views/AccountView';
+import OrdersView from '@/components/views/OrdersView';
 import AdminView from '@/components/views/AdminView';
 
 // Modals
@@ -71,6 +72,7 @@ export default function Home() {
         {activeView === 'bag' && <BagView />}
         {activeView === 'checkout' && <CheckoutView />}
         {activeView === 'confirmation' && <OrderConfirmationView />}
+        {activeView === 'orders' && <OrdersView />}
         {activeView === 'account' && <AccountView />}
         {activeView === 'admin' && <AdminView />}
       </main>

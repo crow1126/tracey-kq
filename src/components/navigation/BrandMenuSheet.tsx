@@ -3,10 +3,10 @@
 
 import React from 'react';
 import { useStore } from '@/context/StoreContext';
-import { X, Sparkles, Scissors, MapPin, MessageCircle, ShieldCheck, ChevronRight, Compass, ShoppingBag, Heart } from 'lucide-react';
+import { X, Sparkles, Scissors, MapPin, MessageCircle, ShieldCheck, ChevronRight, Compass, ShoppingBag, Heart, Truck, User } from 'lucide-react';
 
 export default function BrandMenuSheet() {
-  const { isBrandMenuOpen, setIsBrandMenuOpen, setActiveView } = useStore();
+  const { isBrandMenuOpen, setIsBrandMenuOpen, setActiveView, orders } = useStore();
 
   if (!isBrandMenuOpen) return null;
 
@@ -87,6 +87,35 @@ export default function BrandMenuSheet() {
                 <div className="flex items-center gap-3">
                   <Heart className="w-4 h-4 text-[#1E3A2E]" />
                   <span>Saved Wishlist</span>
+                </div>
+                <ChevronRight className="w-4 h-4 text-gray-400" />
+              </button>
+
+              <button
+                onClick={() => navigateTo('orders')}
+                className="w-full flex items-center justify-between px-3 py-2.5 rounded-xl text-[14px] font-medium text-[#0F1F17] hover:bg-[#F4F1EA] transition-colors"
+              >
+                <div className="flex items-center gap-3">
+                  <Truck className="w-4 h-4 text-[#1E3A2E]" />
+                  <span>Track My Orders</span>
+                </div>
+                <div className="flex items-center gap-1.5">
+                  {orders.length > 0 && (
+                    <span className="text-[10px] font-bold bg-[#1E3A2E] text-[#C7CBB8] px-2 py-0.5 rounded-full">
+                      {orders.length}
+                    </span>
+                  )}
+                  <ChevronRight className="w-4 h-4 text-gray-400" />
+                </div>
+              </button>
+
+              <button
+                onClick={() => navigateTo('account')}
+                className="w-full flex items-center justify-between px-3 py-2.5 rounded-xl text-[14px] font-medium text-[#0F1F17] hover:bg-[#F4F1EA] transition-colors"
+              >
+                <div className="flex items-center gap-3">
+                  <User className="w-4 h-4 text-[#1E3A2E]" />
+                  <span>Patron Account</span>
                 </div>
                 <ChevronRight className="w-4 h-4 text-gray-400" />
               </button>
