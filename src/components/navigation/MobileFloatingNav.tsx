@@ -2,10 +2,10 @@
 
 import React from 'react';
 import { useStore } from '@/context/StoreContext';
-import { Home, Compass, Sparkles, Heart, ShoppingBag } from 'lucide-react';
+import { Home, Compass, Sparkles, Heart } from 'lucide-react';
 
 export default function MobileFloatingNav() {
-  const { activeView, setActiveView, cartCount, wishlist } = useStore();
+  const { activeView, setActiveView, wishlist } = useStore();
 
   if (activeView === 'checkout') return null;
 
@@ -13,8 +13,7 @@ export default function MobileFloatingNav() {
     { id: 'home',      label: 'Home',  icon: Home },
     { id: 'shop',      label: 'Shop',  icon: Compass },
     { id: 'our-story', label: 'About', icon: Sparkles },
-    { id: 'saved',     label: 'Saved', icon: Heart,       badgeCount: wishlist.length },
-    { id: 'bag',       label: 'Bag',   icon: ShoppingBag, badgeCount: cartCount },
+    { id: 'saved',     label: 'Saved', icon: Heart, badgeCount: wishlist.length },
   ];
 
   return (
