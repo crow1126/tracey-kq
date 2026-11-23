@@ -30,7 +30,6 @@ import {
   Send,
   ToggleLeft,
   ToggleRight,
-  ExternalLink,
 } from 'lucide-react';
 import ImageUploader from '../ui/ImageUploader';
 
