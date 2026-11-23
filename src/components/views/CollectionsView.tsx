@@ -39,13 +39,13 @@ const COLLECTION_PILLARS: CollectionPillar[] = [
   },
   {
     id: 'generations',
-    title: 'The Generations',
-    subtitle: 'Childhood, Youth, Adulthood & Beyond',
+    title: 'The Generations (Kids & Youth)',
+    subtitle: 'Childhood, Youth & Mini Royalty',
     description:
-      'Clothing that reflects the changing needs, perspectives and expressions of childhood, youth, adulthood and later life.',
-    image: 'https://images.unsplash.com/photo-1509631179647-0177331693ae?auto=format&fit=crop&w=1200&q=85',
+      'Heirloom Kente mini-robes, bespoke embroidered agbadas, festive party dresses, and organic cotton tailoring for children and youth.',
+    image: 'https://images.unsplash.com/photo-1622290291468-a28f7a7dc6a8?auto=format&fit=crop&w=1200&q=85',
     icon: Users,
-    tag: 'ENDURING LEGACY',
+    tag: 'KIDS & MINI ROYALTY',
   },
   {
     id: 'connections',
@@ -70,7 +70,7 @@ const COLLECTION_PILLARS: CollectionPillar[] = [
 ];
 
 export default function CollectionsView() {
-  const { products, setActiveView, setQuickViewProduct } = useStore();
+  const { products, setActiveView, setQuickViewProduct, navigateToCategory } = useStore();
 
   return (
     <div className="bg-[#F8FAF8] min-h-screen pt-8 sm:pt-14 pb-32 px-4 sm:px-8 lg:px-12 space-y-12 sm:space-y-16 max-w-6xl mx-auto text-[#111113]">
@@ -236,12 +236,16 @@ export default function CollectionsView() {
                   </p>
                   <button
                     onClick={() => {
-                      setActiveView('shop');
-                      window.scrollTo({ top: 0, behavior: 'smooth' });
+                      if (pillar.id === 'generations') {
+                        navigateToCategory('cat-kids');
+                      } else {
+                        setActiveView('shop');
+                        window.scrollTo({ top: 0, behavior: 'smooth' });
+                      }
                     }}
                     className="w-full h-9 rounded-full bg-emerald-50 text-[#1E3A2E] hover:bg-[#1E3A2E] hover:text-white text-xs font-semibold flex items-center justify-center gap-1.5 transition-colors cursor-pointer border border-emerald-200"
                   >
-                    <span>View Garments</span>
+                    <span>View {pillar.id === 'generations' ? 'Kids & Youth Pieces' : 'Garments'}</span>
                     <ArrowRight className="w-3 h-3" />
                   </button>
                 </div>

@@ -440,15 +440,24 @@ export function StoreProvider({ children }: { children: React.ReactNode }) {
       const savedProducts = localStorage.getItem('tkq_admin_products');
       if (savedProducts) {
         const parsed: Product[] = JSON.parse(savedProducts);
-        const existingIds = new Set(parsed.map((p) => p.id));
+        const seedMap = new Map(SEED_PRODUCTS.map((sp) => [sp.id, sp]));
+        const updated = parsed.map((p) => {
+          const seed = seedMap.get(p.id);
+          if (seed) {
+            return {
+              ...p,
+              images: seed.images,
+              category: seed.category,
+              categoryId: seed.categoryId,
+            };
+          }
+          return p;
+        });
+        const existingIds = new Set(updated.map((p) => p.id));
         const missingSeeds = SEED_PRODUCTS.filter((sp) => !existingIds.has(sp.id));
-        if (missingSeeds.length > 0) {
-          const merged = [...parsed, ...missingSeeds];
-          setProducts(merged);
-          localStorage.setItem('tkq_admin_products', JSON.stringify(merged));
-        } else {
-          setProducts(parsed);
-        }
+        const merged = [...updated, ...missingSeeds];
+        setProducts(merged);
+        localStorage.setItem('tkq_admin_products', JSON.stringify(merged));
       }
 
       const savedContent = localStorage.getItem('tkq_admin_site_content');
@@ -519,7 +528,12 @@ export function StoreProvider({ children }: { children: React.ReactNode }) {
       .then((res) => res.json())
       .then((data) => {
         if (data?.products && data.products.length > 0 && data.source === 'neon') {
-          setProducts(data.products);
+          const dbProducts = data.products;
+          const dbIds = new Set(dbProducts.map((p: Product) => p.id));
+          const missingSeeds = SEED_PRODUCTS.filter((sp) => !dbIds.has(sp.id));
+          const combined = [...dbProducts, ...missingSeeds];
+          setProducts(combined);
+          localStorage.setItem('tkq_admin_products', JSON.stringify(combined));
         }
       })
       .catch(() => {});

@@ -1,8 +1,8 @@
+/* eslint-disable @next/next/no-img-element */
 'use client';
 
 import React, { useState, useMemo, useRef } from 'react';
 import { useStore } from '@/context/StoreContext';
-import { SEED_CATEGORIES } from '@/data/db-seed';
 import { Product } from '@/data/db-schema';
 import { Heart, Search, SlidersHorizontal, Sparkles, Check, ShoppingBag, X } from 'lucide-react';
 import IconButton from '../ui/IconButton';
@@ -10,6 +10,7 @@ import IconButton from '../ui/IconButton';
 export default function ShopView() {
   const {
     products,
+    categories,
     setQuickViewProduct,
     addToCart,
     toggleWishlist,
@@ -126,7 +127,16 @@ export default function ShopView() {
                 <span className="text-[#6B7F67] text-[11px]">Sort:</span>
                 <select
                   value={sortBy}
-                  onChange={(e) => setSortBy(e.target.value as any)}
+                  onChange={(e) =>
+                    setSortBy(
+                      e.target.value as
+                        | 'featured'
+                        | 'price-asc'
+                        | 'price-desc'
+                        | 'rating'
+                        | 'newest'
+                    )
+                  }
                   className="bg-transparent text-[11px] font-semibold text-[#1E3A2E] focus:outline-none cursor-pointer"
                 >
                   <option value="featured">Featured</option>
@@ -160,7 +170,7 @@ export default function ShopView() {
               </span>
             </button>
 
-            {SEED_CATEGORIES.map((cat) => {
+            {categories.map((cat) => {
               const isSelected = selectedCategory === cat.id;
               const count = products.filter(
                 (p) => p.categoryId === cat.id || p.category.toLowerCase() === cat.name.toLowerCase()

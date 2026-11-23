@@ -6,7 +6,7 @@ export const SEED_CATEGORIES: Category[] = [
     name: 'Dresses',
     slug: 'dresses',
     itemCount: 42,
-    image: 'https://images.unsplash.com/photo-1515886657613-9f3515b0c78f?auto=format&fit=crop&w=800&q=85',
+    image: 'https://images.unsplash.com/photo-1566174053879-31528523f8ae?auto=format&fit=crop&w=1000&q=85',
     description: 'Floor-length gala gowns, fluid silk slips, and architectural silhouettes.',
   },
   {
@@ -14,7 +14,7 @@ export const SEED_CATEGORIES: Category[] = [
     name: 'Kente & African Prints',
     slug: 'kente-african-prints',
     itemCount: 36,
-    image: 'https://images.unsplash.com/photo-1509631179647-0177331693ae?auto=format&fit=crop&w=800&q=85',
+    image: 'https://images.unsplash.com/photo-1590736704728-f4730bb30770?auto=format&fit=crop&w=1000&q=85',
     description: 'Authentic hand-woven Bonwire Kente fused with avant-garde tailoring.',
   },
   {
@@ -22,7 +22,7 @@ export const SEED_CATEGORIES: Category[] = [
     name: 'Streetwear',
     slug: 'streetwear',
     itemCount: 28,
-    image: 'https://images.unsplash.com/photo-1529139574466-a303027c1d8b?auto=format&fit=crop&w=800&q=85',
+    image: 'https://images.unsplash.com/photo-1552374196-1ab2a1c593e8?auto=format&fit=crop&w=1000&q=85',
     description: 'Accra cosmopolitan essentials, oversized knit cardigans, and drop-shoulder tees.',
   },
   {
@@ -30,7 +30,7 @@ export const SEED_CATEGORIES: Category[] = [
     name: 'Suits',
     slug: 'suits',
     itemCount: 22,
-    image: 'https://images.unsplash.com/photo-1507679799987-c73779587ccf?auto=format&fit=crop&w=800&q=85',
+    image: 'https://images.unsplash.com/photo-1594938298603-c8148c4dae35?auto=format&fit=crop&w=1000&q=85',
     description: 'Double-breasted velvet blazers, Adinkra symbol cuffs, and tapered trousers.',
   },
   {
@@ -38,7 +38,7 @@ export const SEED_CATEGORIES: Category[] = [
     name: 'Footwear',
     slug: 'footwear',
     itemCount: 18,
-    image: 'https://images.unsplash.com/photo-1549298916-b41d501d3772?auto=format&fit=crop&w=800&q=85',
+    image: 'https://images.unsplash.com/photo-1549298916-b41d501d3772?auto=format&fit=crop&w=1000&q=85',
     description: 'Artisanal leather sandals, minimal Chelsea boots, and handcrafted mules.',
   },
   {
@@ -46,7 +46,7 @@ export const SEED_CATEGORIES: Category[] = [
     name: 'Bags',
     slug: 'bags',
     itemCount: 24,
-    image: 'https://images.unsplash.com/photo-1548036328-c9fa89d128fa?auto=format&fit=crop&w=800&q=85',
+    image: 'https://images.unsplash.com/photo-1548036328-c9fa89d128fa?auto=format&fit=crop&w=1000&q=85',
     description: 'Embossed leather totes, brass clasp baguettes, and woven weekenders.',
   },
   {
@@ -54,7 +54,7 @@ export const SEED_CATEGORIES: Category[] = [
     name: 'Jewellery',
     slug: 'jewellery',
     itemCount: 31,
-    image: 'https://images.unsplash.com/photo-1535632066927-ab7c9ab60908?auto=format&fit=crop&w=800&q=85',
+    image: 'https://images.unsplash.com/photo-1535632066927-ab7c9ab60908?auto=format&fit=crop&w=1000&q=85',
     description: 'Recycled brass amulets, hammered gold signets, and Krobo glass beads.',
   },
   {
@@ -62,7 +62,7 @@ export const SEED_CATEGORIES: Category[] = [
     name: 'Accessories',
     slug: 'accessories',
     itemCount: 45,
-    image: 'https://images.unsplash.com/photo-1584917865442-de89df76afd3?auto=format&fit=crop&w=800&q=85',
+    image: 'https://images.unsplash.com/photo-1511499767150-a48a237f0083?auto=format&fit=crop&w=1000&q=85',
     description: 'Silk pocket squares, embroidered headwraps, belts, and bespoke sunglasses.',
   },
   {
@@ -70,7 +70,7 @@ export const SEED_CATEGORIES: Category[] = [
     name: 'Kids & Mini Royalty',
     slug: 'kids',
     itemCount: 24,
-    image: 'https://images.unsplash.com/photo-1622290291468-a28f7a7dc6a8?auto=format&fit=crop&w=800&q=85',
+    image: 'https://images.unsplash.com/photo-1622290291468-a28f7a7dc6a8?auto=format&fit=crop&w=1000&q=85',
     description: 'Heirloom Kente mini-robes, bespoke embroidered agbadas, festive party dresses, and organic cotton tailoring for children.',
   },
 ];
@@ -93,8 +93,8 @@ export const SEED_PRODUCTS: Product[] = [
     rating: 5.0,
     reviewCount: 38,
     images: [
-      'https://images.unsplash.com/photo-1515886657613-9f3515b0c78f?auto=format&fit=crop&w=1000&q=85',
-      'https://images.unsplash.com/photo-1539109136881-3be0616acf4b?auto=format&fit=crop&w=1000&q=85',
+      'https://images.unsplash.com/photo-1566174053879-31528523f8ae?auto=format&fit=crop&w=1000&q=85',
+      'https://images.unsplash.com/photo-1572804013309-59a88b7e92f1?auto=format&fit=crop&w=1000&q=85',
     ],
     colors: [
       { name: 'Royal Amber Gold', hex: '#D4AF37' },
@@ -124,7 +124,7 @@ export const SEED_PRODUCTS: Product[] = [
     rating: 4.8,
     reviewCount: 22,
     images: [
-      'https://images.unsplash.com/photo-1509631179647-0177331693ae?auto=format&fit=crop&w=1000&q=85',
+      'https://images.unsplash.com/photo-1515886657613-9f3515b0c78f?auto=format&fit=crop&w=1000&q=85',
     ],
     colors: [
       { name: 'Deep Olive', hex: '#2A4E1F' },
@@ -184,7 +184,7 @@ export const SEED_PRODUCTS: Product[] = [
     rating: 5.0,
     reviewCount: 45,
     images: [
-      'https://images.unsplash.com/photo-1566174053879-31528523f8ae?auto=format&fit=crop&w=1000&q=85',
+      'https://images.unsplash.com/photo-1590736704728-f4730bb30770?auto=format&fit=crop&w=1000&q=85',
     ],
     colors: [
       { name: 'Heritage Gold & Black', hex: '#D4AF37' },
@@ -212,7 +212,7 @@ export const SEED_PRODUCTS: Product[] = [
     rating: 4.7,
     reviewCount: 16,
     images: [
-      'https://images.unsplash.com/photo-1485230895905-ec40ba36b9bc?auto=format&fit=crop&w=1000&q=85',
+      'https://images.unsplash.com/photo-1574634534894-89d7576c8259?auto=format&fit=crop&w=1000&q=85',
     ],
     colors: [
       { name: 'Natural Sand', hex: '#E6E2D8' },
@@ -242,7 +242,7 @@ export const SEED_PRODUCTS: Product[] = [
     rating: 4.8,
     reviewCount: 29,
     images: [
-      'https://images.unsplash.com/photo-1529139574466-a303027c1d8b?auto=format&fit=crop&w=1000&q=85',
+      'https://images.unsplash.com/photo-1589156280159-27698a70f29e?auto=format&fit=crop&w=1000&q=85',
     ],
     colors: [
       { name: 'Moss & Terracotta', hex: '#3A5C2D' },
@@ -331,7 +331,7 @@ export const SEED_PRODUCTS: Product[] = [
     rating: 4.7,
     reviewCount: 31,
     images: [
-      'https://images.unsplash.com/photo-1488161628813-04466f872be2?auto=format&fit=crop&w=1000&q=85',
+      'https://images.unsplash.com/photo-1576995853123-5a10305d93c0?auto=format&fit=crop&w=1000&q=85',
     ],
     colors: [
       { name: 'Olive Drab', hex: '#3A5C2D' },
@@ -392,7 +392,7 @@ export const SEED_PRODUCTS: Product[] = [
     rating: 4.9,
     reviewCount: 26,
     images: [
-      'https://images.unsplash.com/photo-1519085360753-af0119f7cbe7?auto=format&fit=crop&w=1000&q=85',
+      'https://images.unsplash.com/photo-1594938298603-c8148c4dae35?auto=format&fit=crop&w=1000&q=85',
     ],
     colors: [
       { name: 'Ivory Cream', hex: '#FAFAF7' },
@@ -420,7 +420,7 @@ export const SEED_PRODUCTS: Product[] = [
     rating: 4.8,
     reviewCount: 18,
     images: [
-      'https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=1000&q=85',
+      'https://images.unsplash.com/photo-1593030761757-71fae45fa0e7?auto=format&fit=crop&w=1000&q=85',
     ],
     colors: [
       { name: 'Khaki Clay', hex: '#A39882' },
@@ -450,7 +450,7 @@ export const SEED_PRODUCTS: Product[] = [
     rating: 4.8,
     reviewCount: 39,
     images: [
-      'https://images.unsplash.com/photo-1549298916-b41d501d3772?auto=format&fit=crop&w=1000&q=85',
+      'https://images.unsplash.com/photo-1533867617858-e7b97e060509?auto=format&fit=crop&w=1000&q=85',
     ],
     colors: [
       { name: 'Onyx Leather', hex: '#111113' },

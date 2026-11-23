@@ -18,14 +18,17 @@ export default function DesktopTopNav() {
     user,
     logoutUser,
     openAuthModal,
+    navigateToCategory,
+    selectedCategory,
   } = useStore();
 
   const navLinks = [
-    { id: 'shop', label: 'Shop' },
-    { id: 'collections', label: 'Collections' },
-    { id: 'our-story', label: 'About & Story' },
-    { id: 'stores', label: 'Our Stores' },
-    { id: 'bespoke', label: 'Custom & Bespoke' },
+    { id: 'shop', label: 'Shop', isCategory: false },
+    { id: 'cat-kids', label: 'Kids & Mini Royalty', isCategory: true },
+    { id: 'collections', label: 'Collections', isCategory: false },
+    { id: 'our-story', label: 'About & Story', isCategory: false },
+    { id: 'stores', label: 'Our Stores', isCategory: false },
+    { id: 'bespoke', label: 'Custom & Bespoke', isCategory: false },
   ];
 
   return (
@@ -72,13 +75,19 @@ export default function DesktopTopNav() {
         {/* Desktop Links */}
         <nav className="flex items-center space-x-7 text-[14px] font-medium tracking-wide text-[#3D4337]">
           {navLinks.map((link) => {
-            const isActive = activeView === link.id;
+            const isActive = link.isCategory
+              ? activeView === 'shop' && selectedCategory === link.id
+              : activeView === link.id && (activeView !== 'shop' || selectedCategory === 'all');
             return (
               <button
                 key={link.id}
                 onClick={() => {
-                  setActiveView(link.id);
-                  window.scrollTo({ top: 0, behavior: 'smooth' });
+                  if (link.isCategory) {
+                    navigateToCategory(link.id);
+                  } else {
+                    setActiveView(link.id);
+                    window.scrollTo({ top: 0, behavior: 'smooth' });
+                  }
                 }}
                 className={`py-2 relative transition-colors cursor-pointer ${
                   isActive

@@ -6,7 +6,16 @@ import { useStore } from '@/context/StoreContext';
 import { X, Sparkles, Scissors, MapPin, MessageCircle, ShieldCheck, ChevronRight, Compass, ShoppingBag, Heart, Truck, User } from 'lucide-react';
 
 export default function BrandMenuSheet() {
-  const { isBrandMenuOpen, setIsBrandMenuOpen, setActiveView, orders, user, logoutUser, openAuthModal } = useStore();
+  const {
+    isBrandMenuOpen,
+    setIsBrandMenuOpen,
+    setActiveView,
+    orders,
+    user,
+    logoutUser,
+    openAuthModal,
+    navigateToCategory,
+  } = useStore();
 
   if (!isBrandMenuOpen) return null;
 
@@ -67,6 +76,23 @@ export default function BrandMenuSheet() {
                   <span>Browse & Shop Pieces</span>
                 </div>
                 <ChevronRight className="w-4 h-4 text-gray-400" />
+              </button>
+
+              <button
+                onClick={() => {
+                  navigateToCategory('cat-kids');
+                  setIsBrandMenuOpen(false);
+                }}
+                className="w-full flex items-center justify-between px-3 py-2.5 rounded-xl text-[14px] font-medium text-[#1E3A2E] bg-emerald-50/60 hover:bg-emerald-50 transition-colors"
+              >
+                <div className="flex items-center gap-3">
+                  <Sparkles className="w-4 h-4 text-[#1E3A2E]" />
+                  <span>Kids & Mini Royalty</span>
+                </div>
+                <div className="flex items-center gap-1.5">
+                  <span className="text-[10px] font-bold bg-[#1E3A2E] text-[#C7CBB8] px-2 py-0.5 rounded-full">New</span>
+                  <ChevronRight className="w-4 h-4 text-gray-400" />
+                </div>
               </button>
 
               <button
