@@ -1,19 +1,16 @@
 'use client';
 
 import React, { useState } from 'react';
+import Image from 'next/image';
 import { useStore } from '@/context/StoreContext';
 import {
   ArrowLeft,
   ArrowRight,
   Check,
-  ShieldCheck,
   Lock,
   Truck,
   CreditCard,
-  Phone,
   Smartphone,
-  ChevronRight,
-  Sparkles,
   UserCheck,
 } from 'lucide-react';
 
@@ -286,7 +283,16 @@ export default function CheckoutView() {
                   </label>
                   <select
                     value={selectedDeliveryZone}
-                    onChange={(e) => setSelectedDeliveryZone(e.target.value as any)}
+                    onChange={(e) =>
+                      setSelectedDeliveryZone(
+                        e.target.value as
+                          | 'Accra Metro'
+                          | 'Tema / Spintex'
+                          | 'Kumasi'
+                          | 'Takoradi'
+                          | 'Nationwide Express'
+                      )
+                    }
                     className="w-full h-12 px-4 rounded-full bg-[#F4F1EA] border border-[#C7CBB8]/40 text-xs font-semibold text-[#0F1F17] outline-none cursor-pointer"
                   >
                     <option value="Accra Metro">Accra Metro (GH₵ 35)</option>
@@ -385,46 +391,59 @@ export default function CheckoutView() {
             </div>
 
             <div className="space-y-3">
-              {[
-                {
-                  id: 'MTN Mobile Money',
-                  title: 'MTN Mobile Money',
-                  desc: 'Instant prompt pushed to your MTN phone',
-                  icon: Smartphone,
-                  badge: 'Popular',
-                },
-                {
-                  id: 'Telecel Cash',
-                  title: 'Telecel Cash (Vodafone)',
-                  desc: 'Pay with your Telecel Cash voucher/PIN',
-                  icon: Smartphone,
-                },
-                {
-                  id: 'AirtelTigo Money',
-                  title: 'AirtelTigo Money',
-                  desc: 'Direct payment via AT Money wallet',
-                  icon: Smartphone,
-                },
-                {
-                  id: 'Credit / Debit Card',
-                  title: 'Ghana Visa / Mastercard',
-                  desc: 'Secured via local Ghana bank gateway',
-                  icon: CreditCard,
-                },
-                {
-                  id: 'Cash on Delivery',
-                  title: 'Payment on Delivery',
-                  desc: 'Cash or MoMo to courier rider upon inspection',
-                  icon: Truck,
-                },
-              ].map((method) => {
+              {(
+                [
+                  {
+                    id: 'MTN Mobile Money',
+                    title: 'MTN Mobile Money',
+                    desc: 'Instant prompt pushed to your MTN phone',
+                    icon: Smartphone,
+                    badge: 'Popular',
+                  },
+                  {
+                    id: 'Telecel Cash',
+                    title: 'Telecel Cash (Vodafone)',
+                    desc: 'Pay with your Telecel Cash voucher/PIN',
+                    icon: Smartphone,
+                  },
+                  {
+                    id: 'AirtelTigo Money',
+                    title: 'AirtelTigo Money',
+                    desc: 'Direct payment via AT Money wallet',
+                    icon: Smartphone,
+                  },
+                  {
+                    id: 'Credit / Debit Card',
+                    title: 'Ghana Visa / Mastercard',
+                    desc: 'Secured via local Ghana bank gateway',
+                    icon: CreditCard,
+                  },
+                  {
+                    id: 'Cash on Delivery',
+                    title: 'Payment on Delivery',
+                    desc: 'Cash or MoMo to courier rider upon inspection',
+                    icon: Truck,
+                  },
+                ] as Array<{
+                  id:
+                    | 'MTN Mobile Money'
+                    | 'Telecel Cash'
+                    | 'AirtelTigo Money'
+                    | 'Credit / Debit Card'
+                    | 'Cash on Delivery';
+                  title: string;
+                  desc: string;
+                  icon: typeof Smartphone;
+                  badge?: string;
+                }>
+              ).map((method) => {
                 const isSelected = paymentMethod === method.id;
                 const Icon = method.icon;
 
                 return (
                   <div
                     key={method.id}
-                    onClick={() => setPaymentMethod(method.id as any)}
+                    onClick={() => setPaymentMethod(method.id)}
                     className={`p-4 rounded-2xl cursor-pointer transition-all border ${
                       isSelected
                         ? 'border-2 border-[#1E3A2E] bg-white shadow-xs'
@@ -512,11 +531,16 @@ export default function CheckoutView() {
               {cart.map((item) => (
                 <div key={item.id} className="py-3 flex items-center justify-between text-xs">
                   <div className="flex items-center gap-3">
-                    <img
-                      src={item.product.images[0]}
-                      alt={item.product.name}
-                      className="w-12 h-14 object-cover rounded-xl"
-                    />
+                    <div className="relative w-12 h-14 shrink-0 overflow-hidden rounded-xl">
+                      <Image
+                        src={item.product.images[0]}
+                        alt={item.product.name}
+                        fill
+                        className="object-cover"
+                        sizes="48px"
+                        unoptimized
+                      />
+                    </div>
                     <div>
                       <h4 className="font-semibold text-[#1E3A2E]">{item.product.name}</h4>
                       <p className="text-[11px] text-[#6B7F67]">
