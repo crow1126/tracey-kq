@@ -46,6 +46,15 @@ export default function Home() {
   const [splashDone, setSplashDone] = useState(false);
   const handleSplashComplete = useCallback(() => setSplashDone(true), []);
 
+  // Guaranteed scroll-to-top whenever navigating to any page/view
+  React.useEffect(() => {
+    if (typeof window !== 'undefined') {
+      window.scrollTo({ top: 0, left: 0, behavior: 'instant' });
+      document.documentElement.scrollTop = 0;
+      document.body.scrollTop = 0;
+    }
+  }, [activeView]);
+
   const showFooter = !NO_FOOTER_VIEWS.includes(activeView);
 
   return (

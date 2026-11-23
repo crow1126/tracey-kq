@@ -43,6 +43,55 @@ export interface UserAccount {
   tier: 'Patron' | 'Connoisseur' | 'Ambassador';
 }
 
+export interface PromoCode {
+  id: string;
+  code: string;
+  type: 'percentage' | 'fixed';
+  value: number;
+  minSpendGhc?: number;
+  description: string;
+  isActive: boolean;
+}
+
+export const DEFAULT_PROMO_CODES: PromoCode[] = [
+  {
+    id: 'promo-1',
+    code: 'WELCOME10',
+    type: 'percentage',
+    value: 10,
+    minSpendGhc: 0,
+    description: '10% Welcome privilege for new patrons',
+    isActive: true,
+  },
+  {
+    id: 'promo-2',
+    code: 'VIPGHANA',
+    type: 'percentage',
+    value: 15,
+    minSpendGhc: 5000,
+    description: '15% VIP Patron Privilege on orders over GH₵ 5,000',
+    isActive: true,
+  },
+  {
+    id: 'promo-3',
+    code: 'ACCRA50',
+    type: 'fixed',
+    value: 50,
+    minSpendGhc: 500,
+    description: 'GH₵ 50 instant courier credit',
+    isActive: true,
+  },
+  {
+    id: 'promo-4',
+    code: 'TIMEFITS',
+    type: 'percentage',
+    value: 20,
+    minSpendGhc: 8000,
+    description: '20% Couture Launch Celebration on luxury silhouettes',
+    isActive: true,
+  },
+];
+
 export const DEFAULT_SITE_CONTENT: SiteContent = {
   announcementBarText:
     'T.I.M.E FITS · TAILORED PERFECTION, TIMELESS STYLE · ACCRA ATELIER · EXPRESS SAME-DAY DELIVERY IN ACCRA METRO',
@@ -197,6 +246,13 @@ interface StoreContextType {
   // CRUD for Site Content / Banners (Admin)
   updateSiteContent: (updates: Partial<SiteContent>) => void;
 
+  // Promos & Discounts (Admin & Checkout)
+  promoCodes: PromoCode[];
+  addPromoCode: (promo: Omit<PromoCode, 'id'>) => PromoCode;
+  updatePromoCode: (id: string, updates: Partial<PromoCode>) => void;
+  deletePromoCode: (id: string) => void;
+  togglePromoCode: (id: string) => void;
+
   // CRUD for Articles / Journal (Admin)
   addArticle: (article: Omit<JournalArticle, 'id'>) => JournalArticle;
   updateArticle: (id: string, updates: Partial<JournalArticle>) => void;
@@ -257,6 +313,25 @@ export function StoreProvider({ children }: { children: React.ReactNode }) {
   const [appliedPromoCode, setAppliedPromoCode] = useState<string | null>(null);
   const [promoDiscountPercent, setPromoDiscountPercent] = useState(0);
   const [promoDiscountFixed, setPromoDiscountFixed] = useState(0);
+
+  // Dynamic promo codes list (Admin CMS editable & localStorage backed)
+  const [promoCodes, setPromoCodes] = useState<PromoCode[]>(() => {
+    if (typeof window !== 'undefined') {
+      try {
+        const saved = localStorage.getItem('tkq_promo_codes');
+        if (saved) return JSON.parse(saved);
+      } catch {}
+    }
+    return DEFAULT_PROMO_CODES;
+  });
+
+  useEffect(() => {
+    if (typeof window !== 'undefined') {
+      try {
+        localStorage.setItem('tkq_promo_codes', JSON.stringify(promoCodes));
+      } catch {}
+    }
+  }, [promoCodes]);
 
   const [user, setUser] = useState<UserAccount>({
     id: 'usr-001',
@@ -625,50 +700,6 @@ export function StoreProvider({ children }: { children: React.ReactNode }) {
 
   const isWishlisted = (productId: string) => wishlist.includes(productId);
 
-  const applyPromoCode = (code: string) => {
-    const clean = code.trim().toUpperCase();
-    if (clean === 'WELCOME10') {
-      setAppliedPromoCode(clean);
-      setPromoDiscountPercent(10);
-      setPromoDiscountFixed(0);
-      return { success: true, message: '10% Welcome Discount applied!' };
-    }
-    if (clean === 'VIPGHANA' || clean === 'TKQ15') {
-      setAppliedPromoCode(clean);
-      setPromoDiscountPercent(15);
-      setPromoDiscountFixed(0);
-      return { success: true, message: '15% VIP Patron Discount applied!' };
-    }
-    if (clean === 'ACCRA50') {
-      setAppliedPromoCode(clean);
-      setPromoDiscountPercent(0);
-      setPromoDiscountFixed(50);
-      return { success: true, message: 'GH₵ 50 instant credit applied!' };
-    }
-    return {
-      success: false,
-      message: 'Invalid promo code. Try "WELCOME10" or "VIPGHANA"',
-    };
-  };
-
-  const removePromoCode = () => {
-    setAppliedPromoCode(null);
-    setPromoDiscountPercent(0);
-    setPromoDiscountFixed(0);
-  };
-
-  const submitBespokeEnquiry = (
-    data: Omit<BespokeEnquiry, 'id' | 'createdAt' | 'status'>
-  ) => {
-    const newEnquiry: BespokeEnquiry = {
-      ...data,
-      id: `enq-${Date.now()}`,
-      createdAt: new Date().toISOString().split('T')[0],
-      status: 'New',
-    };
-    setEnquiries((prev) => [newEnquiry, ...prev]);
-  };
-
   // Delivery fee mapping per zone in GH₵
   const getDeliveryFee = () => {
     let fee = 35;
@@ -700,6 +731,93 @@ export function StoreProvider({ children }: { children: React.ReactNode }) {
     0,
     cartSubtotalGhc - discountAmountGhc + deliveryFeeGhc
   );
+
+  const addPromoCode = (promo: Omit<PromoCode, 'id'>) => {
+    const newPromo: PromoCode = {
+      ...promo,
+      id: `promo-${Date.now()}`,
+      code: promo.code.trim().toUpperCase(),
+    };
+    setPromoCodes((prev) => [newPromo, ...prev]);
+    return newPromo;
+  };
+
+  const updatePromoCode = (id: string, updates: Partial<PromoCode>) => {
+    setPromoCodes((prev) =>
+      prev.map((p) =>
+        p.id === id
+          ? {
+              ...p,
+              ...updates,
+              code: updates.code ? updates.code.trim().toUpperCase() : p.code,
+            }
+          : p
+      )
+    );
+  };
+
+  const deletePromoCode = (id: string) => {
+    setPromoCodes((prev) => prev.filter((p) => p.id !== id));
+  };
+
+  const togglePromoCode = (id: string) => {
+    setPromoCodes((prev) =>
+      prev.map((p) => (p.id === id ? { ...p, isActive: !p.isActive } : p))
+    );
+  };
+
+  const applyPromoCode = (code: string) => {
+    const clean = code.trim().toUpperCase();
+    const found = promoCodes.find(
+      (p) => p.code.toUpperCase() === clean && p.isActive
+    );
+    if (!found) {
+      return {
+        success: false,
+        message: 'Invalid or inactive promo code.',
+      };
+    }
+    if (found.minSpendGhc && cartSubtotalGhc < found.minSpendGhc) {
+      return {
+        success: false,
+        message: `Minimum order of GH₵ ${found.minSpendGhc.toLocaleString()} required for code ${found.code}.`,
+      };
+    }
+    setAppliedPromoCode(found.code);
+    if (found.type === 'percentage') {
+      setPromoDiscountPercent(found.value);
+      setPromoDiscountFixed(0);
+      return {
+        success: true,
+        message: `${found.value}% discount applied successfully!`,
+      };
+    } else {
+      setPromoDiscountPercent(0);
+      setPromoDiscountFixed(found.value);
+      return {
+        success: true,
+        message: `GH₵ ${found.value.toLocaleString()} voucher credit applied!`,
+      };
+    }
+  };
+
+  const removePromoCode = () => {
+    setAppliedPromoCode(null);
+    setPromoDiscountPercent(0);
+    setPromoDiscountFixed(0);
+  };
+
+  const submitBespokeEnquiry = (
+    data: Omit<BespokeEnquiry, 'id' | 'createdAt' | 'status'>
+  ) => {
+    const newEnquiry: BespokeEnquiry = {
+      ...data,
+      id: `enq-${Date.now()}`,
+      createdAt: new Date().toISOString().split('T')[0],
+      status: 'New',
+    };
+    setEnquiries((prev) => [newEnquiry, ...prev]);
+  };
 
   const placeOrder = (orderData: {
     customerName: string;
@@ -891,6 +1009,11 @@ export function StoreProvider({ children }: { children: React.ReactNode }) {
         appliedPromoCode,
         promoDiscountPercent,
         promoDiscountFixed,
+        promoCodes,
+        addPromoCode,
+        updatePromoCode,
+        deletePromoCode,
+        togglePromoCode,
         setSelectedCategory,
         navigateToCategory,
         addToCart,

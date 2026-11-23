@@ -58,7 +58,7 @@ export default function OurStoryView() {
       </div>
 
       {/* ── Section 2: MEET THE DESIGNER (Kukua-Tracey) ── */}
-      <div className="relative rounded-[28px] overflow-hidden bg-[#0F1F17] text-white shadow-xl">
+      <div id="meet-the-designer" className="relative rounded-[28px] overflow-hidden bg-[#0F1F17] text-white shadow-xl scroll-mt-24">
         <div className="grid grid-cols-1 lg:grid-cols-12 items-center">
           <div className="lg:col-span-5 aspect-[4/5] sm:aspect-square lg:aspect-auto h-full relative min-h-[320px]">
             <img
@@ -140,7 +140,7 @@ export default function OurStoryView() {
       </div>
 
       {/* ── Section 4: OUR PHILOSOPHY (The 5 Values) ── */}
-      <div className="space-y-6">
+      <div id="brand-philosophy" className="space-y-6 scroll-mt-24">
         <div className="text-center space-y-2">
           <span className="text-[10px] font-bold tracking-[0.2em] text-[#1E3A2E] uppercase">
             OUR PHILOSOPHY

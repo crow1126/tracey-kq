@@ -10,10 +10,24 @@ export default function BrandFooter() {
   const [email, setEmail] = useState('');
   const [isSubscribed, setIsSubscribed] = useState(false);
 
-  const navigateAndScroll = (view: string) => {
+  const navigateAndScroll = (view: string, sectionId?: string) => {
     setActiveView(view as never);
     if (typeof window !== 'undefined') {
-      window.scrollTo({ top: 0, behavior: 'smooth' });
+      window.scrollTo(0, 0);
+      window.scrollTo({ top: 0, left: 0, behavior: 'instant' });
+      document.documentElement.scrollTop = 0;
+      document.body.scrollTop = 0;
+      const mainEl = document.querySelector('main');
+      if (mainEl) mainEl.scrollTop = 0;
+
+      if (sectionId) {
+        setTimeout(() => {
+          const el = document.getElementById(sectionId);
+          if (el) {
+            el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+          }
+        }, 120);
+      }
     }
   };
 
@@ -213,7 +227,7 @@ export default function BrandFooter() {
               <li>
                 <button
                   type="button"
-                  onClick={() => navigateAndScroll('our-story')}
+                  onClick={() => navigateAndScroll('our-story', 'meet-the-designer')}
                   className="hover:text-white transition-colors cursor-pointer text-left"
                 >
                   Meet the Designer
@@ -222,7 +236,7 @@ export default function BrandFooter() {
               <li>
                 <button
                   type="button"
-                  onClick={() => navigateAndScroll('our-story')}
+                  onClick={() => navigateAndScroll('our-story', 'brand-philosophy')}
                   className="hover:text-white transition-colors cursor-pointer text-left"
                 >
                   Brand Philosophy
@@ -253,6 +267,15 @@ export default function BrandFooter() {
                   className="hover:text-white transition-colors cursor-pointer text-left"
                 >
                   Saved Wishlist
+                </button>
+              </li>
+              <li>
+                <button
+                  type="button"
+                  onClick={() => navigateAndScroll('orders')}
+                  className="hover:text-white transition-colors cursor-pointer text-left font-medium text-[#C7CBB8]"
+                >
+                  Patron Orders & Tracking
                 </button>
               </li>
               <li>

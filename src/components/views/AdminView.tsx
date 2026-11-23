@@ -2,7 +2,7 @@
 'use client';
 
 import React, { useState } from 'react';
-import { useStore } from '@/context/StoreContext';
+import { useStore, PromoCode } from '@/context/StoreContext';
 import { Product, Order, JournalArticle, SiteContent } from '@/data/db-schema';
 import {
   ShieldCheck,
@@ -25,6 +25,12 @@ import {
   Truck,
   Phone,
   Clock,
+  Tag,
+  MessageSquare,
+  Send,
+  ToggleLeft,
+  ToggleRight,
+  ExternalLink,
 } from 'lucide-react';
 import ImageUploader from '../ui/ImageUploader';
 
@@ -47,6 +53,11 @@ export default function AdminView() {
     siteContent,
     orders,
     enquiries,
+    promoCodes,
+    addPromoCode,
+    updatePromoCode,
+    deletePromoCode,
+    togglePromoCode,
     updateOrderStatus,
     updateOrderTracking,
     addProduct,
@@ -61,7 +72,7 @@ export default function AdminView() {
   } = useStore();
 
   const [activeTab, setActiveTab] = useState<
-    'inventory' | 'content' | 'journal' | 'orders' | 'enquiries' | 'analytics'
+    'inventory' | 'content' | 'journal' | 'orders' | 'enquiries' | 'analytics' | 'promos'
   >('inventory');
 
   // Selected order for printable packing slip
@@ -72,6 +83,39 @@ export default function AdminView() {
   const [selectedCourierPartner, setSelectedCourierPartner] = useState('atelier');
   const [riderInputName, setRiderInputName] = useState('');
   const [riderInputPhone, setRiderInputPhone] = useState('');
+
+  // WhatsApp Client Messaging Modal state
+  const [whatsappOrder, setWhatsappOrder] = useState<Order | null>(null);
+  const [whatsappMsgType, setWhatsappMsgType] = useState<'confirmed' | 'dispatched' | 'delivered'>('dispatched');
+
+  // Promo Code Modal & Form state
+  const [isPromoModalOpen, setIsPromoModalOpen] = useState(false);
+  const [editingPromoId, setEditingPromoId] = useState<string | null>(null);
+  const [promoForm, setPromoForm] = useState({
+    code: '',
+    type: 'percentage' as 'percentage' | 'fixed',
+    value: 10,
+    minSpendGhc: 0,
+    description: '',
+    isActive: true,
+  });
+  const [promoToDelete, setPromoToDelete] = useState<PromoCode | null>(null);
+
+  // Helper to parse colors from comma string "Name: #hex, Name2: #hex2"
+  const parseColors = (input: string) => {
+    return input
+      .split(',')
+      .map((item) => {
+        const parts = item.split(':').map((s) => s.trim());
+        if (parts.length >= 2) {
+          return { name: parts[0], hex: parts[1] };
+        } else if (parts[0]) {
+          return { name: parts[0], hex: '#1E3A2E' };
+        }
+        return null;
+      })
+      .filter((c): c is { name: string; hex: string } => c !== null);
+  };
 
   // Product Add / Edit Modal state
   const [isProductModalOpen, setIsProductModalOpen] = useState(false);
@@ -90,6 +134,7 @@ export default function AdminView() {
     imageUrl: 'https://images.unsplash.com/photo-1515886657613-9f3515b0c78f?auto=format&fit=crop&w=800&q=85',
     stockStatus: 'in_stock' as 'in_stock' | 'low_stock' | 'out_of_stock',
     sizes: 'XS, S, M, L, XL',
+    colors: 'Royal Amber Gold: #D4AF37, Emerald Green: #1E3A2E',
     isNew: true,
     isTrending: true,
     isSpotlight: false,
@@ -149,6 +194,7 @@ export default function AdminView() {
       imageUrl: 'https://images.unsplash.com/photo-1515886657613-9f3515b0c78f?auto=format&fit=crop&w=800&q=85',
       stockStatus: 'in_stock',
       sizes: 'XS, S, M, L, XL',
+      colors: 'Royal Amber Gold: #D4AF37, Emerald Green: #1E3A2E',
       isNew: true,
       isTrending: true,
       isSpotlight: false,
@@ -159,6 +205,11 @@ export default function AdminView() {
   // Open Product Modal for Edit
   const handleOpenEditProduct = (p: Product) => {
     setEditingProductId(p.id);
+    const colorStr =
+      p.colors && p.colors.length > 0
+        ? p.colors.map((c) => `${c.name}: ${c.hex}`).join(', ')
+        : 'Royal Amber Gold: #D4AF37';
+
     setProductForm({
       name: p.name,
       subtitle: p.subtitle || '',
@@ -173,6 +224,7 @@ export default function AdminView() {
       imageUrl: p.images[0] || '',
       stockStatus: p.stockStatus,
       sizes: p.sizes.join(', '),
+      colors: colorStr,
       isNew: p.isNew,
       isTrending: p.isTrending,
       isSpotlight: p.isSpotlight,
@@ -184,6 +236,8 @@ export default function AdminView() {
   const handleSaveProduct = (e: React.FormEvent) => {
     e.preventDefault();
     const sizeArray = productForm.sizes.split(',').map((s) => s.trim()).filter(Boolean);
+    const colorArray = parseColors(productForm.colors);
+    const finalColors = colorArray.length > 0 ? colorArray : [{ name: 'Heritage Gold', hex: '#D4AF37' }];
 
     if (editingProductId) {
       updateProduct(editingProductId, {
@@ -200,6 +254,7 @@ export default function AdminView() {
         images: [productForm.imageUrl],
         stockStatus: productForm.stockStatus,
         sizes: sizeArray.length > 0 ? sizeArray : ['M'],
+        colors: finalColors,
         isNew: productForm.isNew,
         isTrending: productForm.isTrending,
         isSpotlight: productForm.isSpotlight,
@@ -220,7 +275,7 @@ export default function AdminView() {
         rating: 5.0,
         reviewCount: 1,
         images: [productForm.imageUrl],
-        colors: [{ name: 'Heritage Gold', hex: '#D4AF37' }],
+        colors: finalColors,
         sizes: sizeArray.length > 0 ? sizeArray : ['XS', 'S', 'M', 'L'],
         variants: [],
         fabric: productForm.fabric,
@@ -239,6 +294,81 @@ export default function AdminView() {
       deleteProduct(productToDelete.id);
       setProductToDelete(null);
     }
+  };
+
+  // Promo Code Handlers
+  const handleOpenCreatePromo = () => {
+    setEditingPromoId(null);
+    setPromoForm({
+      code: '',
+      type: 'percentage',
+      value: 10,
+      minSpendGhc: 0,
+      description: '',
+      isActive: true,
+    });
+    setIsPromoModalOpen(true);
+  };
+
+  const handleOpenEditPromo = (promo: PromoCode) => {
+    setEditingPromoId(promo.id);
+    setPromoForm({
+      code: promo.code,
+      type: promo.type,
+      value: promo.value,
+      minSpendGhc: promo.minSpendGhc || 0,
+      description: promo.description,
+      isActive: promo.isActive,
+    });
+    setIsPromoModalOpen(true);
+  };
+
+  const handleSavePromo = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!promoForm.code.trim()) return;
+
+    if (editingPromoId) {
+      updatePromoCode(editingPromoId, {
+        code: promoForm.code.trim().toUpperCase(),
+        type: promoForm.type,
+        value: Number(promoForm.value),
+        minSpendGhc: Number(promoForm.minSpendGhc) || 0,
+        description: promoForm.description,
+        isActive: promoForm.isActive,
+      });
+    } else {
+      addPromoCode({
+        code: promoForm.code.trim().toUpperCase(),
+        type: promoForm.type,
+        value: Number(promoForm.value),
+        minSpendGhc: Number(promoForm.minSpendGhc) || 0,
+        description: promoForm.description,
+        isActive: promoForm.isActive,
+      });
+    }
+    setIsPromoModalOpen(false);
+  };
+
+  const handleConfirmDeletePromo = () => {
+    if (promoToDelete) {
+      deletePromoCode(promoToDelete.id);
+      setPromoToDelete(null);
+    }
+  };
+
+  // Direct WhatsApp Client Communication Helper
+  const sendWhatsAppUpdate = (ord: Order, template: 'confirmed' | 'dispatched' | 'delivered') => {
+    let msg = `Hello ${ord.customerName}, this is T.I.M.E fits Accra Atelier regarding your order ${ord.orderNumber}.`;
+    if (template === 'confirmed') {
+      msg = `Hello ${ord.customerName}, your bespoke couture order ${ord.orderNumber} (GH₵ ${ord.totalGhc.toLocaleString()}) has been confirmed and is now being hand-steamed and prepared at our Accra atelier! Delivery to: ${ord.deliveryAddress}, ${ord.city}.`;
+    } else if (template === 'dispatched') {
+      msg = `Greetings ${ord.customerName}, your T.I.M.E fits order ${ord.orderNumber} is dispatched with courier ${ord.riderName || 'our atelier driver'} (${ord.riderPhone || 'Accra Express'}). Estimated delivery: ${ord.estimatedDelivery || 'Today'}. You can track your order live on our portal.`;
+    } else if (template === 'delivered') {
+      msg = `Dear ${ord.customerName}, your T.I.M.E fits couture piece (${ord.orderNumber}) has been delivered! We hope you cherish this creation. "We don't design for seasons; we design for lifetimes."`;
+    }
+    const cleanPhone = ord.customerPhone.replace(/[^0-9]/g, '');
+    const url = `https://wa.me/${cleanPhone}?text=${encodeURIComponent(msg)}`;
+    window.open(url, '_blank');
   };
 
   // Save Site Content Form
@@ -422,7 +552,8 @@ export default function AdminView() {
         <div className="bg-white rounded-2xl p-1.5 border border-[#E6E6EA] flex space-x-1.5 overflow-x-auto no-scrollbar text-xs font-semibold shadow-xs">
           {[
             { id: 'inventory', label: `Inventory (${products.length})`, icon: Package },
-            { id: 'content', label: 'Site Features & Banners', icon: Sliders },
+            { id: 'promos', label: `Promos & Discounts (${promoCodes.length})`, icon: Tag },
+            { id: 'content', label: 'Hero & Banners CMS', icon: Sliders },
             { id: 'journal', label: `Journal (${articles.length})`, icon: BookOpen },
             { id: 'orders', label: `Orders (${orders.length})`, icon: ShoppingBag },
             { id: 'enquiries', label: `Enquiries (${enquiries.length})`, icon: Scissors },
@@ -434,7 +565,7 @@ export default function AdminView() {
             return (
               <button
                 key={tab.id}
-                onClick={() => setActiveTab(tab.id as 'inventory' | 'content' | 'journal' | 'orders' | 'enquiries' | 'analytics')}
+                onClick={() => setActiveTab(tab.id as 'inventory' | 'content' | 'journal' | 'orders' | 'enquiries' | 'analytics' | 'promos')}
                 className={`flex-shrink-0 py-2.5 sm:py-3 px-3.5 sm:px-4 rounded-xl flex items-center justify-center gap-2 transition-all cursor-pointer whitespace-nowrap ${
                   isActive
                     ? 'bg-[#111113] text-white shadow-sm'
@@ -627,6 +758,166 @@ export default function AdminView() {
                     <button
                       onClick={() => setProductToDelete(p)}
                       className="px-3.5 py-1.5 rounded-lg bg-[#FDECEE] text-[#E5384F] hover:bg-[#E5384F] hover:text-white text-xs font-semibold flex items-center gap-1.5 transition-colors"
+                    >
+                      <Trash2 className="w-3.5 h-3.5" />
+                      <span>Delete</span>
+                    </button>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+        )}
+
+        {/* ────────── PROMOS & DISCOUNTS CMS ────────── */}
+        {activeTab === 'promos' && (
+          <div className="bg-white rounded-3xl border border-[#E6E6EA] overflow-hidden shadow-sm space-y-4">
+            <div className="p-5 sm:p-6 border-b border-[#E6E6EA] flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+              <div>
+                <h3 className="text-base font-bold text-[#111113]">
+                  Promotional Privileges &amp; Atelier Discount Vouchers
+                </h3>
+                <p className="text-xs text-[#8A8A8F]">
+                  Configure promo codes, percentage or fixed GH₵ price vouchers, minimum spend limits, and activate or pause discounts in real-time.
+                </p>
+              </div>
+
+              <button
+                onClick={handleOpenCreatePromo}
+                className="h-11 px-5 rounded-full bg-[#111113] text-white hover:bg-[#3A3A3F] text-xs font-semibold flex items-center gap-2 shadow-sm transition-all cursor-pointer self-start sm:self-auto"
+              >
+                <Plus className="w-4 h-4" />
+                <span>+ Create New Promo Code</span>
+              </button>
+            </div>
+
+            {/* Desktop Table */}
+            <div className="hidden md:block overflow-x-auto">
+              <table className="w-full text-left text-xs">
+                <thead className="bg-[#F5F5F7] border-b border-[#E6E6EA] text-[#8A8A8F] font-semibold uppercase tracking-wider">
+                  <tr>
+                    <th className="py-3.5 px-5">Promo Code</th>
+                    <th className="py-3.5 px-4">Privilege Value</th>
+                    <th className="py-3.5 px-4">Min. Spend</th>
+                    <th className="py-3.5 px-4">Narrative / Description</th>
+                    <th className="py-3.5 px-4">Status</th>
+                    <th className="py-3.5 px-5 text-right">Actions</th>
+                  </tr>
+                </thead>
+                <tbody className="divide-y divide-[#E6E6EA]">
+                  {promoCodes.map((promo) => (
+                    <tr key={promo.id} className="hover:bg-[#F5F5F7] transition-colors">
+                      <td className="py-3.5 px-5">
+                        <div className="flex items-center gap-2.5">
+                          <span className="font-mono font-bold text-sm text-[#111113] bg-[#EDEDF0] px-3 py-1 rounded-lg border border-[#E6E6EA]">
+                            {promo.code}
+                          </span>
+                        </div>
+                      </td>
+                      <td className="py-3.5 px-4">
+                        <span className="font-bold text-[#1E3A2E] text-xs">
+                          {promo.type === 'percentage'
+                            ? `${promo.value}% OFF`
+                            : `GH₵ ${promo.value.toLocaleString()} CREDIT`}
+                        </span>
+                      </td>
+                      <td className="py-3.5 px-4 text-[#8A8A8F]">
+                        {promo.minSpendGhc && promo.minSpendGhc > 0
+                          ? `GH₵ ${promo.minSpendGhc.toLocaleString()}`
+                          : 'No Minimum'}
+                      </td>
+                      <td className="py-3.5 px-4 text-[#3A3A3F] max-w-xs">
+                        {promo.description}
+                      </td>
+                      <td className="py-3.5 px-4">
+                        <button
+                          onClick={() => togglePromoCode(promo.id)}
+                          className={`inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-[11px] font-bold cursor-pointer transition-colors ${
+                            promo.isActive
+                              ? 'bg-[#E8F5EE] text-[#1F8A4C] hover:bg-[#D4EFE1]'
+                              : 'bg-[#EDEDF0] text-[#8A8A8F] hover:bg-[#E6E6EA]'
+                          }`}
+                        >
+                          {promo.isActive ? (
+                            <>
+                              <ToggleRight className="w-4 h-4 text-[#1F8A4C]" />
+                              <span>Active</span>
+                            </>
+                          ) : (
+                            <>
+                              <ToggleLeft className="w-4 h-4 text-[#8A8A8F]" />
+                              <span>Paused</span>
+                            </>
+                          )}
+                        </button>
+                      </td>
+                      <td className="py-3.5 px-5 text-right">
+                        <div className="flex items-center justify-end gap-1.5">
+                          <button
+                            onClick={() => handleOpenEditPromo(promo)}
+                            className="p-2 rounded-lg bg-[#EDEDF0] hover:bg-[#111113] hover:text-white transition-colors cursor-pointer"
+                            title="Edit Promo"
+                          >
+                            <Pencil className="w-3.5 h-3.5" />
+                          </button>
+                          <button
+                            onClick={() => setPromoToDelete(promo)}
+                            className="p-2 rounded-lg bg-[#FDECEE] text-[#E5384F] hover:bg-[#E5384F] hover:text-white transition-colors cursor-pointer"
+                            title="Delete Promo"
+                          >
+                            <Trash2 className="w-3.5 h-3.5" />
+                          </button>
+                        </div>
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+
+            {/* Mobile Card List */}
+            <div className="md:hidden divide-y divide-[#E6E6EA]">
+              {promoCodes.map((promo) => (
+                <div key={promo.id} className="p-4 space-y-3">
+                  <div className="flex items-center justify-between">
+                    <span className="font-mono font-bold text-sm text-[#111113] bg-[#EDEDF0] px-2.5 py-1 rounded-lg">
+                      {promo.code}
+                    </span>
+                    <button
+                      onClick={() => togglePromoCode(promo.id)}
+                      className={`text-[10px] font-bold px-2.5 py-1 rounded-full flex items-center gap-1 ${
+                        promo.isActive
+                          ? 'bg-[#E8F5EE] text-[#1F8A4C]'
+                          : 'bg-[#EDEDF0] text-[#8A8A8F]'
+                      }`}
+                    >
+                      {promo.isActive ? 'Active' : 'Paused'}
+                    </button>
+                  </div>
+
+                  <div className="text-xs space-y-1">
+                    <p className="font-bold text-[#1E3A2E]">
+                      {promo.type === 'percentage'
+                        ? `${promo.value}% Privilege Discount`
+                        : `GH₵ ${promo.value.toLocaleString()} Direct Voucher`}
+                    </p>
+                    <p className="text-[#8A8A8F]">
+                      Min. Spend: {promo.minSpendGhc && promo.minSpendGhc > 0 ? `GH₵ ${promo.minSpendGhc.toLocaleString()}` : 'None'}
+                    </p>
+                    <p className="text-[#3A3A3F]">{promo.description}</p>
+                  </div>
+
+                  <div className="flex items-center justify-end gap-2 pt-1 border-t border-[#F5F5F7]">
+                    <button
+                      onClick={() => handleOpenEditPromo(promo)}
+                      className="px-3 py-1.5 rounded-lg bg-[#EDEDF0] text-xs font-semibold flex items-center gap-1"
+                    >
+                      <Pencil className="w-3.5 h-3.5" />
+                      <span>Edit</span>
+                    </button>
+                    <button
+                      onClick={() => setPromoToDelete(promo)}
+                      className="px-3 py-1.5 rounded-lg bg-[#FDECEE] text-[#E5384F] text-xs font-semibold flex items-center gap-1"
                     >
                       <Trash2 className="w-3.5 h-3.5" />
                       <span>Delete</span>
@@ -1098,6 +1389,16 @@ export default function AdminView() {
                       <td className="py-3.5 px-4 text-right whitespace-nowrap">
                         <button
                           onClick={() => {
+                            setWhatsappOrder(ord);
+                            setWhatsappMsgType('dispatched');
+                          }}
+                          className="p-2 rounded-lg bg-[#E8F5EE] text-[#1F8A4C] hover:bg-[#D4EFE1] transition-colors cursor-pointer mr-1.5"
+                          title="Message Client via WhatsApp"
+                        >
+                          <MessageSquare className="w-4 h-4" />
+                        </button>
+                        <button
+                          onClick={() => {
                             setTrackingOrder(ord);
                             setRiderInputName(ord.riderName || 'Kojo Mensah');
                             setRiderInputPhone(ord.riderPhone || '+233 24 999 1122');
@@ -1172,6 +1473,17 @@ export default function AdminView() {
                     </div>
 
                     <div className="flex items-center gap-1.5">
+                      <button
+                        onClick={() => {
+                          setWhatsappOrder(ord);
+                          setWhatsappMsgType('dispatched');
+                        }}
+                        className="px-2.5 py-1.5 rounded-lg bg-[#E8F5EE] text-[#1F8A4C] hover:bg-[#D4EFE1] text-xs font-semibold flex items-center gap-1 transition-colors"
+                        title="WhatsApp Client"
+                      >
+                        <MessageSquare className="w-3.5 h-3.5" />
+                        <span>Chat</span>
+                      </button>
                       <button
                         onClick={() => {
                           setTrackingOrder(ord);
@@ -1447,6 +1759,33 @@ export default function AdminView() {
                   onChange={(e) => setProductForm({ ...productForm, sizes: e.target.value })}
                   className="w-full h-11 px-3.5 rounded-xl bg-[#F5F5F7] border border-[#E6E6EA] text-xs outline-none"
                 />
+              </div>
+
+              <div>
+                <label className="text-xs font-semibold text-[#8A8A8F] block mb-1">
+                  Garment Colors (Format: Color Name: #hex, e.g. Royal Gold: #D4AF37, Emerald Green: #1E3A2E)
+                </label>
+                <input
+                  type="text"
+                  value={productForm.colors}
+                  onChange={(e) => setProductForm({ ...productForm, colors: e.target.value })}
+                  placeholder="e.g. Royal Amber Gold: #D4AF37, Emerald Green: #1E3A2E, Obsidian Black: #111113"
+                  className="w-full h-11 px-3.5 rounded-xl bg-[#F5F5F7] border border-[#E6E6EA] text-xs outline-none"
+                />
+                <div className="flex flex-wrap gap-1.5 mt-2">
+                  {parseColors(productForm.colors).map((c, i) => (
+                    <span
+                      key={i}
+                      className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-[10px] font-semibold bg-[#F5F5F7] border border-[#E6E6EA]"
+                    >
+                      <span
+                        className="w-2.5 h-2.5 rounded-full border border-black/20"
+                        style={{ backgroundColor: c.hex }}
+                      />
+                      <span>{c.name}</span>
+                    </span>
+                  ))}
+                </div>
               </div>
 
               <div className="flex items-center gap-6 pt-2">
@@ -2022,6 +2361,269 @@ export default function AdminView() {
               >
                 <Save className="w-4 h-4" />
                 <span>Save Courier Details &amp; Close</span>
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* ────────── PROMO ADD / EDIT MODAL ────────── */}
+      {isPromoModalOpen && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/75 backdrop-blur-sm overflow-y-auto">
+          <div className="bg-white rounded-[28px] max-w-lg w-full p-6 sm:p-8 space-y-5 text-[#111113] relative border border-[#E6E6EA] shadow-2xl my-8">
+            <button
+              onClick={() => setIsPromoModalOpen(false)}
+              className="absolute top-5 right-5 p-2 rounded-full bg-[#EDEDF0] hover:bg-[#E6E6EA]"
+            >
+              <X className="w-4 h-4 text-[#111113]" />
+            </button>
+
+            <div className="border-b border-[#E6E6EA] pb-3">
+              <span className="text-[10px] font-bold tracking-widest uppercase text-[#1E3A2E]">
+                ATELIER PRIVILEGE &amp; DISCOUNT CMS
+              </span>
+              <h3 className="text-xl font-bold text-[#111113]">
+                {editingPromoId ? 'Edit Promo Code' : 'Create New Privilege Code'}
+              </h3>
+            </div>
+
+            <form onSubmit={handleSavePromo} className="space-y-4">
+              <div>
+                <label className="text-xs font-semibold text-[#8A8A8F] block mb-1">
+                  Promo Code (e.g. WELCOME10, ACCRA50)
+                </label>
+                <input
+                  type="text"
+                  required
+                  value={promoForm.code}
+                  onChange={(e) => setPromoForm({ ...promoForm, code: e.target.value.toUpperCase() })}
+                  placeholder="e.g. VIPACCRA"
+                  className="w-full h-11 px-3.5 rounded-xl bg-[#F5F5F7] border border-[#E6E6EA] text-sm font-mono font-bold outline-none uppercase"
+                />
+              </div>
+
+              <div className="grid grid-cols-2 gap-3">
+                <div>
+                  <label className="text-xs font-semibold text-[#8A8A8F] block mb-1">
+                    Discount Type
+                  </label>
+                  <select
+                    value={promoForm.type}
+                    onChange={(e) => setPromoForm({ ...promoForm, type: e.target.value as 'percentage' | 'fixed' })}
+                    className="w-full h-11 px-3 rounded-xl bg-[#F5F5F7] border border-[#E6E6EA] text-xs font-semibold outline-none cursor-pointer"
+                  >
+                    <option value="percentage">Percentage (% OFF)</option>
+                    <option value="fixed">Fixed Voucher (GH₵ OFF)</option>
+                  </select>
+                </div>
+
+                <div>
+                  <label className="text-xs font-semibold text-[#8A8A8F] block mb-1">
+                    {promoForm.type === 'percentage' ? 'Percentage Value (%)' : 'Voucher Credit (GH₵)'}
+                  </label>
+                  <input
+                    type="number"
+                    required
+                    min={1}
+                    max={promoForm.type === 'percentage' ? 100 : 100000}
+                    value={promoForm.value}
+                    onChange={(e) => setPromoForm({ ...promoForm, value: Number(e.target.value) })}
+                    className="w-full h-11 px-3.5 rounded-xl bg-[#F5F5F7] border border-[#E6E6EA] text-xs font-bold outline-none"
+                  />
+                </div>
+              </div>
+
+              <div>
+                <label className="text-xs font-semibold text-[#8A8A8F] block mb-1">
+                  Minimum Order Spend (GH₵, 0 for none)
+                </label>
+                <input
+                  type="number"
+                  min={0}
+                  value={promoForm.minSpendGhc}
+                  onChange={(e) => setPromoForm({ ...promoForm, minSpendGhc: Number(e.target.value) })}
+                  placeholder="0"
+                  className="w-full h-11 px-3.5 rounded-xl bg-[#F5F5F7] border border-[#E6E6EA] text-xs outline-none"
+                />
+              </div>
+
+              <div>
+                <label className="text-xs font-semibold text-[#8A8A8F] block mb-1">
+                  Description / Patron Privilege Note
+                </label>
+                <input
+                  type="text"
+                  required
+                  value={promoForm.description}
+                  onChange={(e) => setPromoForm({ ...promoForm, description: e.target.value })}
+                  placeholder="e.g. 15% VIP Patron Privilege on orders over GH₵ 5,000"
+                  className="w-full h-11 px-3.5 rounded-xl bg-[#F5F5F7] border border-[#E6E6EA] text-xs outline-none"
+                />
+              </div>
+
+              <div className="pt-1">
+                <label className="flex items-center gap-2.5 text-xs font-semibold cursor-pointer">
+                  <input
+                    type="checkbox"
+                    checked={promoForm.isActive}
+                    onChange={(e) => setPromoForm({ ...promoForm, isActive: e.target.checked })}
+                    className="rounded text-[#111113] w-4 h-4"
+                  />
+                  <span>Active &amp; redeemable immediately in checkout</span>
+                </label>
+              </div>
+
+              <div className="flex gap-3 pt-4 border-t border-[#E6E6EA]">
+                <button
+                  type="button"
+                  onClick={() => setIsPromoModalOpen(false)}
+                  className="flex-1 h-12 rounded-full border border-[#E6E6EA] text-xs font-semibold hover:bg-[#F5F5F7]"
+                >
+                  Cancel
+                </button>
+                <button
+                  type="submit"
+                  className="flex-1 h-12 rounded-full bg-[#111113] text-white text-xs font-semibold hover:bg-[#3A3A3F] shadow-md cursor-pointer"
+                >
+                  {editingPromoId ? 'Update Promo Code' : 'Create Promo Code'}
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+      )}
+
+      {/* ────────── DELETE PROMO CONFIRMATION MODAL ────────── */}
+      {promoToDelete && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/75 backdrop-blur-sm">
+          <div className="bg-white rounded-[28px] max-w-sm w-full p-6 text-center space-y-4 shadow-2xl">
+            <div className="w-12 h-12 rounded-full bg-[#FDECEE] text-[#E5384F] flex items-center justify-center mx-auto">
+              <Trash2 className="w-6 h-6" />
+            </div>
+            <div>
+              <h3 className="font-bold text-base text-[#111113]">Delete promo code?</h3>
+              <p className="text-xs text-[#8A8A8F] mt-1">
+                Promo code &ldquo;{promoToDelete.code}&rdquo; will be permanently removed.
+              </p>
+            </div>
+            <div className="flex gap-3 pt-2">
+              <button
+                onClick={() => setPromoToDelete(null)}
+                className="flex-1 h-11 rounded-full border border-[#E6E6EA] text-xs font-semibold hover:bg-[#F5F5F7]"
+              >
+                Cancel
+              </button>
+              <button
+                onClick={handleConfirmDeletePromo}
+                className="flex-1 h-11 rounded-full bg-[#E5384F] text-white text-xs font-semibold hover:bg-[#C52B40]"
+              >
+                Yes, Delete
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* ────────── WHATSAPP CLIENT MESSAGING MODAL ────────── */}
+      {whatsappOrder && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/75 backdrop-blur-sm">
+          <div className="bg-white rounded-[28px] max-w-lg w-full p-6 sm:p-8 space-y-5 text-[#111113] relative border border-[#E6E6EA] shadow-2xl">
+            <button
+              onClick={() => setWhatsappOrder(null)}
+              className="absolute top-5 right-5 p-2 rounded-full bg-[#EDEDF0] hover:bg-[#E6E6EA]"
+            >
+              <X className="w-4 h-4 text-[#111113]" />
+            </button>
+
+            <div className="border-b border-[#E6E6EA] pb-3">
+              <div className="flex items-center gap-2">
+                <span className="p-1.5 rounded-full bg-[#E8F5EE] text-[#1F8A4C]">
+                  <MessageSquare className="w-4 h-4" />
+                </span>
+                <span className="text-[10px] font-bold tracking-widest uppercase text-[#1F8A4C]">
+                  WHATSAPP CLIENT CONCIERGE
+                </span>
+              </div>
+              <h3 className="text-xl font-bold text-[#111113] mt-1">
+                Message {whatsappOrder.customerName}
+              </h3>
+              <p className="text-xs text-[#8A8A8F]">
+                Phone: {whatsappOrder.customerPhone} · Order {whatsappOrder.orderNumber} (GH₵ {whatsappOrder.totalGhc.toLocaleString()})
+              </p>
+            </div>
+
+            <div className="space-y-3">
+              <label className="text-xs font-semibold text-[#8A8A8F] block">
+                Choose Status Update Template:
+              </label>
+
+              <div className="grid grid-cols-3 gap-2">
+                <button
+                  type="button"
+                  onClick={() => setWhatsappMsgType('confirmed')}
+                  className={`p-3 rounded-xl border text-xs font-semibold text-center transition-all cursor-pointer ${
+                    whatsappMsgType === 'confirmed'
+                      ? 'border-[#1F8A4C] bg-[#E8F5EE] text-[#1F8A4C]'
+                      : 'border-[#E6E6EA] bg-[#F5F5F7] text-[#8A8A8F]'
+                  }`}
+                >
+                  1. Confirmed
+                </button>
+                <button
+                  type="button"
+                  onClick={() => setWhatsappMsgType('dispatched')}
+                  className={`p-3 rounded-xl border text-xs font-semibold text-center transition-all cursor-pointer ${
+                    whatsappMsgType === 'dispatched'
+                      ? 'border-[#1F8A4C] bg-[#E8F5EE] text-[#1F8A4C]'
+                      : 'border-[#E6E6EA] bg-[#F5F5F7] text-[#8A8A8F]'
+                  }`}
+                >
+                  2. Dispatched
+                </button>
+                <button
+                  type="button"
+                  onClick={() => setWhatsappMsgType('delivered')}
+                  className={`p-3 rounded-xl border text-xs font-semibold text-center transition-all cursor-pointer ${
+                    whatsappMsgType === 'delivered'
+                      ? 'border-[#1F8A4C] bg-[#E8F5EE] text-[#1F8A4C]'
+                      : 'border-[#E6E6EA] bg-[#F5F5F7] text-[#8A8A8F]'
+                  }`}
+                >
+                  3. Delivered
+                </button>
+              </div>
+
+              <div className="p-3.5 rounded-xl bg-[#F5F5F7] border border-[#E6E6EA] text-xs text-[#3A3A3F] leading-relaxed font-mono">
+                {whatsappMsgType === 'confirmed' && (
+                  `"Hello ${whatsappOrder.customerName}, your bespoke couture order ${whatsappOrder.orderNumber} (GH₵ ${whatsappOrder.totalGhc.toLocaleString()}) has been confirmed and is now being hand-steamed and prepared at our Accra atelier! Delivery to: ${whatsappOrder.deliveryAddress}, ${whatsappOrder.city}."`
+                )}
+                {whatsappMsgType === 'dispatched' && (
+                  `"Greetings ${whatsappOrder.customerName}, your T.I.M.E fits order ${whatsappOrder.orderNumber} is dispatched with courier ${whatsappOrder.riderName || 'our atelier driver'} (${whatsappOrder.riderPhone || 'Accra Express'}). Estimated delivery: ${whatsappOrder.estimatedDelivery || 'Today'}. You can track your order live on our portal."`
+                )}
+                {whatsappMsgType === 'delivered' && (
+                  `"Dear ${whatsappOrder.customerName}, your T.I.M.E fits couture piece (${whatsappOrder.orderNumber}) has been delivered! We hope you cherish this creation. Remember: 'We don't design for seasons; we design for lifetimes.'"`
+                )}
+              </div>
+            </div>
+
+            <div className="flex gap-3 pt-3">
+              <button
+                type="button"
+                onClick={() => setWhatsappOrder(null)}
+                className="flex-1 h-12 rounded-full border border-[#E6E6EA] text-xs font-semibold hover:bg-[#F5F5F7]"
+              >
+                Close
+              </button>
+              <button
+                type="button"
+                onClick={() => {
+                  sendWhatsAppUpdate(whatsappOrder, whatsappMsgType);
+                  setWhatsappOrder(null);
+                }}
+                className="flex-1 h-12 rounded-full bg-[#1F8A4C] text-white text-xs font-semibold flex items-center justify-center gap-2 hover:bg-[#186F3D] shadow-md cursor-pointer"
+              >
+                <Send className="w-4 h-4" />
+                <span>Open WhatsApp &amp; Send</span>
               </button>
             </div>
           </div>

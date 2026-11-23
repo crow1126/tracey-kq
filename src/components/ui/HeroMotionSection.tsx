@@ -9,9 +9,8 @@ export default function HeroMotionSection() {
   const { siteContent, setActiveView } = useStore();
 
   const heroImage =
-    siteContent.heroImageUrl && !siteContent.heroImageUrl.includes('photo_1')
-      ? siteContent.heroImageUrl
-      : 'https://images.unsplash.com/photo-1509631179647-0177331693ae?auto=format&fit=crop&w=1800&q=85';
+    siteContent.heroImageUrl ||
+    'https://images.unsplash.com/photo-1509631179647-0177331693ae?auto=format&fit=crop&w=1800&q=85';
 
   const headlinePrefix = siteContent.heroHeadlinePrefix || 'Welcome to ';
   const headlineAccent = siteContent.heroHeadlineAccent || 'T.I.M.E fits';
@@ -19,9 +18,9 @@ export default function HeroMotionSection() {
   const subtitle =
     siteContent.heroSubtitle ||
     'Fashion is never just fabric and form. It is identity in motion, confidence made visible, connection you can feel—and sometimes, the memory we carry long after the moment has passed. Welcome to T.I.M.E fits, where meaningful moments become beautifully considered design.';
-  const primaryCta = 'Shop Collections';
+  const primaryCta = siteContent.heroPrimaryCta || 'Shop Collections';
   const secondaryCta = siteContent.heroSecondaryCta || 'Our Story';
-  const primaryView = 'shop';
+  const primaryView = siteContent.heroPrimaryView || 'shop';
   const secondaryView = siteContent.heroSecondaryView || 'our-story';
 
   return (
