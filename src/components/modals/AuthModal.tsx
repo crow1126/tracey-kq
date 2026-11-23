@@ -18,7 +18,14 @@ import {
 import { authClient } from '@/lib/auth/client';
 
 export default function AuthModal() {
-  const { isAuthModalOpen, setIsAuthModalOpen, loginUser, setActiveView } = useStore();
+  const {
+    isAuthModalOpen,
+    setIsAuthModalOpen,
+    loginUser,
+    setActiveView,
+    authRedirectView,
+    setAuthRedirectView,
+  } = useStore();
 
   const [mode, setMode] = useState<'login' | 'register' | 'forgot-password'>('login');
   const [email, setEmail] = useState('');
@@ -132,8 +139,13 @@ export default function AuthModal() {
       setTimeout(() => {
         setIsSuccess(false);
         setIsAuthModalOpen(false);
-        setActiveView('account');
-      }, 900);
+        const nextView = authRedirectView || 'account';
+        setAuthRedirectView(null);
+        setActiveView(nextView);
+        if (typeof window !== 'undefined') {
+          window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+      }, 800);
     } catch {
       // Graceful fallback for offline dev mode
       loginUser(cleanEmail, name || (mode === 'login' ? 'Ama Mensah-Bonsu' : name));
@@ -141,8 +153,13 @@ export default function AuthModal() {
       setTimeout(() => {
         setIsSuccess(false);
         setIsAuthModalOpen(false);
-        setActiveView('account');
-      }, 900);
+        const nextView = authRedirectView || 'account';
+        setAuthRedirectView(null);
+        setActiveView(nextView);
+        if (typeof window !== 'undefined') {
+          window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+      }, 800);
     } finally {
       setIsLoading(false);
     }
@@ -163,7 +180,12 @@ export default function AuthModal() {
       // In offline or local dev, simulate patron sign-in
       loginUser('patron.atelier@gmail.com', 'Accra Patron');
       setIsAuthModalOpen(false);
-      setActiveView('account');
+      const nextView = authRedirectView || 'account';
+      setAuthRedirectView(null);
+      setActiveView(nextView);
+      if (typeof window !== 'undefined') {
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+      }
     } finally {
       setIsLoading(false);
     }
@@ -172,7 +194,12 @@ export default function AuthModal() {
   const handleDemoPatronSignIn = () => {
     loginUser('ama.mensah@prestige.gh', 'Ama Mensah-Bonsu');
     setIsAuthModalOpen(false);
-    setActiveView('account');
+    const nextView = authRedirectView || 'account';
+    setAuthRedirectView(null);
+    setActiveView(nextView);
+    if (typeof window !== 'undefined') {
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
   };
 
   return (

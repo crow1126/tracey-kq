@@ -2,7 +2,7 @@
 
 import React, { useState } from 'react';
 import { useStore } from '@/context/StoreContext';
-import { Trash2, ShoppingBag, ArrowRight, Tag, Check, Truck, ShieldCheck, Sparkles } from 'lucide-react';
+import { Trash2, ShoppingBag, ArrowRight, Tag, Check, Truck, ShieldCheck, Sparkles, Lock, UserCheck } from 'lucide-react';
 import QtyStepper from '../ui/QtyStepper';
 import Button from '../ui/Button';
 
@@ -23,6 +23,9 @@ export default function BagView() {
     setSelectedDeliveryZone,
     setActiveView,
     clearCart,
+    user,
+    setIsAuthModalOpen,
+    setAuthRedirectView,
   } = useStore();
 
   const [promoInput, setPromoInput] = useState('');
@@ -33,6 +36,18 @@ export default function BagView() {
     if (!promoInput.trim()) return;
     const res = applyPromoCode(promoInput);
     setPromoFeedback({ success: res.success, text: res.message });
+  };
+
+  const handleProceedToCheckout = () => {
+    if (!user.isLoggedIn) {
+      setAuthRedirectView('checkout');
+      setIsAuthModalOpen(true);
+      return;
+    }
+    setActiveView('checkout');
+    if (typeof window !== 'undefined') {
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
   };
 
   return (
@@ -304,16 +319,46 @@ export default function BagView() {
                   </div>
                 </div>
 
-                {/* 56px High Primary CTA: Proceed to Checkout */}
+                {/* Account Status / Auth Requirement Notice */}
+                {user.isLoggedIn ? (
+                  <div className="p-3 rounded-2xl bg-[#F4F1EA] border border-[#C7CBB8]/60 flex items-center justify-between text-xs">
+                    <div className="flex items-center gap-2 text-[#1E3A2E]">
+                      <UserCheck className="w-4 h-4 text-[#1E3A2E]" />
+                      <span>Ordering as <strong>{user.name}</strong></span>
+                    </div>
+                    <span className="text-[10px] bg-[#1E3A2E] text-[#C7CBB8] font-bold px-2 py-0.5 rounded-full">
+                      Verified
+                    </span>
+                  </div>
+                ) : (
+                  <div className="p-3.5 rounded-2xl bg-[#F4F1EA] border border-[#C7CBB8]/80 space-y-1.5 text-xs">
+                    <div className="flex items-center gap-2 text-[#1E3A2E] font-bold">
+                      <Lock className="w-4 h-4 text-[#1E3A2E]" />
+                      <span>Account Required to Checkout</span>
+                    </div>
+                    <p className="text-[11px] text-[#3D4337] font-light leading-relaxed">
+                      Please sign in or create your T.I.M.E fits Patron account to proceed to checkout and secure your garments.
+                    </p>
+                  </div>
+                )}
+
+                {/* 56px High Primary CTA: Proceed to Checkout / Authenticate */}
                 <button
-                  onClick={() => {
-                    setActiveView('checkout');
-                    window.scrollTo({ top: 0, behavior: 'smooth' });
-                  }}
-                  className="w-full h-14 rounded-full bg-[#111113] text-white text-[15px] font-semibold flex items-center justify-center gap-2 shadow-lg hover:bg-[#3A3A3F] transition-all cursor-pointer"
+                  type="button"
+                  onClick={handleProceedToCheckout}
+                  className="w-full h-14 rounded-full bg-[#1E3A2E] text-[#C7CBB8] text-[15px] font-semibold flex items-center justify-center gap-2 shadow-lg hover:bg-[#0F1F17] transition-all cursor-pointer"
                 >
-                  <span>Proceed to Checkout</span>
-                  <ArrowRight className="w-4 h-4" />
+                  {user.isLoggedIn ? (
+                    <>
+                      <span>Proceed to Checkout</span>
+                      <ArrowRight className="w-4 h-4 text-[#C7CBB8]" />
+                    </>
+                  ) : (
+                    <>
+                      <Lock className="w-4 h-4 text-[#C7CBB8]" />
+                      <span>Sign In & Proceed to Checkout</span>
+                    </>
+                  )}
                 </button>
               </div>
             </div>

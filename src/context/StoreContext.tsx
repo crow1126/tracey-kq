@@ -105,6 +105,7 @@ interface StoreContextType {
   isSearchOpen: boolean;
   isBrandMenuOpen: boolean;
   isAuthModalOpen: boolean;
+  authRedirectView: string | null;
   isSizeGuideOpen: boolean;
   selectedDeliveryZone:
     | 'Accra Metro'
@@ -141,6 +142,7 @@ interface StoreContextType {
   setIsSearchOpen: (open: boolean) => void;
   setIsBrandMenuOpen: (open: boolean) => void;
   setIsAuthModalOpen: (open: boolean) => void;
+  setAuthRedirectView: (view: string | null) => void;
   setIsSizeGuideOpen: (open: boolean) => void;
   setSelectedDeliveryZone: (
     zone:
@@ -238,6 +240,7 @@ export function StoreProvider({ children }: { children: React.ReactNode }) {
   const [isSearchOpen, setIsSearchOpen] = useState(false);
   const [isBrandMenuOpen, setIsBrandMenuOpen] = useState(false);
   const [isAuthModalOpen, setIsAuthModalOpen] = useState(false);
+  const [authRedirectView, setAuthRedirectView] = useState<string | null>(null);
   const [isSizeGuideOpen, setIsSizeGuideOpen] = useState(false);
 
   const [selectedDeliveryZone, setSelectedDeliveryZone] = useState<
@@ -903,6 +906,8 @@ export function StoreProvider({ children }: { children: React.ReactNode }) {
         setIsSearchOpen,
         setIsBrandMenuOpen,
         setIsAuthModalOpen,
+        authRedirectView,
+        setAuthRedirectView,
         setIsSizeGuideOpen,
         setSelectedDeliveryZone,
         setSelectedDeliveryMethod,
