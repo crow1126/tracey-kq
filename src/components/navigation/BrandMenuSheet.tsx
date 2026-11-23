@@ -28,7 +28,7 @@ export default function BrandMenuSheet() {
       <div className="fixed inset-y-0 left-0 max-w-full flex pr-10">
         <div className="w-screen max-w-xs bg-white text-[#111113] shadow-2xl flex flex-col justify-between">
           {/* Header */}
-          <div className="p-4 border-b border-[#E6E6EA] flex items-center justify-between bg-emerald-50/50">
+          <div className="p-4 border-b border-[#E6E6EA] flex items-center justify-between bg-[#F4F1EA]">
             <div className="flex items-center gap-2.5">
               <img
                 src="/brand/logo.jpg"
@@ -36,17 +36,17 @@ export default function BrandMenuSheet() {
                 className="h-9 w-auto object-contain rounded"
               />
               <div>
-                <span className="font-serif font-bold text-xs tracking-[0.2em] text-[#16A34A] uppercase block">
+                <span className="font-serif font-bold text-xs tracking-[0.2em] text-[#1E3A2E] uppercase block">
                   T.I.M.E fits
                 </span>
-                <span className="text-[9px] text-gray-500 tracking-wider">
+                <span className="text-[9px] text-[#6B7F67] tracking-wider">
                   Tailored Perfection · Accra
                 </span>
               </div>
             </div>
             <button
               onClick={() => setIsBrandMenuOpen(false)}
-              className="p-2 rounded-full bg-white text-[#111113] hover:bg-[#EDEDF0] shadow-sm border border-[#E6E6EA]"
+              className="p-2 rounded-full bg-white text-[#0F1F17] hover:bg-[#EDEDF0] shadow-sm border border-[#E6E6EA]"
             >
               <X className="w-4 h-4" />
             </button>
@@ -55,15 +55,15 @@ export default function BrandMenuSheet() {
           {/* Navigation Links */}
           <div className="flex-1 overflow-y-auto p-4 space-y-5">
             <div className="space-y-1">
-              <span className="text-[11px] font-bold tracking-[0.2em] text-[#16A34A] uppercase block px-3 py-1">
+              <span className="text-[11px] font-bold tracking-[0.2em] text-[#1E3A2E] uppercase block px-3 py-1">
                 Store
               </span>
               <button
                 onClick={() => navigateTo('shop')}
-                className="w-full flex items-center justify-between px-3 py-2.5 rounded-xl text-[14px] font-medium text-[#111113] hover:bg-emerald-50 transition-colors"
+                className="w-full flex items-center justify-between px-3 py-2.5 rounded-xl text-[14px] font-medium text-[#0F1F17] hover:bg-[#F4F1EA] transition-colors"
               >
                 <div className="flex items-center gap-3">
-                  <Compass className="w-4 h-4 text-[#16A34A]" />
+                  <Compass className="w-4 h-4 text-[#1E3A2E]" />
                   <span>Browse & Shop Pieces</span>
                 </div>
                 <ChevronRight className="w-4 h-4 text-gray-400" />
@@ -71,10 +71,10 @@ export default function BrandMenuSheet() {
 
               <button
                 onClick={() => navigateTo('bag')}
-                className="w-full flex items-center justify-between px-3 py-2.5 rounded-xl text-[14px] font-medium text-[#111113] hover:bg-emerald-50 transition-colors"
+                className="w-full flex items-center justify-between px-3 py-2.5 rounded-xl text-[14px] font-medium text-[#0F1F17] hover:bg-[#F4F1EA] transition-colors"
               >
                 <div className="flex items-center gap-3">
-                  <ShoppingBag className="w-4 h-4 text-[#16A34A]" />
+                  <ShoppingBag className="w-4 h-4 text-[#1E3A2E]" />
                   <span>Shopping Bag</span>
                 </div>
                 <ChevronRight className="w-4 h-4 text-gray-400" />
@@ -82,10 +82,10 @@ export default function BrandMenuSheet() {
 
               <button
                 onClick={() => navigateTo('saved')}
-                className="w-full flex items-center justify-between px-3 py-2.5 rounded-xl text-[14px] font-medium text-[#111113] hover:bg-emerald-50 transition-colors"
+                className="w-full flex items-center justify-between px-3 py-2.5 rounded-xl text-[14px] font-medium text-[#0F1F17] hover:bg-[#F4F1EA] transition-colors"
               >
                 <div className="flex items-center gap-3">
-                  <Heart className="w-4 h-4 text-[#16A34A]" />
+                  <Heart className="w-4 h-4 text-[#1E3A2E]" />
                   <span>Saved Wishlist</span>
                 </div>
                 <ChevronRight className="w-4 h-4 text-gray-400" />
@@ -93,10 +93,10 @@ export default function BrandMenuSheet() {
 
               <button
                 onClick={() => navigateTo('explore')}
-                className="w-full flex items-center justify-between px-3 py-2.5 rounded-xl text-[14px] font-medium text-[#111113] hover:bg-emerald-50 transition-colors"
+                className="w-full flex items-center justify-between px-3 py-2.5 rounded-xl text-[14px] font-medium text-[#0F1F17] hover:bg-[#F4F1EA] transition-colors"
               >
                 <div className="flex items-center gap-3">
-                  <Sparkles className="w-4 h-4 text-[#16A34A]" />
+                  <Sparkles className="w-4 h-4 text-[#1E3A2E]" />
                   <span>Editorial Lookbook</span>
                 </div>
                 <ChevronRight className="w-4 h-4 text-gray-400" />
@@ -104,15 +104,15 @@ export default function BrandMenuSheet() {
             </div>
 
             <div className="space-y-1">
-              <span className="text-[11px] font-bold tracking-[0.2em] text-[#16A34A] uppercase block px-3 py-1">
+              <span className="text-[11px] font-bold tracking-[0.2em] text-[#1E3A2E] uppercase block px-3 py-1">
                 The Maison
               </span>
               <button
                 onClick={() => navigateTo('our-story')}
-                className="w-full flex items-center justify-between px-3 py-2.5 rounded-xl text-[14px] font-medium text-[#111113] hover:bg-emerald-50 transition-colors"
+                className="w-full flex items-center justify-between px-3 py-2.5 rounded-xl text-[14px] font-medium text-[#0F1F17] hover:bg-[#F4F1EA] transition-colors"
               >
                 <div className="flex items-center gap-3">
-                  <Scissors className="w-4 h-4 text-[#16A34A]" />
+                  <Scissors className="w-4 h-4 text-[#1E3A2E]" />
                   <span>Our Story & Philosophy</span>
                 </div>
                 <ChevronRight className="w-4 h-4 text-gray-400" />
@@ -120,10 +120,10 @@ export default function BrandMenuSheet() {
 
               <button
                 onClick={() => navigateTo('collections')}
-                className="w-full flex items-center justify-between px-3 py-2.5 rounded-xl text-[14px] font-medium text-[#111113] hover:bg-emerald-50 transition-colors"
+                className="w-full flex items-center justify-between px-3 py-2.5 rounded-xl text-[14px] font-medium text-[#0F1F17] hover:bg-[#F4F1EA] transition-colors"
               >
                 <div className="flex items-center gap-3">
-                  <Sparkles className="w-4 h-4 text-[#16A34A]" />
+                  <Sparkles className="w-4 h-4 text-[#1E3A2E]" />
                   <span>Our Collections</span>
                 </div>
                 <ChevronRight className="w-4 h-4 text-gray-400" />
@@ -131,10 +131,10 @@ export default function BrandMenuSheet() {
 
               <button
                 onClick={() => navigateTo('bespoke')}
-                className="w-full flex items-center justify-between px-3 py-2.5 rounded-xl text-[14px] font-medium text-[#111113] hover:bg-emerald-50 transition-colors"
+                className="w-full flex items-center justify-between px-3 py-2.5 rounded-xl text-[14px] font-medium text-[#0F1F17] hover:bg-[#F4F1EA] transition-colors"
               >
                 <div className="flex items-center gap-3">
-                  <Scissors className="w-4 h-4 text-[#16A34A]" />
+                  <Scissors className="w-4 h-4 text-[#1E3A2E]" />
                   <span>Bespoke Tailoring</span>
                 </div>
                 <ChevronRight className="w-4 h-4 text-gray-400" />
@@ -142,10 +142,10 @@ export default function BrandMenuSheet() {
 
               <button
                 onClick={() => navigateTo('stores')}
-                className="w-full flex items-center justify-between px-3 py-2.5 rounded-xl text-[14px] font-medium text-[#111113] hover:bg-emerald-50 transition-colors"
+                className="w-full flex items-center justify-between px-3 py-2.5 rounded-xl text-[14px] font-medium text-[#0F1F17] hover:bg-[#F4F1EA] transition-colors"
               >
                 <div className="flex items-center gap-3">
-                  <MapPin className="w-4 h-4 text-[#16A34A]" />
+                  <MapPin className="w-4 h-4 text-[#1E3A2E]" />
                   <span>Our Showrooms</span>
                 </div>
                 <ChevronRight className="w-4 h-4 text-gray-400" />
@@ -153,37 +153,37 @@ export default function BrandMenuSheet() {
             </div>
 
             <div className="space-y-1">
-              <span className="text-[11px] font-bold tracking-[0.2em] text-[#16A34A] uppercase block px-3 py-1">
+              <span className="text-[11px] font-bold tracking-[0.2em] text-[#1E3A2E] uppercase block px-3 py-1">
                 Management
               </span>
               <button
                 onClick={() => navigateTo('admin')}
-                className="w-full flex items-center justify-between px-3 py-2.5 rounded-xl text-[14px] font-medium bg-emerald-50 text-[#16A34A] hover:bg-emerald-100 transition-colors border border-emerald-200"
+                className="w-full flex items-center justify-between px-3 py-2.5 rounded-xl text-[14px] font-medium bg-[#F4F1EA] text-[#1E3A2E] hover:bg-[#EAE6DD] transition-colors border border-[#C7CBB8]/60"
               >
                 <div className="flex items-center gap-3">
-                  <ShieldCheck className="w-4 h-4 text-[#16A34A]" />
+                  <ShieldCheck className="w-4 h-4 text-[#1E3A2E]" />
                   <span>Admin CMS</span>
                 </div>
-                <ChevronRight className="w-4 h-4 text-[#16A34A]" />
+                <ChevronRight className="w-4 h-4 text-[#1E3A2E]" />
               </button>
             </div>
           </div>
 
           {/* Footer Contact */}
-          <div className="p-4 border-t border-[#E6E6EA] bg-[#133D27] text-white space-y-2 rounded-b-none">
+          <div className="p-4 border-t border-[#E6E6EA] bg-[#0F1F17] text-white space-y-2 rounded-b-none">
             <p className="text-xs text-gray-300">
               Founder & Director: <strong>Kukua-Tracey</strong>
             </p>
-            <p className="text-[11px] text-emerald-300 italic">
+            <p className="text-[11px] text-[#C7CBB8] italic">
               &ldquo;We don’t design for seasons; we design for lifetimes.&rdquo;
             </p>
             <a
               href="https://wa.me/233208912340"
               target="_blank"
               rel="noopener noreferrer"
-              className="w-full h-10 rounded-full bg-[#16A34A] text-white text-xs font-semibold flex items-center justify-center gap-2 hover:bg-[#15803D] transition-colors"
+              className="w-full h-10 rounded-full bg-[#1E3A2E] text-[#C7CBB8] border border-[#3E5A3F] text-xs font-semibold flex items-center justify-center gap-2 hover:bg-[#0F1F17] transition-colors"
             >
-              <MessageCircle className="w-4 h-4" />
+              <MessageCircle className="w-4 h-4 text-[#C7CBB8]" />
               <span>WhatsApp Atelier Concierge</span>
             </a>
           </div>

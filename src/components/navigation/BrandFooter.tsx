@@ -29,12 +29,12 @@ export default function BrandFooter() {
   };
 
   return (
-    <footer className="bg-[#133D27] text-white pt-12 pb-32 md:pb-14 px-5 sm:px-8 lg:px-12 border-t border-emerald-900/40">
+    <footer className="bg-[#0F1F17] text-white pt-12 pb-32 md:pb-14 px-5 sm:px-8 lg:px-12 border-t border-[#3E5A3F]/30">
       <div className="max-w-7xl mx-auto space-y-10 sm:space-y-12">
         {/* Newsletter / Private Circle Section */}
-        <div className="bg-[#1A5C37] border border-emerald-800/40 rounded-[24px] sm:rounded-[28px] p-6 sm:p-10 grid grid-cols-1 lg:grid-cols-12 gap-6 sm:gap-8 items-center shadow-xl">
+        <div className="bg-[#1E3A2E] border border-[#3E5A3F]/50 rounded-[24px] sm:rounded-[28px] p-6 sm:p-10 grid grid-cols-1 lg:grid-cols-12 gap-6 sm:gap-8 items-center shadow-xl">
           <div className="lg:col-span-7 space-y-2">
-            <span className="text-[10px] sm:text-[11px] font-bold tracking-[0.2em] text-[#4ADE80] uppercase block">
+            <span className="text-[10px] sm:text-[11px] font-bold tracking-[0.2em] text-[#C7CBB8] uppercase block">
               ACCREDITED ATELIER PRIVILEGES
             </span>
             <h3 className="text-xl sm:text-3xl font-bold tracking-tight text-white font-serif">
@@ -54,17 +54,17 @@ export default function BrandFooter() {
                   placeholder="Enter your email address"
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
-                  className="h-[48px] sm:h-[52px] w-full rounded-full bg-white/10 border border-emerald-500/30 px-5 pr-32 text-xs sm:text-sm text-white placeholder-white/50 focus:outline-none focus:border-[#4ADE80] focus:ring-2 focus:ring-[#22C55E]/30"
+                  className="h-[48px] sm:h-[52px] w-full rounded-full bg-white/10 border border-[#6B7F67]/40 px-5 pr-32 text-xs sm:text-sm text-white placeholder-white/50 focus:outline-none focus:border-[#C7CBB8] focus:ring-2 focus:ring-[#C7CBB8]/30"
                 />
                 <button
                   type="submit"
-                  className="absolute right-1.5 h-[38px] sm:h-[42px] px-5 sm:px-6 rounded-full bg-white text-[#133D27] text-[11px] sm:text-xs font-bold uppercase tracking-wider hover:bg-emerald-50 transition-colors cursor-pointer shadow"
+                  className="absolute right-1.5 h-[38px] sm:h-[42px] px-5 sm:px-6 rounded-full bg-[#C7CBB8] text-[#0F1F17] text-[11px] sm:text-xs font-bold uppercase tracking-wider hover:bg-[#D5D9C8] transition-colors cursor-pointer shadow"
                 >
-                  {isSubscribed ? <Check className="w-4 h-4 text-[#16A34A]" /> : <span>Subscribe</span>}
+                  {isSubscribed ? <Check className="w-4 h-4 text-[#1E3A2E]" /> : <span>Subscribe</span>}
                 </button>
               </div>
               {isSubscribed && (
-                <p className="text-xs text-[#4ADE80] pl-4">
+                <p className="text-xs text-[#C7CBB8] pl-4">
                   Welcome to the T.I.M.E fits Circle. Check your inbox.
                 </p>
               )}
@@ -73,40 +73,40 @@ export default function BrandFooter() {
         </div>
 
         {/* 4 Pillars Strip */}
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-4 sm:gap-6 py-5 border-y border-emerald-900/50 text-xs text-gray-300">
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-4 sm:gap-6 py-5 border-y border-[#3E5A3F]/40 text-xs text-gray-300">
           <div className="flex items-center gap-2.5">
-            <Truck className="w-4 h-4 sm:w-5 sm:h-5 text-[#4ADE80] flex-shrink-0" />
+            <Truck className="w-4 h-4 sm:w-5 sm:h-5 text-[#C7CBB8] flex-shrink-0" />
             <div>
               <p className="font-semibold text-white text-[11px] sm:text-xs">Same-Day Accra Delivery</p>
-              <p className="font-light text-[10px] text-emerald-200/70">Nationwide Express in 48-72h</p>
+              <p className="font-light text-[10px] text-[#C7CBB8]/80">Nationwide Express in 48-72h</p>
             </div>
           </div>
 
           <div className="flex items-center gap-2.5">
-            <ShieldCheck className="w-4 h-4 sm:w-5 sm:h-5 text-[#4ADE80] flex-shrink-0" />
+            <ShieldCheck className="w-4 h-4 sm:w-5 sm:h-5 text-[#C7CBB8] flex-shrink-0" />
             <div>
               <p className="font-semibold text-white text-[11px] sm:text-xs">Tailored Perfection</p>
-              <p className="font-light text-[10px] text-emerald-200/70">Refined craftsmanship that endures</p>
+              <p className="font-light text-[10px] text-[#C7CBB8]/80">Refined craftsmanship that endures</p>
             </div>
           </div>
 
           <div className="flex items-center gap-2.5">
-            <RefreshCw className="w-4 h-4 sm:w-5 sm:h-5 text-[#4ADE80] flex-shrink-0" />
+            <RefreshCw className="w-4 h-4 sm:w-5 sm:h-5 text-[#C7CBB8] flex-shrink-0" />
             <div>
               <p className="font-semibold text-white text-[11px] sm:text-xs">Designed for Lifetimes</p>
-              <p className="font-light text-[10px] text-emerald-200/70">Complimentary fit alterations</p>
+              <p className="font-light text-[10px] text-[#C7CBB8]/80">Complimentary fit alterations</p>
             </div>
           </div>
 
           <div className="flex items-center gap-2.5">
-            <MessageCircle className="w-4 h-4 sm:w-5 sm:h-5 text-[#4ADE80] flex-shrink-0" />
+            <MessageCircle className="w-4 h-4 sm:w-5 sm:h-5 text-[#C7CBB8] flex-shrink-0" />
             <div>
               <p className="font-semibold text-white text-[11px] sm:text-xs">WhatsApp Concierge</p>
               <a
                 href="https://wa.me/233208912340"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="font-light text-[10px] text-emerald-200/90 hover:underline"
+                className="font-light text-[10px] text-[#C7CBB8] hover:underline"
               >
                 +233 20 891 2340
               </a>
@@ -131,7 +131,7 @@ export default function BrandFooter() {
                 <span className="text-[15px] font-bold tracking-[0.2em] text-white uppercase block font-serif">
                   T.I.M.E fits
                 </span>
-                <span className="text-[10px] text-[#4ADE80] italic">
+                <span className="text-[10px] text-[#C7CBB8] italic">
                   Tailored Perfection, Timeless Style.
                 </span>
               </div>
@@ -142,7 +142,7 @@ export default function BrandFooter() {
             <div className="pt-1">
               <button
                 onClick={() => navigateAndScroll('bespoke')}
-                className="inline-flex items-center gap-1.5 text-xs font-semibold text-[#4ADE80] hover:text-white transition-colors cursor-pointer"
+                className="inline-flex items-center gap-1.5 text-xs font-semibold text-[#C7CBB8] hover:text-white transition-colors cursor-pointer"
               >
                 <span>Book Bespoke Atelier Fitting</span>
                 <ArrowRight className="w-3.5 h-3.5" />
@@ -152,7 +152,7 @@ export default function BrandFooter() {
 
           {/* Column 1: Store & Collections */}
           <div className="col-span-1 md:col-span-2 space-y-2.5">
-            <h4 className="text-[11px] font-bold tracking-[0.18em] text-[#4ADE80] uppercase">
+            <h4 className="text-[11px] font-bold tracking-[0.18em] text-[#C7CBB8] uppercase">
               Shop & Explore
             </h4>
             <ul className="space-y-2 text-xs text-gray-300 font-light">
@@ -197,7 +197,7 @@ export default function BrandFooter() {
 
           {/* Column 2: About & Story */}
           <div className="col-span-1 md:col-span-2 space-y-2.5">
-            <h4 className="text-[11px] font-bold tracking-[0.18em] text-[#4ADE80] uppercase">
+            <h4 className="text-[11px] font-bold tracking-[0.18em] text-[#C7CBB8] uppercase">
               The Maison
             </h4>
             <ul className="space-y-2 text-xs text-gray-300 font-light">
@@ -205,7 +205,7 @@ export default function BrandFooter() {
                 <button
                   type="button"
                   onClick={() => navigateAndScroll('our-story')}
-                  className="hover:text-white transition-colors cursor-pointer text-left font-medium text-emerald-200"
+                  className="hover:text-white transition-colors cursor-pointer text-left font-medium text-[#C7CBB8]"
                 >
                   Our Story & About
                 </button>
@@ -242,7 +242,7 @@ export default function BrandFooter() {
 
           {/* Column 3: Client & CMS */}
           <div className="col-span-2 md:col-span-3 space-y-2.5">
-            <h4 className="text-[11px] font-bold tracking-[0.18em] text-[#4ADE80] uppercase">
+            <h4 className="text-[11px] font-bold tracking-[0.18em] text-[#C7CBB8] uppercase">
               Client & Atelier
             </h4>
             <ul className="space-y-2 text-xs text-gray-300 font-light">
@@ -268,7 +268,7 @@ export default function BrandFooter() {
                 <button
                   type="button"
                   onClick={() => navigateAndScroll('admin')}
-                  className="text-[#4ADE80] hover:underline cursor-pointer text-left font-medium"
+                  className="text-[#C7CBB8] hover:underline cursor-pointer text-left font-medium"
                 >
                   Admin CMS
                 </button>
@@ -278,7 +278,7 @@ export default function BrandFooter() {
         </div>
 
         {/* Bottom Credits */}
-        <div className="pt-6 border-t border-emerald-900/50 flex flex-col sm:flex-row items-center justify-between text-[11px] text-gray-400 gap-3 font-light">
+        <div className="pt-6 border-t border-[#3E5A3F]/40 flex flex-col sm:flex-row items-center justify-between text-[11px] text-gray-400 gap-3 font-light">
           <span>© 2026 T.I.M.E fits by Kukua-Tracey. All rights reserved. Accra, Ghana.</span>
           <div className="flex items-center gap-5">
             <span className="hover:text-white cursor-pointer">Privacy Policy</span>

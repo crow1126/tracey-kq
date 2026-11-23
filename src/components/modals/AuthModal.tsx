@@ -234,10 +234,10 @@ export default function AuthModal() {
         {/* Password Reset Confirmation Banner */}
         {resetSent && (
           <div className="mb-5 p-4 rounded-2xl bg-[#F0FDF4] border border-[#DCFCE7] text-center space-y-2 animate-in fade-in">
-            <div className="w-10 h-10 rounded-full bg-[#DCFCE7] text-[#16A34A] flex items-center justify-center mx-auto">
+            <div className="w-10 h-10 rounded-full bg-[#DCFCE7] text-[#1E3A2E] flex items-center justify-center mx-auto">
               <Check className="w-5 h-5" />
             </div>
-            <h3 className="text-sm font-semibold text-[#16A34A]">Recovery Email Dispatched</h3>
+            <h3 className="text-sm font-semibold text-[#1E3A2E]">Recovery Email Dispatched</h3>
             <p className="text-xs text-[#4B5563]">
               If an account is associated with <strong>{email}</strong>, a password reset link has been dispatched to your inbox.
             </p>

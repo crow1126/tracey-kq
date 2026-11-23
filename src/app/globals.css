@@ -1,31 +1,39 @@
 @import "tailwindcss";
 
 @theme {
-  --color-app-bg: #F5F5F7;
+  --color-forest-dark: #0F1F17;
+  --color-forest: #1E3A2E;
+  --color-sage: #3E5A3F;
+  --color-sage-muted: #6B7F67;
+  --color-sand: #C7CBB8;
+  --color-sand-light: #E8DCC4;
+  --color-slate-olive: #3D4337;
+
+  --color-app-bg: #F7F7F4;
   --color-surface: #FFFFFF;
   --color-surface-muted: #EDEDF0;
   --color-border-card: #E6E6EA;
   --color-border-dashed: #D4D4DA;
-  --color-ink: #111113;
-  --color-ink-soft: #3A3A3F;
-  --color-muted-ink: #8A8A8F;
+  --color-ink: #0F1F17;
+  --color-ink-soft: #3D4337;
+  --color-muted-ink: #6B7F67;
   --color-disabled-ink: #C7C7CC;
 
-  --color-accent: #6B73F0;
-  --color-accent-soft: #C9CCF5;
-  --color-accent-wash: #ECEDFD;
+  --color-accent: #1E3A2E;
+  --color-accent-soft: #C7CBB8;
+  --color-accent-wash: #F4F1EA;
 
   --color-promo-pink: #FF2D8A;
   --color-promo-pink-deep: #8A1B4E;
-  --color-success: #1F8A4C;
+  --color-success: #1E3A2E;
   --color-danger: #E5384F;
   --color-warning: #F5A524;
   --color-star: #F5B400;
 
-  --color-dark-bg: #111113;
-  --color-dark-surface: #1C1C1F;
-  --color-on-dark: #FFFFFF;
-  --color-on-dark-muted: #A1A1A8;
+  --color-dark-bg: #0F1F17;
+  --color-dark-surface: #1E3A2E;
+  --color-on-dark: #C7CBB8;
+  --color-on-dark-muted: #6B7F67;
 
   --font-sans: 'Poppins', 'Inter', system-ui, -apple-system, sans-serif;
   --font-display: 'Poppins', 'Inter', system-ui, -apple-system, sans-serif;

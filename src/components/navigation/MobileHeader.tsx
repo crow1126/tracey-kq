@@ -17,7 +17,7 @@ export default function MobileHeader() {
         onClick={() => setIsBrandMenuOpen(true)}
         aria-label="Open Brand Menu"
       >
-        <Menu className="w-5 h-5 text-[#0F5132]" />
+        <Menu className="w-5 h-5 text-[#1E3A2E]" />
       </IconButton>
 
       {/* Brand Wordmark & Logo */}
@@ -34,10 +34,10 @@ export default function MobileHeader() {
           className="h-8.5 w-auto object-contain rounded"
         />
         <div className="flex flex-col text-left">
-          <span className="font-serif font-bold text-[13px] tracking-[0.16em] text-[#0F5132] uppercase leading-tight whitespace-nowrap">
+          <span className="font-serif font-bold text-[13px] tracking-[0.16em] text-[#1E3A2E] uppercase leading-tight whitespace-nowrap">
             T.I.M.E fits
           </span>
-          <span className="text-[8px] text-gray-500 font-normal italic tracking-wider whitespace-nowrap">
+          <span className="text-[8px] text-[#6B7F67] font-normal italic tracking-wider whitespace-nowrap">
             Tailored Perfection
           </span>
         </div>
@@ -50,7 +50,7 @@ export default function MobileHeader() {
           onClick={() => setIsSearchOpen(true)}
           aria-label="Search"
         >
-          <Search className="w-5 h-5 text-[#111113]" />
+          <Search className="w-5 h-5 text-[#0F1F17]" />
         </IconButton>
 
         <button
@@ -59,11 +59,11 @@ export default function MobileHeader() {
             window.scrollTo({ top: 0, behavior: 'smooth' });
           }}
           aria-label="Shopping Bag"
-          className="relative w-9 h-9 rounded-full bg-[#0F5132] text-white flex items-center justify-center hover:bg-[#0A3D24] active:scale-95 transition-all shadow-sm"
+          className="relative w-9 h-9 rounded-full bg-[#1E3A2E] text-[#C7CBB8] flex items-center justify-center hover:bg-[#0F1F17] active:scale-95 transition-all shadow-sm"
         >
-          <ShoppingBag className="w-4 h-4 text-white" />
+          <ShoppingBag className="w-4 h-4 text-[#C7CBB8]" />
           {cartCount > 0 && (
-            <span className="absolute -top-1 -right-1 bg-[#22C55E] text-[#133D27] text-[9px] font-black w-4 h-4 rounded-full flex items-center justify-center shadow">
+            <span className="absolute -top-1 -right-1 bg-[#C7CBB8] text-[#0F1F17] text-[9px] font-black w-4 h-4 rounded-full flex items-center justify-center shadow">
               {cartCount}
             </span>
           )}

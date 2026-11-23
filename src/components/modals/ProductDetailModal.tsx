@@ -194,53 +194,53 @@ export default function ProductDetailModal() {
                         GH₵ {product.originalPriceGhc.toLocaleString()}
                       </span>
                     )}
-                    <span className="text-xs text-[#1F8A4C] font-semibold bg-[#E8F5EE] px-2.5 py-0.5 rounded-full">
+                    <span className="text-xs text-[#1E3A2E] font-semibold bg-[#F4F1EA] px-2.5 py-0.5 rounded-full border border-[#C7CBB8]/60">
                       Taxes & Duties Included
                     </span>
                   </div>
 
                   {/* The Story of This Creation */}
-                  <div className="bg-[#F5F5F7] rounded-2xl p-4 sm:p-5 border border-[#E6E6EA] space-y-2.5">
+                  <div className="bg-[#F4F1EA] rounded-2xl p-4 sm:p-5 border border-[#C7CBB8]/50 space-y-2.5">
                     <div className="flex items-center justify-between">
-                      <span className="text-[11px] font-bold tracking-[0.2em] uppercase text-[#6B73F0] flex items-center gap-1.5">
+                      <span className="text-[11px] font-bold tracking-[0.2em] uppercase text-[#1E3A2E] flex items-center gap-1.5">
                         <Sparkles className="w-3.5 h-3.5" />
                         <span>The Story of This Creation</span>
                       </span>
-                      <span className="text-[10px] text-[#8A8A8F] uppercase font-semibold">
+                      <span className="text-[10px] text-[#6B7F67] uppercase font-semibold">
                         Accra Atelier Archive
                       </span>
                     </div>
-                    <p className="text-xs sm:text-[13px] text-[#3A3A3F] leading-relaxed font-normal">
+                    <p className="text-xs sm:text-[13px] text-[#3D4337] leading-relaxed font-normal">
                       {product.description}
                     </p>
-                    <p className="text-xs text-[#8A8A8F] italic leading-relaxed">
+                    <p className="text-xs text-[#6B7F67] italic leading-relaxed">
                       "{product.craftsmanship || 'Hand-loomed in the Ashanti region of Bonwire by hereditary master weavers. Finished with French seams and architectural interior boning.'}"
                     </p>
-                    <div className="pt-2 border-t border-[#E6E6EA] flex flex-wrap items-center justify-between text-[11px] text-[#8A8A8F] gap-2">
-                      <span>Fabric: <strong className="text-[#111113]">{product.fabric}</strong></span>
-                      <span className="text-[#16A34A] font-semibold">T.I.M.E fits · Accra Atelier</span>
+                    <div className="pt-2 border-t border-[#C7CBB8]/40 flex flex-wrap items-center justify-between text-[11px] text-[#6B7F67] gap-2">
+                      <span>Fabric: <strong className="text-[#0F1F17]">{product.fabric}</strong></span>
+                      <span className="text-[#1E3A2E] font-semibold">T.I.M.E fits · Accra Atelier</span>
                     </div>
                   </div>
 
                   {/* T.I.M.E fits Memory Tag Included */}
-                  <div className="bg-emerald-50/70 border border-emerald-200/80 rounded-2xl p-3 flex items-center gap-3">
-                    <span className="w-8 h-8 rounded-xl bg-[#16A34A] text-white flex items-center justify-center text-xs font-serif font-bold shrink-0">
+                  <div className="bg-[#F4F1EA] border border-[#C7CBB8]/80 rounded-2xl p-3 flex items-center gap-3">
+                    <span className="w-8 h-8 rounded-xl bg-[#1E3A2E] text-[#C7CBB8] flex items-center justify-center text-xs font-serif font-bold shrink-0">
                       TAG
                     </span>
                     <div className="text-[11px] leading-tight">
-                      <span className="font-bold text-[#16A34A] block">T.I.M.E fits Memory Tag Included</span>
-                      <span className="text-gray-600 font-light italic">&ldquo;This piece was created to be part of your story.&rdquo; (Date & Occasion card)</span>
+                      <span className="font-bold text-[#1E3A2E] block">T.I.M.E fits Memory Tag Included</span>
+                      <span className="text-[#3D4337] font-light italic">&ldquo;This piece was created to be part of your story.&rdquo; (Date & Occasion card)</span>
                     </div>
                   </div>
 
                   {/* "Fits True to Size" Meter */}
-                  <div className="bg-[#F5F5F7] rounded-2xl p-3.5 flex items-center justify-between text-xs">
+                  <div className="bg-[#F4F1EA] rounded-2xl p-3.5 flex items-center justify-between text-xs">
                     <div className="space-y-0.5">
-                      <span className="font-semibold text-[#111113] block">Patron Fit Consensus</span>
-                      <span className="text-[#8A8A8F] text-[11px]">96% of Accra clients report True to Size</span>
+                      <span className="font-semibold text-[#0F1F17] block">Patron Fit Consensus</span>
+                      <span className="text-[#6B7F67] text-[11px]">96% of Accra clients report True to Size</span>
                     </div>
                     <div className="w-24 bg-[#E6E6EA] h-2 rounded-full overflow-hidden">
-                      <div className="bg-[#1F8A4C] h-full w-[96%]" />
+                      <div className="bg-[#1E3A2E] h-full w-[96%]" />
                     </div>
                   </div>
 
@@ -307,18 +307,18 @@ export default function ProductDetailModal() {
                       onClick={handleAddToCart}
                       className={`h-14 flex-1 rounded-full text-[15px] font-semibold flex items-center justify-center gap-2 shadow-lg transition-all duration-200 cursor-pointer ${
                         isAdded
-                          ? 'bg-[#1F8A4C] text-white'
-                          : 'bg-[#111113] text-white hover:bg-[#3A3A3F]'
+                          ? 'bg-[#1E3A2E] text-[#C7CBB8]'
+                          : 'bg-[#1E3A2E] text-[#C7CBB8] hover:bg-[#0F1F17]'
                       }`}
                     >
                       {isAdded ? (
                         <>
-                          <Check className="w-5 h-5" />
+                          <Check className="w-5 h-5 text-[#C7CBB8]" />
                           <span>Added to Bag ✓</span>
                         </>
                       ) : (
                         <>
-                          <ShoppingBag className="w-5 h-5" />
+                          <ShoppingBag className="w-5 h-5 text-[#C7CBB8]" />
                           <span>
                             Add to Bag · GH₵ {(product.priceGhc * quantity).toLocaleString()}
                           </span>
@@ -334,7 +334,7 @@ export default function ProductDetailModal() {
                     >
                       <Heart
                         className={`w-6 h-6 transition-transform active:scale-125 ${
-                          wishlisted ? 'text-[#E5384F] fill-[#E5384F]' : 'text-[#111113]'
+                          wishlisted ? 'text-[#E5384F] fill-[#E5384F]' : 'text-[#0F1F17]'
                         }`}
                       />
                     </button>
@@ -346,7 +346,7 @@ export default function ProductDetailModal() {
                       href={getWhatsAppOrderUrl(product, currentSize, currentColor.name)}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="w-full h-12 rounded-full border border-[#1F8A4C] text-[#1F8A4C] hover:bg-[#1F8A4C] hover:text-white transition-all text-xs font-semibold flex items-center justify-center gap-2"
+                      className="w-full h-12 rounded-full border border-[#1E3A2E] text-[#1E3A2E] hover:bg-[#1E3A2E] hover:text-[#C7CBB8] transition-all text-xs font-semibold flex items-center justify-center gap-2"
                     >
                       <MessageCircle className="w-4 h-4" />
                       <span>Order Directly via WhatsApp Concierge</span>

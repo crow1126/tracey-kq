@@ -20,13 +20,13 @@ export default function MobileFloatingNav() {
   return (
     <nav
       aria-label="Mobile Navigation"
-      className="md:hidden fixed bottom-0 left-3 right-3 z-40 bg-[#133D27]/95 backdrop-blur-xl border border-emerald-600/30 rounded-t-[28px] px-2 pt-2 pb-[max(12px,env(safe-area-inset-bottom))] shadow-2xl"
+      className="md:hidden fixed bottom-4 left-4 right-4 max-w-sm mx-auto z-40 bg-[#0F1F17]/92 backdrop-blur-2xl border border-[#3E5A3F]/40 rounded-full px-2 py-1.5 shadow-[0_16px_40px_rgba(0,0,0,0.5)] select-none"
       style={{
         transform: 'translateZ(0)',
         WebkitTransform: 'translateZ(0)',
       }}
     >
-      <div className="max-w-md mx-auto flex items-center justify-around h-[56px]">
+      <div className="flex items-center justify-around h-[50px]">
         {items.map((item) => {
           const isActive = activeView === item.id;
           const Icon = item.icon;
@@ -40,23 +40,23 @@ export default function MobileFloatingNav() {
                   window.scrollTo({ top: 0, behavior: 'smooth' });
                 }
               }}
-              className="relative w-[52px] h-[48px] flex flex-col items-center justify-center rounded-2xl cursor-pointer select-none outline-none focus-visible:ring-2 focus-visible:ring-[#22C55E]"
+              className="relative flex-1 h-[44px] flex flex-col items-center justify-center rounded-full cursor-pointer select-none outline-none transition-all duration-200"
               aria-label={item.label}
             >
-              {/* Active item: deeper luxury emerald pill */}
+              {/* Active item: pill highlight matching iPhone dock style */}
               {isActive && (
-                <span className="absolute inset-0 bg-[#0F5132] border border-[#22C55E]/40 rounded-2xl shadow-md animate-in fade-in zoom-in-95 duration-200" />
+                <span className="absolute inset-x-1 inset-y-0.5 bg-[#1E3A2E] border border-[#6B7F67]/50 rounded-full shadow-md animate-in fade-in zoom-in-95 duration-200" />
               )}
 
               <div className="relative z-10 flex flex-col items-center justify-center -space-y-0.5">
                 <Icon
                   className={`w-4 h-4 transition-colors ${
-                    isActive ? 'text-white stroke-[2.5]' : 'text-gray-300 hover:text-white'
+                    isActive ? 'text-[#C7CBB8] stroke-[2.3]' : 'text-[#C7CBB8]/55 hover:text-[#C7CBB8]'
                   }`}
                 />
                 <span
                   className={`text-[9px] tracking-tight transition-colors ${
-                    isActive ? 'text-white font-bold' : 'text-gray-300 font-medium'
+                    isActive ? 'text-[#C7CBB8] font-semibold' : 'text-[#C7CBB8]/50 font-normal'
                   }`}
                 >
                   {item.label}
@@ -66,7 +66,7 @@ export default function MobileFloatingNav() {
                 {item.badgeCount !== undefined && item.badgeCount > 0 && (
                   <span
                     className={`absolute -top-1 -right-1 text-[8px] font-bold w-3.5 h-3.5 rounded-full flex items-center justify-center shadow-md ${
-                      isActive ? 'bg-white text-[#0F5132]' : 'bg-[#22C55E] text-[#133D27]'
+                      isActive ? 'bg-[#C7CBB8] text-[#0F1F17]' : 'bg-[#C7CBB8] text-[#0F1F17]'
                     }`}
                   >
                     {item.badgeCount}
