@@ -1,7 +1,8 @@
 'use client';
 
-import React from 'react';
+import React, { useState, useCallback } from 'react';
 import { useStore } from '@/context/StoreContext';
+import SplashScreen from '@/components/ui/SplashScreen';
 
 // Navigation
 import DesktopTopNav from '@/components/navigation/DesktopTopNav';
@@ -41,11 +42,17 @@ const NO_FOOTER_VIEWS = ['checkout', 'confirmation'];
 
 export default function Home() {
   const { activeView, quickViewProduct } = useStore();
+  const [splashDone, setSplashDone] = useState(false);
+  const handleSplashComplete = useCallback(() => setSplashDone(true), []);
 
   const showFooter = !NO_FOOTER_VIEWS.includes(activeView);
 
   return (
-    <div className="min-h-screen flex flex-col bg-[#F5F5F7]">
+    <>
+      {/* ─── Splash / landing animation (first visit) ─── */}
+      {!splashDone && <SplashScreen onComplete={handleSplashComplete} />}
+
+      <div className="min-h-screen flex flex-col bg-[#F5F5F7]">
       {/* ─────── Navigation ─────── */}
       <DesktopTopNav />
       <MobileHeader />
@@ -83,5 +90,6 @@ export default function Home() {
       {/* ─────── Mobile Bottom Pill Nav ─────── */}
       <MobileFloatingNav />
     </div>
+    </>
   );
 }
