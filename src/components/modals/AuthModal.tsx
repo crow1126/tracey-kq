@@ -1,4 +1,5 @@
 /* eslint-disable react-hooks/set-state-in-effect */
+/* eslint-disable @next/next/no-img-element */
 'use client';
 
 import React, { useState } from 'react';
@@ -217,35 +218,49 @@ export default function AuthModal() {
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center p-4 sm:p-6 overflow-y-auto">
-      {/* Backdrop */}
+      {/* Ambient Fading Luxury Backdrop */}
       <div
         onClick={() => setIsAuthModalOpen(false)}
-        className="fixed inset-0 bg-black/70 backdrop-blur-md transition-opacity"
+        className="fixed inset-0 bg-[#0F1F17]/80 backdrop-blur-md transition-opacity"
       />
 
-      {/* Modal Card */}
-      <div className="relative bg-white rounded-3xl max-w-md w-full p-6 sm:p-8 z-10 shadow-2xl text-[#111113] border border-[#E6E6EA] my-8 animate-in fade-in zoom-in-95 duration-200">
+      {/* Modal Card with Fading Luxury Palette & Delicate Gold Trim */}
+      <div className="relative bg-gradient-to-b from-[#FAF8F5] via-white to-[#F5F2EA] rounded-[32px] max-w-md w-full p-6 sm:p-8 z-10 shadow-2xl text-[#0F1F17] border border-[#C7CBB8]/70 my-8 overflow-hidden animate-in fade-in zoom-in-95 duration-200">
+        {/* Top Fading Gold & Emerald Accent Strip */}
+        <div className="h-1.5 w-full bg-gradient-to-r from-[#C7CBB8] via-[#1E3A2E] to-[#C7CBB8] absolute top-0 inset-x-0" />
+
         <button
           onClick={() => setIsAuthModalOpen(false)}
-          className="absolute top-5 right-5 p-2 rounded-full bg-[#EDEDF0] hover:bg-[#E6E6EA] transition-colors cursor-pointer"
+          className="absolute top-5 right-5 p-2 rounded-full bg-[#F4F1EA] hover:bg-[#EAE6DD] text-[#1E3A2E] border border-[#C7CBB8]/60 transition-colors cursor-pointer shadow-xs"
           aria-label="Close authentication modal"
         >
-          <X className="w-5 h-5 text-[#111113]" />
+          <X className="w-5 h-5 text-[#1E3A2E]" />
         </button>
 
-        {/* Brand Header */}
-        <div className="text-center space-y-1 mb-6">
-          <span className="text-[10px] font-semibold tracking-[0.3em] text-[#8A8A8F] uppercase block">
-            TRACEY KUUKUA QUANSAH
-          </span>
-          <h2 className="text-2xl font-bold text-[#111113]">
+        {/* Brand Header with Authentic T.I.M.E fits Logo & Typography */}
+        <div className="text-center space-y-2 mb-6 pt-1">
+          <div className="inline-flex flex-col items-center">
+            <div className="w-16 h-16 sm:w-18 sm:h-18 rounded-2xl p-1.5 bg-white shadow-md border border-[#C7CBB8]/70 flex items-center justify-center mb-1 group hover:border-[#1E3A2E] transition-colors">
+              <img
+                src="/brand/logo.jpg"
+                alt="T.I.M.E fits Logo"
+                className="w-full h-full object-contain rounded-xl"
+              />
+            </div>
+            <span className="text-[10px] font-bold tracking-[0.25em] text-[#1E3A2E] uppercase font-mono mt-1">
+              T.I.M.E FITS · ACCRA
+            </span>
+          </div>
+
+          <h2 className="text-2xl sm:text-3xl font-bold font-serif text-[#0F1F17] tracking-tight">
             {mode === 'login'
-              ? 'Welcome Back'
+              ? 'Welcome to the Atelier'
               : mode === 'register'
-              ? 'Join the Atelier'
-              : 'Password Recovery'}
+              ? 'Join the Private Circle'
+              : 'Patron Access Recovery'}
           </h2>
-          <p className="text-xs text-[#8A8A8F]">
+
+          <p className="text-xs text-[#525B44] max-w-xs mx-auto leading-relaxed font-light">
             {mode === 'login'
               ? 'Access your private wardrobe archive, orders, and bespoke fittings.'
               : mode === 'register'
@@ -256,13 +271,13 @@ export default function AuthModal() {
 
         {/* Current Signed In Status & Quick Sign Out */}
         {user.isLoggedIn && (
-          <div className="mb-5 p-3.5 rounded-2xl bg-[#F4F1EA] border border-[#C7CBB8]/60 flex items-center justify-between">
+          <div className="mb-5 p-3.5 rounded-2xl bg-[#F4F1EA] border border-[#C7CBB8]/80 flex items-center justify-between shadow-xs">
             <div>
               <span className="text-[10px] font-bold uppercase text-[#1E3A2E] tracking-wider block">
-                Signed In
+                Signed In Patron
               </span>
-              <p className="text-xs font-bold text-[#111113]">{user.name}</p>
-              <p className="text-[10px] text-[#6B7F67]">{user.email}</p>
+              <p className="text-xs font-bold text-[#0F1F17]">{user.name}</p>
+              <p className="text-[10px] text-[#525B44]">{user.email}</p>
             </div>
             <button
               type="button"
@@ -270,7 +285,7 @@ export default function AuthModal() {
                 logoutUser();
                 resetForm();
               }}
-              className="text-xs font-bold text-[#E5384F] hover:underline px-2.5 py-1 rounded-full bg-white border border-[#E6E6EA]"
+              className="text-xs font-bold text-[#E5384F] hover:underline px-3 py-1 rounded-full bg-white border border-[#E6E6EA] shadow-xs cursor-pointer"
             >
               Sign Out
             </button>
@@ -306,21 +321,23 @@ export default function AuthModal() {
             </p>
             <button
               onClick={() => switchMode('login')}
-              className="text-xs font-semibold text-[#111113] hover:underline pt-2 inline-block cursor-pointer"
+              className="text-xs font-semibold text-[#1E3A2E] hover:underline pt-2 inline-block cursor-pointer"
             >
               Back to Sign In
             </button>
           </div>
         )}
 
-        {/* Mode Switch Tabs (hidden during forgot-password) */}
+        {/* Mode Switch Tabs with Forest Spruce Active Pill */}
         {mode !== 'forgot-password' && (
-          <div className="flex rounded-full bg-[#EDEDF0] p-1 mb-6">
+          <div className="flex rounded-full bg-[#F4F1EA] p-1 mb-6 border border-[#C7CBB8]/50 shadow-inner">
             <button
               type="button"
               onClick={() => switchMode('login')}
               className={`flex-1 py-2 text-xs font-semibold rounded-full transition-all cursor-pointer ${
-                mode === 'login' ? 'bg-white text-[#111113] shadow-sm' : 'text-[#8A8A8F]'
+                mode === 'login'
+                  ? 'bg-[#1E3A2E] text-[#C7CBB8] shadow-sm'
+                  : 'text-[#525B44] hover:text-[#1E3A2E]'
               }`}
             >
               Sign In
@@ -329,7 +346,9 @@ export default function AuthModal() {
               type="button"
               onClick={() => switchMode('register')}
               className={`flex-1 py-2 text-xs font-semibold rounded-full transition-all cursor-pointer ${
-                mode === 'register' ? 'bg-white text-[#111113] shadow-sm' : 'text-[#8A8A8F]'
+                mode === 'register'
+                  ? 'bg-[#1E3A2E] text-[#C7CBB8] shadow-sm'
+                  : 'text-[#525B44] hover:text-[#1E3A2E]'
               }`}
             >
               Create Account
@@ -337,7 +356,7 @@ export default function AuthModal() {
           </div>
         )}
 
-        {/* Social & One-Click Login Options (hidden during forgot-password) */}
+        {/* Social & One-Click Login Options with Warm Luxury Accents */}
         {mode !== 'forgot-password' && !resetSent && (
           <>
             <div className="grid grid-cols-3 gap-2.5 sm:gap-3 mb-6">
@@ -346,7 +365,7 @@ export default function AuthModal() {
                 type="button"
                 onClick={handleGoogleSignIn}
                 disabled={isLoading}
-                className="h-13 sm:h-14 rounded-full border border-[#E6E6EA] bg-white hover:bg-[#F5F5F7] flex items-center justify-center gap-1.5 transition-colors cursor-pointer shadow-sm text-xs font-medium text-[#111113] disabled:opacity-50"
+                className="h-13 sm:h-14 rounded-full border border-[#C7CBB8]/60 bg-white hover:bg-[#F4F1EA] flex items-center justify-center gap-1.5 transition-colors cursor-pointer shadow-xs text-xs font-medium text-[#0F1F17] disabled:opacity-50"
               >
                 <svg className="w-4 h-4 sm:w-5 sm:h-5" viewBox="0 0 24 24">
                   <path
@@ -375,7 +394,7 @@ export default function AuthModal() {
                 onClick={handleDemoPatronSignIn}
                 disabled={isLoading}
                 title="Sign in instantly as Ama Mensah-Bonsu (VIP Patron)"
-                className="h-13 sm:h-14 rounded-full border border-[#E6E6EA] bg-white hover:bg-[#F5F5F7] flex items-center justify-center gap-1.5 transition-colors cursor-pointer shadow-sm text-xs font-medium text-[#111113] disabled:opacity-50"
+                className="h-13 sm:h-14 rounded-full border border-[#C7CBB8]/80 bg-gradient-to-r from-[#F4F1EA] to-[#EAE6DD] hover:from-[#EAE6DD] hover:to-[#D8D4C8] flex items-center justify-center gap-1.5 transition-all cursor-pointer shadow-xs text-xs font-semibold text-[#1E3A2E] disabled:opacity-50"
               >
                 <Sparkles className="w-4 h-4 text-[#D4AF37]" />
                 <span className="hidden sm:inline">VIP Demo</span>
@@ -385,15 +404,15 @@ export default function AuthModal() {
               <button
                 type="button"
                 onClick={() => setIsAuthModalOpen(false)}
-                className="h-13 sm:h-14 rounded-full border border-[#E6E6EA] bg-white hover:bg-[#F5F5F7] flex items-center justify-center gap-1.5 transition-colors cursor-pointer shadow-sm text-xs font-medium text-[#8A8A8F]"
+                className="h-13 sm:h-14 rounded-full border border-[#C7CBB8]/60 bg-white hover:bg-[#F4F1EA] flex items-center justify-center gap-1.5 transition-colors cursor-pointer shadow-xs text-xs font-medium text-[#6B7F67]"
               >
                 <span>Guest</span>
               </button>
             </div>
 
             <div className="relative flex items-center justify-center my-4">
-              <div className="border-t border-[#E6E6EA] w-full" />
-              <span className="bg-white px-3 text-[11px] text-[#8A8A8F] uppercase tracking-wider absolute">
+              <div className="border-t border-[#C7CBB8]/50 w-full" />
+              <span className="bg-[#FAF8F5] px-3 text-[10px] text-[#6B7F67] uppercase tracking-wider font-semibold absolute">
                 Or with credentials
               </span>
             </div>
@@ -405,7 +424,7 @@ export default function AuthModal() {
           <form onSubmit={handleSubmit} className="space-y-3.5">
             {mode === 'register' && (
               <div className="relative">
-                <User className="w-5 h-5 absolute left-5 top-1/2 -translate-y-1/2 text-[#8A8A8F]" />
+                <User className="w-5 h-5 absolute left-5 top-1/2 -translate-y-1/2 text-[#6B7F67]" />
                 <input
                   type="text"
                   required
@@ -413,13 +432,13 @@ export default function AuthModal() {
                   value={name}
                   onChange={(e) => setName(e.target.value)}
                   disabled={isLoading}
-                  className="w-full h-14 pl-12 pr-5 rounded-full bg-white border border-[#E6E6EA] text-sm text-[#111113] placeholder-[#8A8A8F] outline-none focus:border-[#111113] transition-all disabled:opacity-50"
+                  className="w-full h-14 pl-12 pr-5 rounded-full bg-[#FCFAF7] border border-[#C7CBB8]/70 text-sm text-[#0F1F17] placeholder-[#8A8A8F] outline-none focus:bg-white focus:border-[#1E3A2E] focus:ring-2 focus:ring-[#1E3A2E]/15 transition-all disabled:opacity-50"
                 />
               </div>
             )}
 
             <div className="relative">
-              <Mail className="w-5 h-5 absolute left-5 top-1/2 -translate-y-1/2 text-[#8A8A8F]" />
+              <Mail className="w-5 h-5 absolute left-5 top-1/2 -translate-y-1/2 text-[#6B7F67]" />
               <input
                 type="email"
                 required
@@ -427,14 +446,14 @@ export default function AuthModal() {
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 disabled={isLoading}
-                className="w-full h-14 pl-12 pr-5 rounded-full bg-white border border-[#E6E6EA] text-sm text-[#111113] placeholder-[#8A8A8F] outline-none focus:border-[#111113] transition-all disabled:opacity-50"
+                className="w-full h-14 pl-12 pr-5 rounded-full bg-[#FCFAF7] border border-[#C7CBB8]/70 text-sm text-[#0F1F17] placeholder-[#8A8A8F] outline-none focus:bg-white focus:border-[#1E3A2E] focus:ring-2 focus:ring-[#1E3A2E]/15 transition-all disabled:opacity-50"
               />
             </div>
 
             {mode !== 'forgot-password' && (
               <div>
                 <div className="relative">
-                  <Lock className="w-5 h-5 absolute left-5 top-1/2 -translate-y-1/2 text-[#8A8A8F]" />
+                  <Lock className="w-5 h-5 absolute left-5 top-1/2 -translate-y-1/2 text-[#6B7F67]" />
                   <input
                     type={showPassword ? 'text' : 'password'}
                     required
@@ -442,19 +461,19 @@ export default function AuthModal() {
                     value={password}
                     onChange={(e) => setPassword(e.target.value)}
                     disabled={isLoading}
-                    className="w-full h-14 pl-12 pr-12 rounded-full bg-white border border-[#E6E6EA] text-sm text-[#111113] placeholder-[#8A8A8F] outline-none focus:border-[#111113] transition-all disabled:opacity-50"
+                    className="w-full h-14 pl-12 pr-12 rounded-full bg-[#FCFAF7] border border-[#C7CBB8]/70 text-sm text-[#0F1F17] placeholder-[#8A8A8F] outline-none focus:bg-white focus:border-[#1E3A2E] focus:ring-2 focus:ring-[#1E3A2E]/15 transition-all disabled:opacity-50"
                   />
                   <button
                     type="button"
                     onClick={() => setShowPassword(!showPassword)}
                     tabIndex={-1}
-                    className="absolute right-3 top-1/2 -translate-y-1/2 w-10 h-10 flex items-center justify-center text-[#8A8A8F] hover:text-[#111113] cursor-pointer"
+                    className="absolute right-3 top-1/2 -translate-y-1/2 w-10 h-10 flex items-center justify-center text-[#6B7F67] hover:text-[#1E3A2E] cursor-pointer"
                   >
                     {showPassword ? <EyeOff className="w-5 h-5" /> : <Eye className="w-5 h-5" />}
                   </button>
                 </div>
                 {mode === 'register' && (
-                  <p className="text-[11px] text-[#8A8A8F] mt-1.5 px-4">
+                  <p className="text-[11px] text-[#6B7F67] mt-1.5 px-4 font-light">
                     Must be at least 8 characters.
                   </p>
                 )}
@@ -474,7 +493,7 @@ export default function AuthModal() {
                 <button
                   type="button"
                   onClick={() => switchMode('forgot-password')}
-                  className="text-xs text-[#8A8A8F] hover:text-[#111113] transition-colors cursor-pointer"
+                  className="text-xs text-[#6B7F67] hover:text-[#1E3A2E] transition-colors cursor-pointer"
                 >
                   Forgot your password?
                 </button>
@@ -483,7 +502,7 @@ export default function AuthModal() {
 
             {mode === 'register' && (
               <div className="text-center pt-1">
-                <span className="text-xs text-[#8A8A8F]">Already have an account? </span>
+                <span className="text-xs text-[#6B7F67]">Already have an account? </span>
                 <button
                   type="button"
                   onClick={() => switchMode('login')}
@@ -494,20 +513,20 @@ export default function AuthModal() {
               </div>
             )}
 
-            {/* Primary Action Button */}
+            {/* Primary Action Button with Fading Luxury Gradient */}
             <button
               type="submit"
               disabled={isLoading}
-              className="w-full h-14 rounded-full bg-[#111113] text-white text-[15px] font-semibold flex items-center justify-center gap-2 shadow-lg hover:bg-[#2C2C30] transition-all cursor-pointer mt-4 disabled:opacity-70 disabled:cursor-not-allowed"
+              className="w-full h-14 rounded-full bg-gradient-to-r from-[#0F1F17] via-[#1E3A2E] to-[#0F1F17] text-[#C7CBB8] hover:text-white text-[15px] font-semibold flex items-center justify-center gap-2 shadow-xl hover:shadow-[#1E3A2E]/40 border border-[#3E5A3F]/50 transition-all cursor-pointer mt-4 disabled:opacity-70 disabled:cursor-not-allowed group"
             >
               {isLoading ? (
                 <span className="flex items-center gap-2">
-                  <Loader2 className="w-5 h-5 animate-spin" />
+                  <Loader2 className="w-5 h-5 animate-spin text-[#C7CBB8]" />
                   <span>Connecting to Atelier...</span>
                 </span>
               ) : isSuccess ? (
-                <span className="flex items-center gap-1.5 text-[#1F8A4C]">
-                  <Check className="w-5 h-5" />
+                <span className="flex items-center gap-1.5 text-[#C7CBB8]">
+                  <Check className="w-5 h-5 text-emerald-400" />
                   <span>{mode === 'register' ? 'Account Created ✓' : 'Authenticated ✓'}</span>
                 </span>
               ) : (
@@ -519,7 +538,7 @@ export default function AuthModal() {
                       ? 'Create Patron Account'
                       : 'Send Recovery Link'}
                   </span>
-                  <ArrowRight className="w-4 h-4" />
+                  <ArrowRight className="w-4 h-4 text-[#C7CBB8] group-hover:translate-x-1 transition-transform" />
                 </span>
               )}
             </button>
@@ -532,15 +551,15 @@ export default function AuthModal() {
             <button
               type="button"
               onClick={() => switchMode('login')}
-              className="text-xs font-semibold text-[#8A8A8F] hover:text-[#111113] transition-colors cursor-pointer"
+              className="text-xs font-semibold text-[#6B7F67] hover:text-[#1E3A2E] transition-colors cursor-pointer"
             >
               ← Back to Sign In
             </button>
           </div>
         )}
 
-        <p className="text-[11px] text-[#8A8A8F] text-center mt-5">
-          By signing in, you agree to Tracey KQ&apos;s Terms of Luxury Service and Privacy Policy. Handcrafted in Ghana.
+        <p className="text-[11px] text-[#6B7F67] text-center mt-5 font-light">
+          By continuing, you agree to T.I.M.E fits by Kukua-Tracey&apos;s Terms of Luxury Service and Privacy Policy. Handcrafted in Ghana.
         </p>
       </div>
     </div>
