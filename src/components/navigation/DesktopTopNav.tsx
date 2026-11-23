@@ -3,7 +3,7 @@
 
 import React from 'react';
 import { useStore } from '@/context/StoreContext';
-import { Search, Heart, ShoppingBag, ShieldCheck, Truck } from 'lucide-react';
+import { Search, Heart, ShoppingBag, ShieldCheck, Truck, User } from 'lucide-react';
 import IconButton from '../ui/IconButton';
 
 export default function DesktopTopNav() {
@@ -15,6 +15,9 @@ export default function DesktopTopNav() {
     orders,
     setIsSearchOpen,
     siteContent,
+    user,
+    logoutUser,
+    openAuthModal,
   } = useStore();
 
   const navLinks = [
@@ -169,6 +172,40 @@ export default function DesktopTopNav() {
               </span>
             )}
           </IconButton>
+
+          {/* Patron Account / Auth Gateway */}
+          {user.isLoggedIn ? (
+            <div className="flex items-center gap-1.5 pl-2 border-l border-[#E6E6EA]">
+              <button
+                onClick={() => {
+                  setActiveView('account');
+                  window.scrollTo({ top: 0, behavior: 'smooth' });
+                }}
+                className="text-xs font-semibold px-2.5 py-1.5 rounded-full bg-[#F4F1EA] text-[#1E3A2E] hover:bg-[#EAE6DD] transition-colors flex items-center gap-1.5 border border-[#C7CBB8]/60 cursor-pointer"
+                title={`Logged in as ${user.name}`}
+              >
+                <div className="w-5 h-5 rounded-full bg-[#1E3A2E] text-[#C7CBB8] text-[10px] font-bold flex items-center justify-center">
+                  {user.name.charAt(0)}
+                </div>
+                <span className="max-w-[70px] truncate">{user.name.split(' ')[0]}</span>
+              </button>
+              <button
+                onClick={logoutUser}
+                className="text-[11px] text-[#8A8A8F] hover:text-[#E5384F] px-1.5 py-1 transition-colors cursor-pointer"
+                title="Sign Out"
+              >
+                Sign Out
+              </button>
+            </div>
+          ) : (
+            <button
+              onClick={() => openAuthModal('login')}
+              className="text-xs font-semibold px-3 py-1.5 rounded-full bg-[#1E3A2E] text-[#C7CBB8] hover:bg-[#0F1F17] transition-colors flex items-center gap-1.5 cursor-pointer shadow-xs ml-1"
+            >
+              <User className="w-3.5 h-3.5" />
+              <span>Sign In</span>
+            </button>
+          )}
         </div>
       </div>
     </header>

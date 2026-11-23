@@ -6,7 +6,7 @@ import { useStore } from '@/context/StoreContext';
 import { X, Sparkles, Scissors, MapPin, MessageCircle, ShieldCheck, ChevronRight, Compass, ShoppingBag, Heart, Truck, User } from 'lucide-react';
 
 export default function BrandMenuSheet() {
-  const { isBrandMenuOpen, setIsBrandMenuOpen, setActiveView, orders } = useStore();
+  const { isBrandMenuOpen, setIsBrandMenuOpen, setActiveView, orders, user, logoutUser, openAuthModal } = useStore();
 
   if (!isBrandMenuOpen) return null;
 
@@ -179,6 +179,77 @@ export default function BrandMenuSheet() {
                 </div>
                 <ChevronRight className="w-4 h-4 text-gray-400" />
               </button>
+            </div>
+
+            <div className="space-y-2 pt-2 border-t border-[#E6E6EA]">
+              <span className="text-[11px] font-bold tracking-[0.2em] text-[#1E3A2E] uppercase block px-3 py-1">
+                Patron Access
+              </span>
+              {user.isLoggedIn ? (
+                <div className="bg-[#F4F1EA] rounded-2xl p-3.5 border border-[#C7CBB8]/60 space-y-2.5">
+                  <div className="flex items-center justify-between">
+                    <div>
+                      <span className="text-[10px] font-bold uppercase text-[#1E3A2E] tracking-wider block">
+                        Signed In
+                      </span>
+                      <p className="text-xs font-bold text-[#111113]">{user.name}</p>
+                      <p className="text-[10px] text-[#6B7F67]">{user.email}</p>
+                    </div>
+                    <span className="text-[9px] font-bold text-[#6B73F0] bg-[#ECEDFD] px-2 py-0.5 rounded-full">
+                      {user.tier}
+                    </span>
+                  </div>
+                  <div className="flex items-center gap-2 pt-1 border-t border-[#C7CBB8]/40">
+                    <button
+                      onClick={() => navigateTo('account')}
+                      className="flex-1 py-1.5 rounded-xl bg-white text-[11px] font-semibold text-[#1E3A2E] border border-[#C7CBB8]/60 hover:bg-[#F5F5F7] text-center"
+                    >
+                      View Profile
+                    </button>
+                    <button
+                      onClick={() => {
+                        logoutUser();
+                        setIsBrandMenuOpen(false);
+                      }}
+                      className="flex-1 py-1.5 rounded-xl bg-[#FFF0F2] text-[11px] font-semibold text-[#E5384F] border border-[#FCDADF] hover:bg-[#FDECEE] text-center"
+                    >
+                      Sign Out
+                    </button>
+                  </div>
+                </div>
+              ) : (
+                <div className="space-y-1.5">
+                  <button
+                    onClick={() => {
+                      setIsBrandMenuOpen(false);
+                      openAuthModal('login');
+                    }}
+                    className="w-full flex items-center justify-between px-3.5 py-2.5 rounded-xl text-xs font-semibold bg-[#1E3A2E] text-[#C7CBB8] hover:bg-[#0F1F17] transition-colors"
+                  >
+                    <span>Sign In to Account</span>
+                    <ChevronRight className="w-4 h-4 text-[#C7CBB8]" />
+                  </button>
+                  <button
+                    onClick={() => {
+                      setIsBrandMenuOpen(false);
+                      openAuthModal('register');
+                    }}
+                    className="w-full flex items-center justify-between px-3.5 py-2.5 rounded-xl text-xs font-semibold bg-[#F4F1EA] text-[#1E3A2E] hover:bg-[#EAE6DD] transition-colors border border-[#C7CBB8]/60"
+                  >
+                    <span>Create Account (Sign Up)</span>
+                    <ChevronRight className="w-4 h-4 text-[#1E3A2E]" />
+                  </button>
+                  <button
+                    onClick={() => {
+                      setIsBrandMenuOpen(false);
+                      openAuthModal('forgot-password');
+                    }}
+                    className="w-full text-left px-3.5 py-1 text-[11px] text-[#6B7F67] hover:text-[#1E3A2E] underline"
+                  >
+                    Forgot your password?
+                  </button>
+                </div>
+              )}
             </div>
 
             <div className="space-y-1">

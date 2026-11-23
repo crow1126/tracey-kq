@@ -155,6 +155,7 @@ interface StoreContextType {
   isBrandMenuOpen: boolean;
   isAuthModalOpen: boolean;
   authRedirectView: string | null;
+  authModalMode: 'login' | 'register' | 'forgot-password';
   isSizeGuideOpen: boolean;
   selectedDeliveryZone:
     | 'Accra Metro'
@@ -192,6 +193,11 @@ interface StoreContextType {
   setIsBrandMenuOpen: (open: boolean) => void;
   setIsAuthModalOpen: (open: boolean) => void;
   setAuthRedirectView: (view: string | null) => void;
+  setAuthModalMode: (mode: 'login' | 'register' | 'forgot-password') => void;
+  openAuthModal: (
+    mode?: 'login' | 'register' | 'forgot-password',
+    redirectView?: string | null
+  ) => void;
   setIsSizeGuideOpen: (open: boolean) => void;
   setSelectedDeliveryZone: (
     zone:
@@ -297,6 +303,18 @@ export function StoreProvider({ children }: { children: React.ReactNode }) {
   const [isBrandMenuOpen, setIsBrandMenuOpen] = useState(false);
   const [isAuthModalOpen, setIsAuthModalOpen] = useState(false);
   const [authRedirectView, setAuthRedirectView] = useState<string | null>(null);
+  const [authModalMode, setAuthModalMode] = useState<
+    'login' | 'register' | 'forgot-password'
+  >('login');
+
+  const openAuthModal = (
+    mode: 'login' | 'register' | 'forgot-password' = 'login',
+    redirectView: string | null = null
+  ) => {
+    setAuthModalMode(mode);
+    if (redirectView) setAuthRedirectView(redirectView);
+    setIsAuthModalOpen(true);
+  };
   const [isSizeGuideOpen, setIsSizeGuideOpen] = useState(false);
 
   const [selectedDeliveryZone, setSelectedDeliveryZone] = useState<
@@ -421,7 +439,16 @@ export function StoreProvider({ children }: { children: React.ReactNode }) {
     try {
       const savedProducts = localStorage.getItem('tkq_admin_products');
       if (savedProducts) {
-        setProducts(JSON.parse(savedProducts));
+        const parsed: Product[] = JSON.parse(savedProducts);
+        const existingIds = new Set(parsed.map((p) => p.id));
+        const missingSeeds = SEED_PRODUCTS.filter((sp) => !existingIds.has(sp.id));
+        if (missingSeeds.length > 0) {
+          const merged = [...parsed, ...missingSeeds];
+          setProducts(merged);
+          localStorage.setItem('tkq_admin_products', JSON.stringify(merged));
+        } else {
+          setProducts(parsed);
+        }
       }
 
       const savedContent = localStorage.getItem('tkq_admin_site_content');
@@ -1031,6 +1058,9 @@ export function StoreProvider({ children }: { children: React.ReactNode }) {
         setIsAuthModalOpen,
         authRedirectView,
         setAuthRedirectView,
+        authModalMode,
+        setAuthModalMode,
+        openAuthModal,
         setIsSizeGuideOpen,
         setSelectedDeliveryZone,
         setSelectedDeliveryMethod,

@@ -1,3 +1,4 @@
+/* eslint-disable @next/next/no-img-element */
 'use client';
 
 import React, { useState } from 'react';
@@ -5,24 +6,17 @@ import { useStore } from '@/context/StoreContext';
 import {
   User,
   ShoppingBag,
-  Heart,
-  Award,
   MapPin,
-  CreditCard,
   Gift,
   LogOut,
-  ChevronRight,
   Truck,
   MessageCircle,
-  ExternalLink,
-  ShieldCheck,
   Check,
 } from 'lucide-react';
-import Badge from '../ui/Badge';
 import Button from '../ui/Button';
 
 export default function AccountView() {
-  const { user, orders, wishlist, logoutUser, setActiveView, setIsAuthModalOpen } = useStore();
+  const { user, orders, wishlist, logoutUser, setActiveView, openAuthModal } = useStore();
 
   const [activeTab, setActiveTab] = useState<'orders' | 'addresses' | 'points' | 'concierge'>('orders');
   const [giftCardCode, setGiftCardCode] = useState('');
@@ -41,13 +35,31 @@ export default function AccountView() {
               Sign in to view your order history, tracked parcels, saved atelier measurements, and loyalty style points.
             </p>
           </div>
-          <Button
-            variant="primary"
-            onClick={() => setIsAuthModalOpen(true)}
-            className="w-full"
-          >
-            Sign In / Register
-          </Button>
+          <div className="space-y-2.5">
+            <Button
+              variant="primary"
+              onClick={() => openAuthModal('login')}
+              className="w-full"
+            >
+              Sign In to Your Account
+            </Button>
+            <Button
+              variant="secondary"
+              onClick={() => openAuthModal('register')}
+              className="w-full"
+            >
+              Create New Account (Sign Up)
+            </Button>
+            <div className="pt-2">
+              <button
+                type="button"
+                onClick={() => openAuthModal('forgot-password')}
+                className="text-xs text-[#6B7F67] hover:text-[#1E3A2E] underline cursor-pointer"
+              >
+                Forgot your password? Recover your account
+              </button>
+            </div>
+          </div>
         </div>
       </div>
     );
@@ -141,7 +153,7 @@ export default function AccountView() {
             return (
               <button
                 key={tab.id}
-                onClick={() => setActiveTab(tab.id as any)}
+                onClick={() => setActiveTab(tab.id as 'orders' | 'addresses' | 'points' | 'concierge')}
                 className={`py-4 flex items-center gap-2 border-b-2 transition-all cursor-pointer whitespace-nowrap ${
                   isActive
                     ? 'border-[#111113] text-[#111113]'
@@ -363,12 +375,12 @@ export default function AccountView() {
               </div>
               <div>
                 <h3 className="text-base font-bold text-[#111113]">Private Atelier Concierge</h3>
-                <p className="text-xs text-[#8A8A8F]">Direct line to Tracey Kuukua Quansah's styling team</p>
+                <p className="text-xs text-[#8A8A8F]">Direct line to Tracey Kuukua Quansah&apos;s styling team</p>
               </div>
             </div>
 
             <p className="text-xs text-[#3A3A3F] leading-relaxed">
-              As a {user.tier} patron, you receive priority scheduling for bespoke appointments, custom fabric sourcing directly from Bonwire, and same-day fitting delivery across Accra.
+              As a {user.tier} patron, you receive priority scheduling for bespoke appointments, custom fabric sourcing directly from Bonwire, and same-day fitting delivery across Accra. Tracey KQ&apos;s team is here for you.
             </p>
 
             <a

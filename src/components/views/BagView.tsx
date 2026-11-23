@@ -1,8 +1,9 @@
+/* eslint-disable @next/next/no-img-element */
 'use client';
 
 import React, { useState } from 'react';
 import { useStore } from '@/context/StoreContext';
-import { Trash2, ShoppingBag, ArrowRight, Tag, Check, Truck, ShieldCheck, Sparkles, Lock, UserCheck } from 'lucide-react';
+import { Trash2, ShoppingBag, ArrowRight, Tag, Truck, ShieldCheck, Sparkles, Lock, UserCheck, X, Heart } from 'lucide-react';
 import QtyStepper from '../ui/QtyStepper';
 import Button from '../ui/Button';
 
@@ -26,10 +27,15 @@ export default function BagView() {
     user,
     setIsAuthModalOpen,
     setAuthRedirectView,
+    openAuthModal,
+    logoutUser,
+    toggleWishlist,
+    isWishlisted,
   } = useStore();
 
   const [promoInput, setPromoInput] = useState('');
   const [promoFeedback, setPromoFeedback] = useState<{ success: boolean; text: string } | null>(null);
+  const [isClearBagConfirmOpen, setIsClearBagConfirmOpen] = useState(false);
 
   const handleApplyPromo = (e: React.FormEvent) => {
     e.preventDefault();
@@ -102,8 +108,8 @@ export default function BagView() {
                   Garments in Bag
                 </span>
                 <button
-                  onClick={clearCart}
-                  className="text-xs text-[#8A8A8F] hover:text-[#E5384F] transition-colors"
+                  onClick={() => setIsClearBagConfirmOpen(true)}
+                  className="text-xs text-[#8A8A8F] hover:text-[#E5384F] transition-colors cursor-pointer"
                 >
                   Clear Bag
                 </button>
@@ -225,7 +231,7 @@ export default function BagView() {
                   </label>
                   <select
                     value={selectedDeliveryZone}
-                    onChange={(e) => setSelectedDeliveryZone(e.target.value as any)}
+                    onChange={(e) => setSelectedDeliveryZone(e.target.value as 'Accra Metro' | 'Tema / Spintex' | 'Kumasi' | 'Takoradi' | 'Nationwide Express')}
                     className="w-full h-11 px-3.5 rounded-2xl bg-[#EDEDF0] border-transparent text-xs font-semibold text-[#111113] outline-none focus:ring-1 focus:ring-[#6B73F0] cursor-pointer"
                   >
                     <option value="Accra Metro">Accra Metro (GH₵ 35)</option>
@@ -365,6 +371,160 @@ export default function BagView() {
           </div>
         )}
       </section>
+
+      {/* ────────── CLEAR BAG & AUTH CONFIRMATION MODAL ────────── */}
+      {isClearBagConfirmOpen && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 sm:p-6 bg-black/70 backdrop-blur-sm animate-in fade-in">
+          <div className="bg-white rounded-[28px] max-w-md w-full p-6 sm:p-8 space-y-5 text-[#111113] relative border border-[#E6E6EA] shadow-2xl">
+            <button
+              onClick={() => setIsClearBagConfirmOpen(false)}
+              className="absolute top-5 right-5 p-2 rounded-full bg-[#EDEDF0] hover:bg-[#E6E6EA] transition-colors cursor-pointer"
+            >
+              <X className="w-5 h-5 text-[#111113]" />
+            </button>
+
+            <div className="text-center space-y-2">
+              <div className="w-14 h-14 rounded-full bg-[#F4F1EA] text-[#1E3A2E] flex items-center justify-center mx-auto border border-[#C7CBB8]/60">
+                <ShoppingBag className="w-7 h-7" />
+              </div>
+              <span className="text-[10px] font-bold tracking-[0.25em] text-[#8A8A8F] uppercase block">
+                ATELIER BAG MANAGEMENT
+              </span>
+              <h3 className="text-xl font-bold text-[#111113]">
+                Clear Your Shopping Bag?
+              </h3>
+              <p className="text-xs text-[#8A8A8F] leading-relaxed max-w-sm mx-auto">
+                {!user.isLoggedIn
+                  ? `You have ${cartCount} handcrafted pieces in your bag (GH₵ ${cartTotalGhc.toLocaleString()}). To preserve these pieces in your patron archive before clearing, sign in or register below.`
+                  : `Signed in as ${user.name} (${user.email}). You can save these ${cartCount} pieces to your Wishlist, switch accounts/sign out, or empty your bag.`}
+              </p>
+            </div>
+
+            {/* Auth Pathways when clearing cart */}
+            {!user.isLoggedIn ? (
+              <div className="space-y-2.5 pt-2">
+                <button
+                  type="button"
+                  onClick={() => {
+                    setIsClearBagConfirmOpen(false);
+                    openAuthModal('login', 'bag');
+                  }}
+                  className="w-full h-12 rounded-full bg-[#1E3A2E] text-[#C7CBB8] text-xs font-bold flex items-center justify-center gap-2 hover:bg-[#0F1F17] shadow-md transition-all cursor-pointer"
+                >
+                  <UserCheck className="w-4 h-4 text-[#C7CBB8]" />
+                  <span>Sign In to Save Pieces</span>
+                </button>
+
+                <button
+                  type="button"
+                  onClick={() => {
+                    setIsClearBagConfirmOpen(false);
+                    openAuthModal('register', 'bag');
+                  }}
+                  className="w-full h-12 rounded-full bg-white border border-[#1E3A2E] text-[#1E3A2E] text-xs font-bold flex items-center justify-center gap-2 hover:bg-[#F4F1EA] transition-all cursor-pointer"
+                >
+                  <Sparkles className="w-4 h-4 text-[#1E3A2E]" />
+                  <span>Create Account (Sign Up)</span>
+                </button>
+
+                <div className="text-center pt-0.5">
+                  <button
+                    type="button"
+                    onClick={() => {
+                      setIsClearBagConfirmOpen(false);
+                      openAuthModal('forgot-password', 'bag');
+                    }}
+                    className="text-[11px] text-[#6B7F67] hover:text-[#1E3A2E] underline cursor-pointer"
+                  >
+                    Forgot your password? Recover account
+                  </button>
+                </div>
+
+                <div className="border-t border-[#E6E6EA] pt-3 flex flex-col gap-2">
+                  <button
+                    type="button"
+                    onClick={() => {
+                      cart.forEach((item) => {
+                        if (!isWishlisted(item.product.id)) {
+                          toggleWishlist(item.product.id);
+                        }
+                      });
+                      clearCart();
+                      setIsClearBagConfirmOpen(false);
+                    }}
+                    className="w-full h-11 rounded-full bg-[#EDEDF0] text-[#111113] text-xs font-semibold hover:bg-[#E6E6EA] transition-colors cursor-pointer"
+                  >
+                    Move Pieces to Saved Wishlist &amp; Clear Bag
+                  </button>
+
+                  <button
+                    type="button"
+                    onClick={() => {
+                      clearCart();
+                      setIsClearBagConfirmOpen(false);
+                    }}
+                    className="w-full h-11 rounded-full text-[#E5384F] hover:bg-[#FFF0F2] text-xs font-semibold transition-colors cursor-pointer"
+                  >
+                    Clear Bag Anyway
+                  </button>
+                </div>
+              </div>
+            ) : (
+              <div className="space-y-2.5 pt-2">
+                <button
+                  type="button"
+                  onClick={() => {
+                    cart.forEach((item) => {
+                      if (!isWishlisted(item.product.id)) {
+                        toggleWishlist(item.product.id);
+                      }
+                    });
+                    clearCart();
+                    setIsClearBagConfirmOpen(false);
+                  }}
+                  className="w-full h-12 rounded-full bg-[#1E3A2E] text-[#C7CBB8] text-xs font-bold flex items-center justify-center gap-2 hover:bg-[#0F1F17] shadow-md transition-all cursor-pointer"
+                >
+                  <Heart className="w-4 h-4 text-[#C7CBB8]" />
+                  <span>Save All to Wishlist &amp; Clear Bag</span>
+                </button>
+
+                <button
+                  type="button"
+                  onClick={() => {
+                    clearCart();
+                    setIsClearBagConfirmOpen(false);
+                  }}
+                  className="w-full h-12 rounded-full bg-[#FFF0F2] border border-[#FCDADF] text-[#E5384F] text-xs font-bold hover:bg-[#FDECEE] transition-all cursor-pointer"
+                >
+                  <Trash2 className="w-4 h-4" />
+                  <span>Empty Bag</span>
+                </button>
+
+                <div className="pt-2 text-center border-t border-[#E6E6EA]">
+                  <button
+                    type="button"
+                    onClick={() => {
+                      logoutUser();
+                      setIsClearBagConfirmOpen(false);
+                    }}
+                    className="text-xs text-[#8A8A8F] hover:text-[#E5384F] underline cursor-pointer"
+                  >
+                    Sign Out of {user.name}
+                  </button>
+                </div>
+              </div>
+            )}
+
+            <button
+              type="button"
+              onClick={() => setIsClearBagConfirmOpen(false)}
+              className="w-full h-11 rounded-full border border-[#E6E6EA] text-xs font-semibold text-[#8A8A8F] hover:bg-[#F5F5F7] transition-colors cursor-pointer"
+            >
+              Keep My Items
+            </button>
+          </div>
+        </div>
+      )}
     </div>
   );
 }

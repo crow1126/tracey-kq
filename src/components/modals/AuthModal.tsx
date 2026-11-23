@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/set-state-in-effect */
 'use client';
 
 import React, { useState } from 'react';
@@ -22,9 +23,12 @@ export default function AuthModal() {
     isAuthModalOpen,
     setIsAuthModalOpen,
     loginUser,
+    logoutUser,
+    user,
     setActiveView,
     authRedirectView,
     setAuthRedirectView,
+    authModalMode,
   } = useStore();
 
   const [mode, setMode] = useState<'login' | 'register' | 'forgot-password'>('login');
@@ -36,6 +40,15 @@ export default function AuthModal() {
   const [error, setError] = useState<string | null>(null);
   const [isSuccess, setIsSuccess] = useState(false);
   const [resetSent, setResetSent] = useState(false);
+
+  React.useEffect(() => {
+    if (authModalMode) {
+      setMode(authModalMode);
+      setError(null);
+      setIsLoading(false);
+      setResetSent(false);
+    }
+  }, [authModalMode, isAuthModalOpen]);
 
   if (!isAuthModalOpen) return null;
 
@@ -241,6 +254,29 @@ export default function AuthModal() {
           </p>
         </div>
 
+        {/* Current Signed In Status & Quick Sign Out */}
+        {user.isLoggedIn && (
+          <div className="mb-5 p-3.5 rounded-2xl bg-[#F4F1EA] border border-[#C7CBB8]/60 flex items-center justify-between">
+            <div>
+              <span className="text-[10px] font-bold uppercase text-[#1E3A2E] tracking-wider block">
+                Signed In
+              </span>
+              <p className="text-xs font-bold text-[#111113]">{user.name}</p>
+              <p className="text-[10px] text-[#6B7F67]">{user.email}</p>
+            </div>
+            <button
+              type="button"
+              onClick={() => {
+                logoutUser();
+                resetForm();
+              }}
+              className="text-xs font-bold text-[#E5384F] hover:underline px-2.5 py-1 rounded-full bg-white border border-[#E6E6EA]"
+            >
+              Sign Out
+            </button>
+          </div>
+        )}
+
         {/* Error Alert Banner */}
         {error && (
           <div className="mb-5 p-3.5 rounded-2xl bg-[#FFF0F2] border border-[#FCDADF] flex items-start gap-2.5 text-xs text-[#D92D20] animate-in fade-in slide-in-from-top-1">
@@ -425,15 +461,35 @@ export default function AuthModal() {
               </div>
             )}
 
-            {/* Forgot password link */}
+            {/* Forgot password & Create account pathways */}
             {mode === 'login' && (
-              <div className="flex justify-end px-2">
+              <div className="flex items-center justify-between px-2 pt-1">
+                <button
+                  type="button"
+                  onClick={() => switchMode('register')}
+                  className="text-xs text-[#1E3A2E] font-semibold hover:underline cursor-pointer"
+                >
+                  Create Account →
+                </button>
                 <button
                   type="button"
                   onClick={() => switchMode('forgot-password')}
                   className="text-xs text-[#8A8A8F] hover:text-[#111113] transition-colors cursor-pointer"
                 >
                   Forgot your password?
+                </button>
+              </div>
+            )}
+
+            {mode === 'register' && (
+              <div className="text-center pt-1">
+                <span className="text-xs text-[#8A8A8F]">Already have an account? </span>
+                <button
+                  type="button"
+                  onClick={() => switchMode('login')}
+                  className="text-xs font-bold text-[#1E3A2E] hover:underline cursor-pointer"
+                >
+                  Sign In
                 </button>
               </div>
             )}

@@ -3,11 +3,11 @@
 
 import React from 'react';
 import { useStore } from '@/context/StoreContext';
-import { Menu, Search, ShoppingBag } from 'lucide-react';
+import { Menu, Search, ShoppingBag, User } from 'lucide-react';
 import IconButton from '../ui/IconButton';
 
 export default function MobileHeader() {
-  const { setActiveView, setIsBrandMenuOpen, setIsSearchOpen, cartCount } = useStore();
+  const { setActiveView, setIsBrandMenuOpen, setIsSearchOpen, cartCount, user, openAuthModal } = useStore();
 
   return (
     <div className="md:hidden sticky top-0 z-30 bg-white/95 backdrop-blur-md border-b border-[#E6E6EA] px-3 h-16 flex items-center justify-between gap-2 shadow-xs">
@@ -44,7 +44,7 @@ export default function MobileHeader() {
       </button>
 
       {/* Header Actions */}
-      <div className="flex items-center gap-1 flex-shrink-0">
+      <div className="flex items-center gap-1.5 flex-shrink-0">
         <IconButton
           variant="header"
           onClick={() => setIsSearchOpen(true)}
@@ -52,6 +52,31 @@ export default function MobileHeader() {
         >
           <Search className="w-5 h-5 text-[#0F1F17]" />
         </IconButton>
+
+        {/* User Account / Auth icon button */}
+        <button
+          onClick={() => {
+            if (user.isLoggedIn) {
+              setActiveView('account');
+              window.scrollTo({ top: 0, behavior: 'smooth' });
+            } else {
+              openAuthModal('login');
+            }
+          }}
+          aria-label="Patron Account"
+          className="relative w-9 h-9 rounded-full bg-[#F4F1EA] text-[#1E3A2E] border border-[#C7CBB8]/60 flex items-center justify-center hover:bg-[#EAE6DD] active:scale-95 transition-all cursor-pointer"
+        >
+          {user.isLoggedIn ? (
+            <span className="text-[11px] font-bold text-[#1E3A2E]">
+              {user.name.charAt(0)}
+            </span>
+          ) : (
+            <User className="w-4 h-4 text-[#1E3A2E]" />
+          )}
+          {user.isLoggedIn && (
+            <span className="absolute top-0.5 right-0.5 w-2 h-2 rounded-full bg-[#1F8A4C] ring-1 ring-white" />
+          )}
+        </button>
 
         <button
           onClick={() => {
