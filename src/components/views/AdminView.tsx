@@ -164,25 +164,28 @@ export default function AdminView() {
   // Product Add / Edit Modal state
   const [isProductModalOpen, setIsProductModalOpen] = useState(false);
   const [editingProductId, setEditingProductId] = useState<string | null>(null);
-  const [productForm, setProductForm] = useState({
+  // Clean empty product form template
+  const EMPTY_PRODUCT_FORM = {
     name: '',
     subtitle: '',
-    category: 'Dresses',
-    categoryId: 'cat-dresses',
-    priceGhc: 8500,
+    category: '',
+    categoryId: '',
+    priceGhc: 0,
     originalPriceGhc: 0,
-    fabric: 'Bonwire Hand-Woven Silk',
-    craftsmanship: 'Hand-loomed in the Ashanti region of Bonwire by hereditary master weavers.',
-    description: 'An architectural silhouette sculpted with traditional Ghanaian textiles and fluid modern tailoring.',
-    careInstructions: 'Dry clean only. Store in breathable canvas garment bag.',
-    imageUrl: 'https://images.unsplash.com/photo-1515886657613-9f3515b0c78f?auto=format&fit=crop&w=800&q=85',
+    fabric: '',
+    craftsmanship: '',
+    description: '',
+    careInstructions: '',
+    imageUrl: '',
     stockStatus: 'in_stock' as 'in_stock' | 'low_stock' | 'out_of_stock',
-    sizes: 'XS, S, M, L, XL',
-    colors: 'Royal Amber Gold: #D4AF37, Emerald Green: #1E3A2E',
-    isNew: true,
-    isTrending: true,
+    sizes: '',
+    colors: '',
+    isNew: false,
+    isTrending: false,
     isSpotlight: false,
-  });
+  };
+
+  const [productForm, setProductForm] = useState(EMPTY_PRODUCT_FORM);
 
   // Product delete confirmation modal
   const [productToDelete, setProductToDelete] = useState<Product | null>(null);
@@ -221,28 +224,10 @@ export default function AdminView() {
     return matchesCat && matchesSearch;
   });
 
-  // Open Product Modal for Create
+  // Open Product Modal for Create (Completely clean, nothing pre-selected)
   const handleOpenCreateProduct = () => {
     setEditingProductId(null);
-    setProductForm({
-      name: '',
-      subtitle: 'Accra Atelier Ready-to-Wear',
-      category: 'Dresses',
-      categoryId: 'cat-dresses',
-      priceGhc: 8500,
-      originalPriceGhc: 0,
-      fabric: 'Bonwire Hand-Woven Silk',
-      craftsmanship: 'Hand-loomed in the Ashanti region of Bonwire by hereditary master weavers.',
-      description: 'An architectural silhouette sculpted with traditional Ghanaian textiles and fluid modern tailoring.',
-      careInstructions: 'Dry clean only. Store in breathable canvas garment bag.',
-      imageUrl: 'https://images.unsplash.com/photo-1515886657613-9f3515b0c78f?auto=format&fit=crop&w=800&q=85',
-      stockStatus: 'in_stock',
-      sizes: 'XS, S, M, L, XL',
-      colors: 'Royal Amber Gold: #D4AF37, Emerald Green: #1E3A2E',
-      isNew: true,
-      isTrending: true,
-      isSpotlight: false,
-    });
+    setProductForm({ ...EMPTY_PRODUCT_FORM });
     setIsProductModalOpen(true);
   };
 
@@ -252,7 +237,7 @@ export default function AdminView() {
     const colorStr =
       p.colors && p.colors.length > 0
         ? p.colors.map((c) => `${c.name}: ${c.hex}`).join(', ')
-        : 'Royal Amber Gold: #D4AF37';
+        : '';
 
     setProductForm({
       name: p.name,
@@ -279,9 +264,22 @@ export default function AdminView() {
   // Submit Product Form
   const handleSaveProduct = (e: React.FormEvent) => {
     e.preventDefault();
+    if (!productForm.category) {
+      alert('Please select a category for this creation.');
+      return;
+    }
+    if (!productForm.imageUrl) {
+      alert('Please upload an image for this creation.');
+      return;
+    }
+    if (!productForm.priceGhc || productForm.priceGhc <= 0) {
+      alert('Please enter a valid price in GH₵ for this creation.');
+      return;
+    }
+
     const sizeArray = productForm.sizes.split(',').map((s) => s.trim()).filter(Boolean);
     const colorArray = parseColors(productForm.colors);
-    const finalColors = colorArray.length > 0 ? colorArray : [{ name: 'Heritage Gold', hex: '#D4AF37' }];
+    const finalColors = colorArray.length > 0 ? colorArray : [{ name: 'Standard Fit', hex: '#111113' }];
 
     if (editingProductId) {
       updateProduct(editingProductId, {
@@ -1812,11 +1810,12 @@ export default function AdminView() {
                       setProductForm({
                         ...productForm,
                         category: e.target.value,
-                        categoryId: cat?.id || 'cat-dresses',
+                        categoryId: cat?.id || '',
                       });
                     }}
                     className="w-full h-11 px-3 rounded-xl bg-[#F5F5F7] border border-[#E6E6EA] text-xs font-semibold outline-none cursor-pointer"
                   >
+                    <option value="">Select Category...</option>
                     {categories.map((c) => (
                       <option key={c.id} value={c.name}>
                         {c.name}
@@ -1834,8 +1833,9 @@ export default function AdminView() {
                   <input
                     type="number"
                     required
-                    value={productForm.priceGhc}
-                    onChange={(e) => setProductForm({ ...productForm, priceGhc: Number(e.target.value) })}
+                    value={productForm.priceGhc || ''}
+                    placeholder="e.g. 8500"
+                    onChange={(e) => setProductForm({ ...productForm, priceGhc: e.target.value === '' ? 0 : Number(e.target.value) })}
                     className="w-full h-11 px-3.5 rounded-xl bg-[#F5F5F7] border border-[#E6E6EA] text-xs font-bold outline-none focus:border-[#6B73F0]"
                   />
                 </div>
@@ -1846,8 +1846,9 @@ export default function AdminView() {
                   </label>
                   <input
                     type="number"
-                    value={productForm.originalPriceGhc}
-                    onChange={(e) => setProductForm({ ...productForm, originalPriceGhc: Number(e.target.value) })}
+                    value={productForm.originalPriceGhc || ''}
+                    placeholder="Optional (e.g. 10500)"
+                    onChange={(e) => setProductForm({ ...productForm, originalPriceGhc: e.target.value === '' ? 0 : Number(e.target.value) })}
                     className="w-full h-11 px-3.5 rounded-xl bg-[#F5F5F7] border border-[#E6E6EA] text-xs outline-none"
                   />
                 </div>
@@ -1877,7 +1878,7 @@ export default function AdminView() {
                   required
                   value={productForm.fabric}
                   onChange={(e) => setProductForm({ ...productForm, fabric: e.target.value })}
-                  placeholder="e.g. Bonwire Hand-Woven Silk"
+                  placeholder="e.g. Bonwire Hand-Woven Silk, Raw Velvet, Organza"
                   className="w-full h-11 px-3.5 rounded-xl bg-[#F5F5F7] border border-[#E6E6EA] text-xs outline-none"
                 />
               </div>
@@ -1890,6 +1891,7 @@ export default function AdminView() {
                   rows={3}
                   required
                   value={productForm.description}
+                  placeholder="Describe the silhouette, cut, textiles, and heritage of this creation..."
                   onChange={(e) => setProductForm({ ...productForm, description: e.target.value })}
                   className="w-full p-3 rounded-xl bg-[#F5F5F7] border border-[#E6E6EA] text-xs outline-none"
                 />
@@ -1908,6 +1910,7 @@ export default function AdminView() {
                 <input
                   type="text"
                   value={productForm.sizes}
+                  placeholder="e.g. XS, S, M, L, XL"
                   onChange={(e) => setProductForm({ ...productForm, sizes: e.target.value })}
                   className="w-full h-11 px-3.5 rounded-xl bg-[#F5F5F7] border border-[#E6E6EA] text-xs outline-none"
                 />

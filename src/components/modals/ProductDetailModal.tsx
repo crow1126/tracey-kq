@@ -47,8 +47,8 @@ export default function ProductDetailModal() {
   if (!quickViewProduct) return null;
 
   const product = quickViewProduct;
-  const currentSize = selectedSize || product.sizes[0];
-  const currentColor = selectedColor || product.colors[0];
+  const currentSize = selectedSize || product.sizes?.[0] || 'Standard';
+  const currentColor = selectedColor || product.colors?.[0] || { name: 'Standard Fit', hex: '#111113' };
   const wishlisted = isWishlisted(product.id);
 
   // Complete the look recommendation
@@ -243,25 +243,27 @@ export default function ProductDetailModal() {
                   </div>
 
                   {/* Colour Swatches (44x44px circle, 2px ring when selected with 3px white gap) */}
-                  <div className="space-y-2.5">
-                    <div className="flex items-center justify-between text-xs">
-                      <span className="font-semibold text-[#111113]">
-                        Colour: <strong className="text-[#6B73F0]">{currentColor.name}</strong>
-                      </span>
-                      <span className="text-[#8A8A8F]">{product.colors.length} hand-dyed variants</span>
+                  {(product.colors?.length ?? 0) > 0 && (
+                    <div className="space-y-2.5">
+                      <div className="flex items-center justify-between text-xs">
+                        <span className="font-semibold text-[#111113]">
+                          Colour: <strong className="text-[#6B73F0]">{currentColor.name}</strong>
+                        </span>
+                        <span className="text-[#8A8A8F]">{product.colors.length} hand-dyed variants</span>
+                      </div>
+                      <div className="flex items-center gap-3">
+                        {product.colors.map((c) => (
+                          <Swatch
+                            key={c.name}
+                            hex={c.hex}
+                            name={c.name}
+                            selected={currentColor.name === c.name}
+                            onClick={() => setSelectedColor(c)}
+                          />
+                        ))}
+                      </div>
                     </div>
-                    <div className="flex items-center gap-3">
-                      {product.colors.map((c) => (
-                        <Swatch
-                          key={c.name}
-                          hex={c.hex}
-                          name={c.name}
-                          selected={currentColor.name === c.name}
-                          onClick={() => setSelectedColor(c)}
-                        />
-                      ))}
-                    </div>
-                  </div>
+                  )}
 
                   {/* Size Selectors (XS to XXL): 48px high, min-width 64px, pill, selected = ink bg */}
                   <div className="space-y-2.5">
