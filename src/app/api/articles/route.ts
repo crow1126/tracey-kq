@@ -1,6 +1,9 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { SEED_ARTICLES } from '@/data/db-seed';
 
+export const dynamic = 'force-dynamic';
+export const revalidate = 0;
+
 function getPrisma() {
   if (!process.env.DATABASE_URL) return null;
   // eslint-disable-next-line @typescript-eslint/no-require-imports
