@@ -36,6 +36,7 @@ import {
   ToggleRight,
 } from 'lucide-react';
 import ImageUploader from '../ui/ImageUploader';
+import ColorPaletteSelector from '../ui/ColorPaletteSelector';
 
 const GHANA_COURIERS = [
   { id: 'atelier', name: 'Atelier Dedicated Chauffeur (Kojo Mensah)', phone: '+233 24 999 1122', tag: 'White-Glove' },
@@ -1914,30 +1915,10 @@ export default function AdminView() {
               </div>
 
               <div>
-                <label className="text-xs font-semibold text-[#8A8A8F] block mb-1">
-                  Garment Colors (Format: Color Name: #hex, e.g. Royal Gold: #D4AF37, Emerald Green: #1E3A2E)
-                </label>
-                <input
-                  type="text"
+                <ColorPaletteSelector
                   value={productForm.colors}
-                  onChange={(e) => setProductForm({ ...productForm, colors: e.target.value })}
-                  placeholder="e.g. Royal Amber Gold: #D4AF37, Emerald Green: #1E3A2E, Obsidian Black: #111113"
-                  className="w-full h-11 px-3.5 rounded-xl bg-[#F5F5F7] border border-[#E6E6EA] text-xs outline-none"
+                  onChange={(val) => setProductForm({ ...productForm, colors: val })}
                 />
-                <div className="flex flex-wrap gap-1.5 mt-2">
-                  {parseColors(productForm.colors).map((c, i) => (
-                    <span
-                      key={i}
-                      className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-[10px] font-semibold bg-[#F5F5F7] border border-[#E6E6EA]"
-                    >
-                      <span
-                        className="w-2.5 h-2.5 rounded-full border border-black/20"
-                        style={{ backgroundColor: c.hex }}
-                      />
-                      <span>{c.name}</span>
-                    </span>
-                  ))}
-                </div>
               </div>
 
               <div className="flex items-center gap-6 pt-2">
