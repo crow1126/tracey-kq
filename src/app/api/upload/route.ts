@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { writeFile, mkdir } from 'fs/promises';
 import path from 'path';
+import { validateImageBuffer, generateSafeFileName } from '@/lib/security';
 
 // Optional Cloudinary integration
 function getCloudinary() {
@@ -31,15 +32,6 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ error: 'No image file uploaded' }, { status: 400 });
     }
 
-    // Validate mime type
-    const validTypes = ['image/jpeg', 'image/png', 'image/webp', 'image/avif', 'image/jpg', 'image/gif'];
-    if (!validTypes.includes(file.type.toLowerCase())) {
-      return NextResponse.json(
-        { error: 'Invalid file format. Please upload JPG, PNG, WebP, or AVIF.' },
-        { status: 400 }
-      );
-    }
-
     // Limit to 20MB
     const maxBytes = 20 * 1024 * 1024;
     if (file.size > maxBytes) {
@@ -50,6 +42,18 @@ export async function POST(req: NextRequest) {
     }
 
     const buffer = Buffer.from(await file.arrayBuffer());
+
+    // ── Deep Defense: Magic Bytes & Polyglot / Embedded Script Inspection ──
+    const validation = validateImageBuffer(buffer);
+    if (!validation.isValid) {
+      return NextResponse.json(
+        { error: validation.error || 'Malicious or invalid image file rejected.' },
+        { status: 422 }
+      );
+    }
+
+    const canonicalExt = validation.detectedExt || 'jpg';
+    const safeUniqueName = generateSafeFileName(file.name, canonicalExt);
 
     // 1. Try Cloudinary if configured
     const cloudinary = getCloudinary();
@@ -75,7 +79,8 @@ export async function POST(req: NextRequest) {
         success: true,
         url: uploadResult.secure_url,
         provider: 'cloudinary',
-        filename: file.name,
+        filename: safeUniqueName,
+        mimeType: validation.detectedMime,
       });
     }
 
@@ -83,19 +88,17 @@ export async function POST(req: NextRequest) {
     const uploadDir = path.join(process.cwd(), 'public', 'uploads');
     await mkdir(uploadDir, { recursive: true });
 
-    const safeName = file.name.replace(/[^a-zA-Z0-9.-]/g, '_');
-    const uniqueFileName = `${Date.now()}-${Math.random().toString(36).substring(2, 8)}-${safeName}`;
-    const filePath = path.join(uploadDir, uniqueFileName);
-
+    const filePath = path.join(uploadDir, safeUniqueName);
     await writeFile(filePath, buffer);
 
-    const publicUrl = `/uploads/${uniqueFileName}`;
+    const publicUrl = `/uploads/${safeUniqueName}`;
 
     return NextResponse.json({
       success: true,
       url: publicUrl,
       provider: 'local',
-      filename: uniqueFileName,
+      filename: safeUniqueName,
+      mimeType: validation.detectedMime,
     });
   } catch (error: unknown) {
     console.error('Image upload error:', error);
