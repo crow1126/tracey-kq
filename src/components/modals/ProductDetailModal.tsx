@@ -1,12 +1,12 @@
+/* eslint-disable @next/next/no-img-element */
 'use client';
 
 import React, { useState } from 'react';
 import { useStore } from '@/context/StoreContext';
 import { Product } from '@/data/db-schema';
-import { SEED_PRODUCTS, SEED_REVIEWS } from '@/data/db-seed';
+import { SEED_PRODUCTS } from '@/data/db-seed';
 import {
   X,
-  Star,
   Heart,
   ShoppingBag,
   MessageCircle,
@@ -86,8 +86,6 @@ export default function ProductDetailModal() {
       alert('Product link copied to clipboard!');
     }
   };
-
-  const productReviews = SEED_REVIEWS.filter((r) => r.productId === product.id);
 
   return (
     <>
@@ -214,7 +212,7 @@ export default function ProductDetailModal() {
                       {product.description}
                     </p>
                     <p className="text-xs text-[#6B7F67] italic leading-relaxed">
-                      "{product.craftsmanship || 'Hand-loomed in the Ashanti region of Bonwire by hereditary master weavers. Finished with French seams and architectural interior boning.'}"
+                      &ldquo;{product.craftsmanship || 'Hand-loomed in the Ashanti region of Bonwire by hereditary master weavers. Finished with French seams and architectural interior boning.'}&rdquo;
                     </p>
                     <div className="pt-2 border-t border-[#C7CBB8]/40 flex flex-wrap items-center justify-between text-[11px] text-[#6B7F67] gap-2">
                       <span>Fabric: <strong className="text-[#0F1F17]">{product.fabric}</strong></span>

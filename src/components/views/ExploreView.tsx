@@ -1,9 +1,10 @@
+/* eslint-disable @next/next/no-img-element */
 'use client';
 
 import React, { useState, useMemo } from 'react';
 import { useStore } from '@/context/StoreContext';
 import { Product } from '@/data/db-schema';
-import { Heart, Filter, X, SlidersHorizontal, Sparkles, Check, ShoppingBag, Eye } from 'lucide-react';
+import { Heart, Filter, X, SlidersHorizontal, Sparkles, Check, ShoppingBag } from 'lucide-react';
 import Chip from '../ui/Chip';
 import Badge from '../ui/Badge';
 import IconButton from '../ui/IconButton';

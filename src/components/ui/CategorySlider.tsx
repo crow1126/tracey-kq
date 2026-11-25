@@ -1,6 +1,7 @@
+/* eslint-disable @next/next/no-img-element */
 'use client';
 
-import React, { useRef, useState, useEffect } from 'react';
+import React, { useRef, useState, useEffect, useCallback } from 'react';
 import { useStore } from '@/context/StoreContext';
 import { ChevronLeft, ChevronRight, ArrowUpRight, Sparkles } from 'lucide-react';
 
@@ -11,7 +12,7 @@ export default function CategorySlider() {
   const [canScrollRight, setCanScrollRight] = useState(true);
   const [activeIndex, setActiveIndex] = useState(0);
 
-  const checkScroll = () => {
+  const checkScroll = useCallback(() => {
     if (!sliderRef.current) return;
     const { scrollLeft, scrollWidth, clientWidth } = sliderRef.current;
     setCanScrollLeft(scrollLeft > 10);
@@ -21,7 +22,7 @@ export default function CategorySlider() {
     const cardWidth = 280;
     const idx = Math.round(scrollLeft / cardWidth);
     setActiveIndex(Math.min(Math.max(idx, 0), categories.length - 1));
-  };
+  }, [categories.length]);
 
   useEffect(() => {
     const el = sliderRef.current;
@@ -30,7 +31,7 @@ export default function CategorySlider() {
       checkScroll();
       return () => el.removeEventListener('scroll', checkScroll);
     }
-  }, [categories]);
+  }, [checkScroll]);
 
   const scroll = (direction: 'left' | 'right') => {
     if (!sliderRef.current) return;

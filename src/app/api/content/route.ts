@@ -2,9 +2,6 @@ import { NextResponse } from 'next/server';
 import { prisma } from '@/lib/prisma';
 import { DEFAULT_SITE_CONTENT } from '@/context/StoreContext';
 
-export const dynamic = 'force-dynamic';
-export const revalidate = 0;
-
 export async function GET() {
   try {
     if (!process.env.DATABASE_URL) {

@@ -1,13 +1,12 @@
+/* eslint-disable @next/next/no-img-element */
 'use client';
 
 import React, { useState } from 'react';
 import { useStore } from '@/context/StoreContext';
 import {
   Check,
-  ShoppingBag,
   ArrowRight,
   Truck,
-  MapPin,
   Sparkles,
   Phone,
   MessageCircle,

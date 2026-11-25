@@ -1,9 +1,10 @@
+/* eslint-disable @next/next/no-img-element */
 'use client';
 
 import React from 'react';
 import { useStore } from '@/context/StoreContext';
 import { SEED_STORES } from '@/data/db-seed';
-import { MapPin, Clock, Phone, Navigation, Scissors, Sparkles, ArrowRight } from 'lucide-react';
+import { MapPin, Clock, Phone, Navigation, Scissors, ArrowRight } from 'lucide-react';
 import Button from '../ui/Button';
 import Badge from '../ui/Badge';
 

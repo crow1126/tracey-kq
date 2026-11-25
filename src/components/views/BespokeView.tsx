@@ -2,17 +2,17 @@
 
 import React, { useState } from 'react';
 import { useStore } from '@/context/StoreContext';
-import { Scissors, Sparkles, Check, Calendar, Ruler, Award, ShieldCheck, ArrowRight } from 'lucide-react';
+import { Scissors, Sparkles, Check, Ruler, Award, ArrowRight } from 'lucide-react';
 import Button from '../ui/Button';
 
 export default function BespokeView() {
-  const { submitBespokeEnquiry, setActiveView } = useStore();
+  const { submitBespokeEnquiry } = useStore();
 
   const [formData, setFormData] = useState({
     name: '',
     email: '',
     phone: '',
-    serviceType: 'Bespoke Tailoring' as const,
+    serviceType: 'Bespoke Tailoring' as 'Bespoke Tailoring' | 'Bridal' | 'Red Carpet' | 'Bulk / Corporate',
     preferredDate: '',
     budgetGhc: 'GH₵ 15,000 - GH₵ 25,000',
     message: '',
@@ -168,7 +168,12 @@ export default function BespokeView() {
                     </label>
                     <select
                       value={formData.serviceType}
-                      onChange={(e) => setFormData({ ...formData, serviceType: e.target.value as any })}
+                      onChange={(e) =>
+                        setFormData({
+                          ...formData,
+                          serviceType: e.target.value as 'Bespoke Tailoring' | 'Bridal' | 'Red Carpet' | 'Bulk / Corporate',
+                        })
+                      }
                       className="h-[52px] w-full rounded-full bg-[#F5F5F7] border border-[#E6E6EA] px-5 text-sm text-[#111113] focus:outline-none focus:border-[#6B73F0]"
                     >
                       <option value="Bespoke Tailoring">Bespoke Tailoring</option>

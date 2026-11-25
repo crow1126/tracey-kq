@@ -1,3 +1,4 @@
+/* eslint-disable @next/next/no-img-element */
 'use client';
 
 import React, { useState, useEffect } from 'react';
@@ -10,9 +11,10 @@ export default function OnboardingSheet() {
 
   useEffect(() => {
     // Show only on mobile and only if not dismissed before
-    const isDismissed = localStorage.getItem('tkq_welcome_dismissed');
+    const isDismissed = typeof window !== 'undefined' ? localStorage.getItem('tkq_welcome_dismissed') : '1';
     if (!isDismissed && window.innerWidth < 768) {
-      setIsOpen(true);
+      const timer = setTimeout(() => setIsOpen(true), 100);
+      return () => clearTimeout(timer);
     }
   }, []);
 

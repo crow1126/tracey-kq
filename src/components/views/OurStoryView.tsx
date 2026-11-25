@@ -12,7 +12,6 @@ import {
   Sparkles,
   CheckCircle2,
   BookmarkCheck,
-  Compass,
 } from 'lucide-react';
 import Button from '../ui/Button';
 

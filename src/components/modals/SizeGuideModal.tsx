@@ -2,7 +2,6 @@
 
 import React, { useState } from 'react';
 import { X, Ruler, Sparkles, Check } from 'lucide-react';
-import Button from '../ui/Button';
 
 interface SizeGuideModalProps {
   isOpen: boolean;

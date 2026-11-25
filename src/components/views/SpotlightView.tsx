@@ -1,9 +1,10 @@
+/* eslint-disable @next/next/no-img-element */
 'use client';
 
 import React from 'react';
 import { useStore } from '@/context/StoreContext';
 import { SEED_ARTICLES } from '@/data/db-seed';
-import { Plus, ArrowRight, Share2, Clock, Sparkles } from 'lucide-react';
+import { Plus, ArrowRight, Share2, Clock } from 'lucide-react';
 import Button from '../ui/Button';
 import IconButton from '../ui/IconButton';
 import Badge from '../ui/Badge';

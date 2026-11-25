@@ -1,8 +1,10 @@
+/* eslint-disable @next/next/no-img-element */
 'use client';
 
 import React, { useState } from 'react';
 import { useStore } from '@/context/StoreContext';
-import { Heart, ShoppingBag, ArrowRight, Trash2, Search, Check } from 'lucide-react';
+import { Product } from '@/data/db-schema';
+import { Heart, ShoppingBag, ArrowRight, Search, Check } from 'lucide-react';
 import IconButton from '../ui/IconButton';
 import Button from '../ui/Button';
 
@@ -26,7 +28,7 @@ export default function SavedView() {
     p.category.toLowerCase().includes(searchQuery.toLowerCase())
   );
 
-  const handleMoveToBag = (e: React.MouseEvent, product: any) => {
+  const handleMoveToBag = (e: React.MouseEvent, product: Product) => {
     e.stopPropagation();
     addToCart(product, product.sizes[0], product.colors[0]?.name, product.colors[0]?.hex, 1);
     setJustAddedId(product.id);

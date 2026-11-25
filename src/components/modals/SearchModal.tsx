@@ -1,9 +1,9 @@
+/* eslint-disable @next/next/no-img-element */
 'use client';
 
 import React, { useState, useMemo } from 'react';
 import { useStore } from '@/context/StoreContext';
 import { Search, X, ArrowRight, Heart, Sparkles, ShoppingBag } from 'lucide-react';
-import { Product } from '@/data/db-schema';
 
 export default function SearchModal() {
   const {
@@ -134,10 +134,10 @@ export default function SearchModal() {
                   <Search className="w-6 h-6" />
                 </div>
                 <h4 className="text-base font-semibold text-[#111113]">
-                  No pieces found matching "{query}"
+                  No pieces found matching &ldquo;{query}&rdquo;
                 </h4>
                 <p className="text-xs text-[#8A8A8F] max-w-sm mx-auto">
-                  Try searching with broader terms like "silk", "gown", "kente", or explore the full shop collection.
+                  Try searching with broader terms like &ldquo;silk&rdquo;, &ldquo;gown&rdquo;, &ldquo;kente&rdquo;, or explore the full shop collection.
                 </p>
                 <button
                   onClick={() => {

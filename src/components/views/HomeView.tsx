@@ -4,9 +4,7 @@
 import React from 'react';
 import { useStore } from '@/context/StoreContext';
 import { ArrowRight, Heart, Plus, MapPin, BookmarkCheck } from 'lucide-react';
-import Button from '../ui/Button';
 import IconButton from '../ui/IconButton';
-import Badge from '../ui/Badge';
 import CategorySlider from '../ui/CategorySlider';
 import HeroMotionSection from '../ui/HeroMotionSection';
 
