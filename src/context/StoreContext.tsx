@@ -95,18 +95,18 @@ export const DEFAULT_PROMO_CODES: PromoCode[] = [
 export const DEFAULT_SITE_CONTENT: SiteContent = {
   announcementBarText:
     'T.I.M.E FITS · TAILORED PERFECTION, TIMELESS STYLE · ACCRA ATELIER · EXPRESS SAME-DAY DELIVERY IN ACCRA METRO',
-  // Hero single photo & narrative
-  heroCampaignBadge: 'T.I.M.E FITS · TAILORED PERFECTION',
-  heroHeadlinePrefix: 'Welcome to ',
-  heroHeadlineAccent: 'T.I.M.E fits',
-  heroHeadlineSuffix: ' — Timeless Style.',
+  // Hero single photo & narrative (Canonical luxury showpiece)
+  heroCampaignBadge: 'SUMMER 2026 CAMPAIGN',
+  heroHeadlinePrefix: 'Sculpting Ancestral Ghanaian Splendor into Minimalist',
+  heroHeadlineAccent: 'Couture',
+  heroHeadlineSuffix: '.',
   heroSubtitle:
-    'Fashion is never just fabric and form. It is identity in motion, confidence made visible, connection you can feel—and sometimes, the memory we carry long after the moment has passed. Welcome to T.I.M.E fits, where meaningful moments become beautifully considered design.',
+    'Designed by Tracey Kuukua Quansah in Accra. Hand-loomed Bonwire silks, architectural velvet tailoring, and zero-waste bespoke silhouettes.',
   heroImageUrl:
-    'https://images.unsplash.com/photo-1509631179647-0177331693ae?auto=format&fit=crop&w=1800&q=85',
-  heroPrimaryCta: 'Explore Collections',
+    'https://images.unsplash.com/photo-1515886657613-9f3515b0c78f?auto=format&fit=crop&w=1800&q=85',
+  heroPrimaryCta: 'Shop Now',
   heroSecondaryCta: 'Our Story',
-  heroPrimaryView: 'collections',
+  heroPrimaryView: 'shop',
   heroSecondaryView: 'our-story',
 
   // Backwards compatibility fields
