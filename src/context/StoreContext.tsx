@@ -370,53 +370,8 @@ export function StoreProvider({ children }: { children: React.ReactNode }) {
     tier: 'Connoisseur',
   });
 
-  const [orders, setOrders] = useState<Order[]>([
-    {
-      id: 'ord-01',
-      orderNumber: 'TKQ-2026-0891',
-      customerName: 'Ama Mensah-Bonsu',
-      customerEmail: 'ama.mensah@prestige.gh',
-      customerPhone: '+233 20 891 2345',
-      deliveryAddress: 'House 14, Senchi Street, Airport Residential Area',
-      city: 'Accra',
-      deliveryZone: 'Accra Metro',
-      deliveryFeeGhc: 35,
-      deliveryMethod: 'Express Same-Day Priority',
-      paymentMethod: 'MTN Mobile Money',
-      paymentStatus: 'Paid',
-      subtotalGhc: 18500,
-      discountGhc: 0,
-      totalGhc: 18535,
-      status: 'Shipped',
-      date: '18 February 2026',
-      estimatedDelivery: 'Today by 5:00 PM',
-      items: [
-        {
-          id: 'item-1',
-          productId: 'prod-01',
-          productName: 'The Ashanti Silk Cape Gown',
-          productImage:
-            'https://images.unsplash.com/photo-1515886657613-9f3515b0c78f?auto=format&fit=crop&w=600&q=85',
-          size: 'M',
-          colorName: 'Royal Amber Gold',
-          quantity: 1,
-          priceGhc: 18500,
-        },
-      ],
-      riderName: 'Kwesi Darko',
-      riderPhone: '+233 50 123 4567',
-      trackingTimeline: [
-        { title: 'Order Confirmed', time: '09:15 AM', completed: true },
-        {
-          title: 'Garment Steamed & Inspected',
-          time: '11:30 AM',
-          completed: true,
-        },
-        { title: 'Dispatched with Courier', time: '01:45 PM', completed: true },
-        { title: 'Delivered at Doorstep', time: 'Pending', completed: false },
-      ],
-    },
-  ]);
+  // Tracked orders: Defaults to empty [] for unauthenticated guests so order track count is 0
+  const [orders, setOrders] = useState<Order[]>([]);
 
   const [enquiries, setEnquiries] = useState<BespokeEnquiry[]>([
     {
@@ -462,7 +417,27 @@ export function StoreProvider({ children }: { children: React.ReactNode }) {
 
       const savedContent = localStorage.getItem('tkq_admin_site_content');
       if (savedContent) {
-        setSiteContent({ ...DEFAULT_SITE_CONTENT, ...JSON.parse(savedContent) });
+        const parsed = JSON.parse(savedContent);
+        // Automatically migrate legacy green neon image to canonical yellow showpiece
+        if (
+          !parsed.heroImageUrl ||
+          parsed.heroImageUrl ===
+            'https://images.unsplash.com/photo-1509631179647-0177331693ae?auto=format&fit=crop&w=1800&q=85'
+        ) {
+          parsed.heroImageUrl = DEFAULT_SITE_CONTENT.heroImageUrl;
+          parsed.heroHeadlinePrefix = DEFAULT_SITE_CONTENT.heroHeadlinePrefix;
+          parsed.heroHeadlineAccent = DEFAULT_SITE_CONTENT.heroHeadlineAccent;
+          parsed.heroHeadlineSuffix = DEFAULT_SITE_CONTENT.heroHeadlineSuffix;
+          parsed.heroCampaignBadge = DEFAULT_SITE_CONTENT.heroCampaignBadge;
+        }
+        setSiteContent({ ...DEFAULT_SITE_CONTENT, ...parsed });
+      }
+
+      const savedOrders = localStorage.getItem('tkq_user_orders');
+      if (savedOrders) {
+        try {
+          setOrders(JSON.parse(savedOrders));
+        } catch {}
       }
 
       const savedArticles = localStorage.getItem('tkq_admin_articles');
@@ -576,6 +551,12 @@ export function StoreProvider({ children }: { children: React.ReactNode }) {
       localStorage.setItem('tkq_admin_articles', JSON.stringify(articles));
     } catch {}
   }, [articles]);
+
+  useEffect(() => {
+    try {
+      localStorage.setItem('tkq_user_orders', JSON.stringify(orders));
+    } catch {}
+  }, [orders]);
 
   // Category navigation helper
   const navigateToCategory = (catId: string) => {

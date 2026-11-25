@@ -20,7 +20,7 @@ import {
 import { Order } from '@/data/db-schema';
 
 export default function OrdersView() {
-  const { orders, setActiveView } = useStore();
+  const { orders, setActiveView, user, openAuthModal } = useStore();
 
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedOrder, setSelectedOrder] = useState<Order | null>(orders[0] || null);
@@ -143,13 +143,24 @@ export default function OrdersView() {
                 Your bespoke reservations and garment orders will appear here for live courier tracking.
               </p>
             </div>
-            <button
-              onClick={() => setActiveView('shop')}
-              className="h-11 px-6 rounded-full bg-[#1E3A2E] text-[#C7CBB8] text-xs font-bold uppercase tracking-wider hover:bg-[#0F1F17] transition-all cursor-pointer shadow-md inline-flex items-center gap-2"
-            >
-              <span>Explore Collection</span>
-              <ArrowRight className="w-4 h-4" />
-            </button>
+            <div className="flex flex-col sm:flex-row items-center justify-center gap-3 pt-2">
+              <button
+                onClick={() => setActiveView('shop')}
+                className="h-10 px-5 rounded-full bg-[#1E3A2E] text-[#C7CBB8] text-xs font-bold uppercase tracking-wider hover:bg-[#0F1F17] transition-all cursor-pointer shadow-md inline-flex items-center gap-2"
+              >
+                <span>Explore Collection</span>
+                <ArrowRight className="w-4 h-4" />
+              </button>
+              {!user.isLoggedIn && (
+                <button
+                  type="button"
+                  onClick={() => openAuthModal('login', 'orders')}
+                  className="h-10 px-5 rounded-full bg-white border border-[#1E3A2E] text-[#1E3A2E] text-xs font-bold hover:bg-[#F4F1EA] transition-all cursor-pointer shadow-sm"
+                >
+                  Sign In to Atelier
+                </button>
+              )}
+            </div>
           </div>
         ) : (
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">

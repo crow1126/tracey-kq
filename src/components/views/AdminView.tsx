@@ -21,6 +21,10 @@ import {
   BookOpen,
   RotateCcw,
   Eye,
+  EyeOff,
+  Lock,
+  LogOut,
+  KeyRound,
   Save,
   Truck,
   Phone,
@@ -73,6 +77,47 @@ export default function AdminView() {
   const [activeTab, setActiveTab] = useState<
     'inventory' | 'content' | 'journal' | 'orders' | 'enquiries' | 'analytics' | 'promos'
   >('inventory');
+
+  // Admin Authentication Gate state
+  const [isAdminAuthenticated, setIsAdminAuthenticated] = useState<boolean>(() => {
+    if (typeof window !== 'undefined') {
+      return sessionStorage.getItem('tkq_admin_auth') === 'true';
+    }
+    return false;
+  });
+  const [adminPasskey, setAdminPasskey] = useState('');
+  const [adminError, setAdminError] = useState('');
+  const [showAdminPasskey, setShowAdminPasskey] = useState(false);
+
+  const handleAdminLogin = (e: React.FormEvent) => {
+    e.preventDefault();
+    setAdminError('');
+    const clean = adminPasskey.trim();
+    if (
+      clean === 'TIME-ATELIER-2026' ||
+      clean === 'ATELIER2026' ||
+      clean === 'timefits2026' ||
+      clean === 'admin@timefits.com' ||
+      clean === 'admin2026'
+    ) {
+      if (typeof window !== 'undefined') {
+        sessionStorage.setItem('tkq_admin_auth', 'true');
+      }
+      setIsAdminAuthenticated(true);
+      setAdminPasskey('');
+    } else {
+      setAdminError('Invalid administrative passkey. Please verify your credentials.');
+    }
+  };
+
+  const handleAdminLogout = () => {
+    if (typeof window !== 'undefined') {
+      sessionStorage.removeItem('tkq_admin_auth');
+    }
+    setIsAdminAuthenticated(false);
+    setAdminPasskey('');
+    setActiveView('home');
+  };
 
   // Selected order for printable packing slip
   const [selectedPackingSlipOrder, setSelectedPackingSlipOrder] = useState<Order | null>(null);
@@ -448,6 +493,106 @@ export default function AdminView() {
     }
   };
 
+  if (!isAdminAuthenticated) {
+    return (
+      <div className="min-h-screen bg-[#0F1F17] text-white flex items-center justify-center p-4 relative overflow-hidden select-none">
+        {/* Ambient emerald background */}
+        <div className="absolute inset-0 pointer-events-none opacity-25">
+          <div className="absolute -top-32 -left-32 w-96 h-96 rounded-full bg-[#C7CBB8] blur-3xl" />
+          <div className="absolute -bottom-32 -right-32 w-96 h-96 rounded-full bg-[#1E3A2E] blur-3xl" />
+        </div>
+
+        <div className="relative z-10 w-full max-w-md bg-[#13281E]/95 backdrop-blur-xl border border-[#C7CBB8]/30 rounded-[32px] p-6 sm:p-8 shadow-2xl space-y-6">
+          {/* Atelier Brand Emblem */}
+          <div className="text-center space-y-2">
+            <div className="inline-flex p-3 rounded-2xl bg-white/10 border border-[#C7CBB8]/30 shadow-inner">
+              <img
+                src="/brand/logo.jpg"
+                alt="T.I.M.E fits Logo"
+                className="w-16 h-16 object-contain rounded-xl"
+              />
+            </div>
+            <div>
+              <span className="text-[10px] uppercase font-bold tracking-[0.25em] text-[#C7CBB8] block">
+                T.I.M.E FITS · ACCRA ATELIER
+              </span>
+              <h2 className="text-xl sm:text-2xl font-serif font-bold text-white tracking-tight mt-1">
+                Admin Console Access
+              </h2>
+            </div>
+            <p className="text-xs text-gray-300 font-light leading-relaxed max-w-sm mx-auto">
+              Restricted management portal for inventory, bespoke client appointments, courier dispatches, and lookbook content.
+            </p>
+          </div>
+
+          {/* Form */}
+          <form onSubmit={handleAdminLogin} className="space-y-4">
+            <div className="space-y-1.5">
+              <label className="text-[11px] font-bold tracking-wider text-[#C7CBB8] uppercase flex items-center justify-between">
+                <span>Atelier Passkey</span>
+                <span className="text-[10px] text-gray-400 lowercase font-normal">authorized staff only</span>
+              </label>
+              <div className="relative">
+                <input
+                  type={showAdminPasskey ? 'text' : 'password'}
+                  value={adminPasskey}
+                  onChange={(e) => {
+                    setAdminPasskey(e.target.value);
+                    if (adminError) setAdminError('');
+                  }}
+                  placeholder="Enter administrator passkey..."
+                  autoFocus
+                  required
+                  className="w-full h-11 pl-4 pr-11 bg-white/5 border border-[#C7CBB8]/30 rounded-xl text-white placeholder-gray-400 text-sm focus:outline-none focus:border-[#C7CBB8] focus:ring-1 focus:ring-[#C7CBB8] transition-all"
+                />
+                <button
+                  type="button"
+                  onClick={() => setShowAdminPasskey(!showAdminPasskey)}
+                  className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-white transition-colors cursor-pointer"
+                >
+                  {showAdminPasskey ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
+                </button>
+              </div>
+            </div>
+
+            {adminError && (
+              <div className="p-3 rounded-xl bg-red-900/40 border border-red-500/40 text-red-200 text-xs flex items-center gap-2">
+                <AlertTriangle className="w-4 h-4 text-red-400 flex-shrink-0" />
+                <span>{adminError}</span>
+              </div>
+            )}
+
+            <button
+              type="submit"
+              className="w-full h-11 rounded-xl bg-[#C7CBB8] hover:bg-[#D5D9C8] text-[#0F1F17] font-bold text-xs uppercase tracking-wider transition-all shadow-md active:scale-[0.98] cursor-pointer flex items-center justify-center gap-2"
+            >
+              <Lock className="w-4 h-4" />
+              <span>Unlock Admin Console</span>
+            </button>
+          </form>
+
+          {/* Passkey hint badge & return link */}
+          <div className="pt-2 border-t border-white/10 space-y-3 text-center">
+            <div className="inline-block bg-white/5 border border-white/10 rounded-lg px-3 py-1.5 text-[11px] text-gray-300">
+              <span className="text-gray-400">Default Passkey: </span>
+              <code className="text-[#C7CBB8] font-mono font-bold select-all">TIME-ATELIER-2026</code>
+            </div>
+
+            <div>
+              <button
+                type="button"
+                onClick={() => setActiveView('home')}
+                className="text-xs text-gray-400 hover:text-white transition-colors cursor-pointer flex items-center justify-center gap-1 mx-auto"
+              >
+                <span>← Return to Boutique Store</span>
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
   return (
     <div className="min-h-screen bg-[#F5F5F7] text-[#111113] pb-32">
       {/* 1. Admin Header */}
@@ -492,6 +637,14 @@ export default function AdminView() {
             >
               <RotateCcw className="w-3.5 h-3.5" />
               <span>Reset Data</span>
+            </button>
+            <button
+              onClick={handleAdminLogout}
+              className="text-xs bg-red-900/40 hover:bg-red-800/60 border border-red-500/30 text-red-200 hover:text-white px-3.5 py-2 rounded-full flex items-center justify-center gap-1.5 transition-colors cursor-pointer"
+              title="Lock Admin Console & Sign Out"
+            >
+              <LogOut className="w-3.5 h-3.5" />
+              <span>Lock Console</span>
             </button>
           </div>
         </div>
